@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Project</string>
+    <string name="configure_my_childern">Configure My Childern</string>
+    <string name="flip_coin">Flip Coin</string>
+    <string name="timeout_timer">Timeout Timer</string>
+    <string name="save_btn">save btn</string>
+    <string name="name">name</string>
+    <string name="homeTitle">Practical Parent App</string>
+    <string name="configPage">Configure Child</string>
+    <string name="addPage">Add Child</string>
 </resources>
