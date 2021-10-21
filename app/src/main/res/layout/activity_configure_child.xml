@@ -22,10 +22,23 @@
         android:id="@+id/addKid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/add_vector" />
+        app:layout_constraintHorizontal_bias="0.895"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kidsList"
+        app:srcCompat="@drawable/add_vector"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ListView
+        android:id="@+id/kidsList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="61dp"
+        app:layout_constraintBottom_toTopOf="@+id/addKid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

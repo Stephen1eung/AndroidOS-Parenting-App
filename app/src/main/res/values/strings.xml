@@ -8,4 +8,7 @@
     <string name="homeTitle">Practical Parent App</string>
     <string name="configPage">Configure Child</string>
     <string name="addPage">Add Child</string>
+    <string name="editTitle">Edit Child</string>
+    <string name="deleteBtn">deleteBtn</string>
+    <string name="saveBtn">saveBtn</string>
 </resources>

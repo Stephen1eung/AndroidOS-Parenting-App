@@ -4,18 +4,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ChildManager implements Iterable<Child> {
-    private static ChildManager instance;
-    private ArrayList<Child> kids = new ArrayList<>();
+    private static ChildManager instance = new ChildManager();
+    private ArrayList<Child> kids = new ArrayList<Child>();
     private ChildManager() {
 
     }
 
     public static ChildManager getInstance() {
-        return instance == null ? new ChildManager() : instance;
+        return instance;
     }
 
     public ArrayList<Child> getKids() {
-        return kids;
+        return this.kids;
+    }
+
+    public void addKid(Child child) {
+        kids.add(child);
+    }
+
+    public void removeKid(int index) {
+        kids.remove(index);
     }
 
     @Override

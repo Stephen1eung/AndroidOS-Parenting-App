@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import ca.cmpt276.project.UI.ConfigureChildActivity;
+import ca.cmpt276.project.model.Child;
+import ca.cmpt276.project.model.ChildManager;
 
 public class MainMenu extends AppCompatActivity {
 
