@@ -18,6 +18,8 @@ public class ChildManager implements Iterable<Child> {
         return this.kids;
     }
 
+    public void setKids(ArrayList<Child> kidsList) { this.kids = kidsList; }
+
     public void addKid(Child child) {
         kids.add(child);
     }
