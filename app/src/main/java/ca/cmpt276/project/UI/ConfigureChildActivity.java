@@ -29,9 +29,8 @@ import ca.cmpt276.project.model.Child;
 import ca.cmpt276.project.model.ChildManager;
 
 public class ConfigureChildActivity extends AppCompatActivity {
-    private ChildManager manager;
-
     private ImageView DownArrow;
+    private ChildManager manager;
     private TextView whenEmpty, info;
 
     public static Intent makeIntent(Context context) {
@@ -48,10 +47,8 @@ public class ConfigureChildActivity extends AppCompatActivity {
         info = findViewById(R.id.infoTxt);
         DownArrow = findViewById(R.id.arrow);
 
-        loadSavedKids();
-
         manager = ChildManager.getInstance();
-        manager.setKids(loadSavedKids());
+        manager.setKids(loadSavedKids(ConfigureChildActivity.this));
 
         itemClick();
         addKidBtn();
@@ -75,23 +72,25 @@ public class ConfigureChildActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        saveKids();
+        super.onDestroy();
+    }
+
+    private void saveKids() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ConfigureChildActivity.this);
         SharedPreferences.Editor editor = sp.edit();
         Gson gson = new Gson();
         String json = gson.toJson(manager.getKids());
         editor.putString("SavedKids", json);
         editor.apply();
-
-        super.onDestroy();
     }
 
-    private ArrayList<Child> loadSavedKids() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ConfigureChildActivity.this);
+    public static ArrayList<Child> loadSavedKids(Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = sharedPrefs.getString("SavedKids", "");
         Type type = new TypeToken<ArrayList<Child>>() {
         }.getType();
-
         return gson.fromJson(json, type);
     }
 
@@ -143,7 +142,7 @@ public class ConfigureChildActivity extends AppCompatActivity {
 
             TextView txt = itemView.findViewById(R.id.kidsName);
             txt.setText(currKid.getName());
-
+            saveKids();
             return itemView;
         }
     }
