@@ -10,6 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
+            android:name=".UI.EditChildActivity"
+            android:exported="false"
+            android:parentActivityName=".UI.ConfigureChildActivity" />
+        <activity
+            android:name=".UI.AddChildActivity"
+            android:exported="false"
+            android:parentActivityName=".UI.ConfigureChildActivity" />
+        <activity
+            android:name=".UI.ConfigureChildActivity"
+            android:exported="false"
+            android:parentActivityName=".MainMenu" />
+        <activity
             android:name=".MainMenu"
             android:exported="true">
             <intent-filter>

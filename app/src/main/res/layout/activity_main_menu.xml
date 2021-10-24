@@ -6,4 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".MainMenu">
 
+    <Button
+        android:id="@+id/flipCoin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="19dp"
+        android:text="@string/flip_coin"
+        app:layout_constraintBottom_toTopOf="@+id/timeOut"
+        app:layout_constraintStart_toStartOf="@+id/timeOut"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/ChildConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/configure_my_childern"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeOut" />
+
+    <Button
+        android:id="@+id/timeOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="37dp"
+        android:text="@string/timeout_timer"
+        app:layout_constraintBottom_toTopOf="@+id/ChildConfig"
+        app:layout_constraintStart_toStartOf="@+id/ChildConfig"
+        app:layout_constraintTop_toBottomOf="@+id/flipCoin" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
