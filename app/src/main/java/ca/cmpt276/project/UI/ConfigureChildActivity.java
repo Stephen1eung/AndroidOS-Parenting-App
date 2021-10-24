@@ -37,6 +37,15 @@ public class ConfigureChildActivity extends AppCompatActivity {
         return new Intent(context, ConfigureChildActivity.class);
     }
 
+    public static ArrayList<Child> loadSavedKids(Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString("SavedKids", "");
+        Type type = new TypeToken<ArrayList<Child>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,15 +94,6 @@ public class ConfigureChildActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public static ArrayList<Child> loadSavedKids(Context context) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Gson gson = new Gson();
-        String json = sharedPrefs.getString("SavedKids", "");
-        Type type = new TypeToken<ArrayList<Child>>() {
-        }.getType();
-        return gson.fromJson(json, type);
-    }
-
     private void itemClick() {
         ListView listView = findViewById(R.id.kidsList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -139,10 +139,8 @@ public class ConfigureChildActivity extends AppCompatActivity {
             }
 
             Child currKid = manager.getKids().get(position);
-
             TextView txt = itemView.findViewById(R.id.kidsName);
             txt.setText(currKid.getName());
-            saveKids();
             return itemView;
         }
     }
