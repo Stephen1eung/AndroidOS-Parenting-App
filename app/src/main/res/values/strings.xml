@@ -11,4 +11,5 @@
     <string name="editTitle">Edit Child</string>
     <string name="deleteBtn">deleteBtn</string>
     <string name="saveBtn">saveBtn</string>
+    <string name="timeOutTitle">Timeout</string>
 </resources>
