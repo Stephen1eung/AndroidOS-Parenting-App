@@ -1,8 +1,5 @@
 package ca.cmpt276.project.UI;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +12,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Objects;
 
 import ca.cmpt276.project.R;
@@ -24,7 +24,6 @@ import ca.cmpt276.project.model.ChildManager;
 public class AddChildActivity extends AppCompatActivity {
     private ChildManager manager;
     private EditText name;
-
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, AddChildActivity.class);
@@ -77,8 +76,7 @@ public class AddChildActivity extends AppCompatActivity {
                     Child newChild = new Child(n);
                     manager.addKid(newChild);
                     finish();
-                }
-                else {
+                } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddChildActivity.this);
                     builder.setIcon(R.drawable.warning)
                             .setTitle("Closing Activity")

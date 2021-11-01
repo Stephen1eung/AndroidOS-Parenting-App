@@ -5,12 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,10 +17,10 @@ import ca.cmpt276.project.R;
 import ca.cmpt276.project.model.ChildManager;
 
 public class EditChildActivity extends AppCompatActivity {
+    private static final String INDEX_NAME = "ca.cmpt276.project.UI - index";
     private EditText name;
     private ChildManager manager;
     private int kidIndex;
-    private static final String INDEX_NAME = "ca.cmpt276.project.UI - index";
 
     public static Intent makeIntent(Context context, int index) {
         Intent intent = new Intent(context, EditChildActivity.class);
