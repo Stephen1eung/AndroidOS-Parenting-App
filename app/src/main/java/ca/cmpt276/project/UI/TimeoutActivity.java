@@ -44,7 +44,6 @@ public class TimeoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeout);
         setTitle(R.string.timeOutTitle);
 
-
         initAllItems();
         populateTimeOptions();
         setupTimer();
@@ -163,13 +162,17 @@ public class TimeoutActivity extends AppCompatActivity {
             RadioButton btn = new RadioButton(this);
             btn.setText(getString(R.string.timeOptionString, row));
 
+            if (defaultOption == row) btn.setChecked(true);
+
+
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    long time = row * 60000;
+                    setTimer(time);
                     defaultOption = row;
                 }
             });
-            if (row == defaultOption) btn.setChecked(true);
             group.addView(btn);
         }
     }
