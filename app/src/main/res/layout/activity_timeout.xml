@@ -11,13 +11,14 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="210dp"
+        android:layout_marginBottom="9dp"
         android:hint="Minutes"
         android:inputType="number"
         android:maxLength="4"
+        app:layout_constraintBottom_toTopOf="@+id/setBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/timeGroup" />
 
     <Button
         android:id="@+id/setBtn"
@@ -25,9 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/userInput"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginBottom="26dp"
         android:layout_toEndOf="@+id/userInput"
         android:text="Set"
+        app:layout_constraintBottom_toTopOf="@+id/countDown"
         app:layout_constraintStart_toStartOf="@+id/userInput"
         app:layout_constraintTop_toBottomOf="@+id/userInput" />
 
@@ -36,10 +38,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginTop="26dp"
+        android:layout_marginBottom="30dp"
         android:text="00:00"
         android:textColor="@android:color/black"
         android:textSize="60sp"
+        app:layout_constraintBottom_toTopOf="@+id/startAndPauseBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setBtn" />
@@ -49,9 +52,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginBottom="165dp"
         android:text="reset"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/startAndPauseBtn"
         app:layout_constraintTop_toBottomOf="@+id/startAndPauseBtn"
         tools:visibility="visible" />
@@ -61,9 +65,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="22dp"
         android:text="Start"
+        app:layout_constraintBottom_toTopOf="@+id/resetBtn"
         app:layout_constraintStart_toStartOf="@+id/countDown"
         app:layout_constraintTop_toBottomOf="@+id/countDown" />
+
+    <RadioGroup
+        android:id="@+id/timeGroup"
+        android:layout_width="381dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginBottom="64dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/userInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,11 +3,15 @@ package ca.cmpt276.project.UI;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,8 @@ import ca.cmpt276.project.R;
 // a lot of the code was from that youtube video above, I simply added shared pref and user input (the video was missing those)
 public class TimeoutActivity extends AppCompatActivity {
     private long START_TIME = 60000;
+    RadioGroup group;
+    private int defaultOption;
     private TextView countDown;
     private EditText userInput;
     private boolean timerRunning;
@@ -40,10 +46,12 @@ public class TimeoutActivity extends AppCompatActivity {
 
 
         initAllItems();
+        populateTimeOptions();
         setupTimer();
     }
 
     private void initAllItems() {
+        group = findViewById(R.id.timeGroup);
         setBtn = findViewById(R.id.setBtn);
         resetBtn = findViewById(R.id.resetBtn);
         userInput = findViewById(R.id.userInput);
@@ -70,6 +78,7 @@ public class TimeoutActivity extends AppCompatActivity {
                     Toast.makeText(TimeoutActivity.this, "Enter Positive Number", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                group.clearCheck();
                 long time = Long.parseLong(userInput.getText().toString()) * 60000;
                 setTimer(time);
                 userInput.setText("");
@@ -146,6 +155,25 @@ public class TimeoutActivity extends AppCompatActivity {
         }
     }
 
+    private void populateTimeOptions() {
+
+        int[] boardRow = getResources().getIntArray(R.array.timeOptions);
+
+        for (int row : boardRow) {
+            RadioButton btn = new RadioButton(this);
+            btn.setText(getString(R.string.timeOptionString, row));
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    defaultOption = row;
+                }
+            });
+            if (row == defaultOption) btn.setChecked(true);
+            group.addView(btn);
+        }
+    }
+
     @Override
     protected void onStop() {
         SharedPreferences sp = getSharedPreferences("timerOutPref", MODE_PRIVATE);
@@ -155,6 +183,7 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.putLong("TIME_LEFT", TIME_LEFT);
         editor.putBoolean("timerRunning", timerRunning);
         editor.putLong("END_TIME", END_TIME);
+        editor.putInt("defaultOption", defaultOption);
         editor.apply();
 
         if (countDownTimer != null) countDownTimer.cancel();
@@ -166,7 +195,7 @@ public class TimeoutActivity extends AppCompatActivity {
         super.onStart();
 
         SharedPreferences prefs = getSharedPreferences("timerOutPref", MODE_PRIVATE);
-
+        defaultOption = prefs.getInt("defaultOption", 1);
         START_TIME = prefs.getLong("START_TIME", 60000);
         TIME_LEFT = prefs.getLong("TIME_LEFT", START_TIME);
         timerRunning = prefs.getBoolean("timerRunning", false);

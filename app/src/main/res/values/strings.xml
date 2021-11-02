@@ -12,4 +12,13 @@
     <string name="deleteBtn">deleteBtn</string>
     <string name="saveBtn">saveBtn</string>
     <string name="timeOutTitle">Timeout</string>
+
+    <integer-array name="timeOptions">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </integer-array>
+    <string name="timeOptionString">%1$d mins</string>
 </resources>
