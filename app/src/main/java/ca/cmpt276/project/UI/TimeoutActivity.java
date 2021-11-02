@@ -154,6 +154,18 @@ public class TimeoutActivity extends AppCompatActivity {
         }
     }
 
+    private int getDefaultOption() {
+        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        return sp.getInt("defaultOption", 3);
+    }
+
+    private void saveDefaultOption(int defaultOption) {
+        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("defaultOption", defaultOption);
+        editor.apply();
+    }
+
     private void populateTimeOptions() {
 
         int[] boardRow = getResources().getIntArray(R.array.timeOptions);
@@ -161,19 +173,17 @@ public class TimeoutActivity extends AppCompatActivity {
         for (int row : boardRow) {
             RadioButton btn = new RadioButton(this);
             btn.setText(getString(R.string.timeOptionString, row));
-
-            if (defaultOption == row) btn.setChecked(true);
-
-
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     long time = row * 60000;
                     setTimer(time);
+                    saveDefaultOption(row);
                     defaultOption = row;
                 }
             });
             group.addView(btn);
+            if (row == getDefaultOption()) btn.setChecked(true);
         }
     }
 
@@ -186,7 +196,6 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.putLong("TIME_LEFT", TIME_LEFT);
         editor.putBoolean("timerRunning", timerRunning);
         editor.putLong("END_TIME", END_TIME);
-        editor.putInt("defaultOption", defaultOption);
         editor.apply();
 
         if (countDownTimer != null) countDownTimer.cancel();
@@ -198,7 +207,6 @@ public class TimeoutActivity extends AppCompatActivity {
         super.onStart();
 
         SharedPreferences prefs = getSharedPreferences("timerOutPref", MODE_PRIVATE);
-        defaultOption = prefs.getInt("defaultOption", 1);
         START_TIME = prefs.getLong("START_TIME", 60000);
         TIME_LEFT = prefs.getLong("TIME_LEFT", START_TIME);
         timerRunning = prefs.getBoolean("timerRunning", false);
