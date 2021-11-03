@@ -8,68 +8,66 @@
 
     <RadioGroup
         android:id="@+id/timeGroup"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="99dp"
+        android:layout_width="411dp"
+        android:layout_height="64dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/setBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/setBtn"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="123dp"
+        android:layout_height="65dp"
         android:layout_alignTop="@+id/userInput"
-        android:layout_marginEnd="78dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginTop="168dp"
         android:layout_toEndOf="@+id/userInput"
         android:text="Set"
         app:layout_constraintBottom_toTopOf="@+id/countDown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/userInput"
-        app:layout_constraintTop_toBottomOf="@+id/timeGroup" />
+        app:layout_constraintTop_toTopOf="@+id/timeGroup" />
 
     <EditText
         android:id="@+id/userInput"
-        android:layout_width="0dp"
+        android:layout_width="123dp"
         android:layout_height="49dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="74dp"
-        android:layout_marginEnd="13dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="172dp"
         android:hint="Minutes"
         android:inputType="number"
         android:maxLength="4"
-        app:layout_constraintBaseline_toBaselineOf="@+id/setBtn"
-        app:layout_constraintEnd_toStartOf="@+id/setBtn"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/countDown"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timeGroup" />
 
     <Button
         android:id="@+id/startAndPauseBtn"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="1dp"
+        android:layout_width="98dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="36dp"
         android:text="Start"
-        app:layout_constraintBottom_toTopOf="@+id/resetBtn"
-        app:layout_constraintEnd_toEndOf="@+id/resetBtn"
-        app:layout_constraintStart_toStartOf="@+id/resetBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countDown" />
 
     <Button
         android:id="@+id/resetBtn"
         android:layout_width="106dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="184dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="20dp"
         android:text="reset"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startAndPauseBtn"
+        app:layout_constraintVertical_bias="0.0"
         tools:visibility="visible" />
 
     <TextView
@@ -77,13 +75,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="33dp"
         android:text="00:00"
         android:textColor="@android:color/black"
         android:textSize="60sp"
-        app:layout_constraintBottom_toTopOf="@+id/startAndPauseBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setBtn" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
