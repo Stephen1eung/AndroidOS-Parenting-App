@@ -7,7 +7,7 @@ public class ChildManager implements Iterable<Child> {
     private static ChildManager instance = new ChildManager();
     private ArrayList<Child> kids = new ArrayList<Child>();
     private ChildManager() {
-
+        kids = new ArrayList<>();
     }
 
     public static ChildManager getInstance() {
@@ -21,6 +21,9 @@ public class ChildManager implements Iterable<Child> {
     public void setKids(ArrayList<Child> kidsList) { this.kids = kidsList; }
 
     public void addKid(Child child) {
+        if (kids == null) {
+            kids = new ArrayList<>();
+        }
         kids.add(child);
     }
 
