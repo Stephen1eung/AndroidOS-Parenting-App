@@ -1,5 +1,7 @@
 package ca.cmpt276.project.UI;
 
+import static ca.cmpt276.project.UI.ConfigureChildActivity.saveKids;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -75,6 +77,7 @@ public class AddChildActivity extends AppCompatActivity {
                     String n = name.getText().toString();
                     Child newChild = new Child(n);
                     manager.addKid(newChild);
+                    saveKids(AddChildActivity.this);
                     finish();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddChildActivity.this);
