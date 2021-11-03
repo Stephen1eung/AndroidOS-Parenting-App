@@ -30,7 +30,7 @@ import ca.cmpt276.project.model.ChildManager;
 
 public class ConfigureChildActivity extends AppCompatActivity {
     private ImageView DownArrow;
-    private ChildManager manager;
+    private static ChildManager manager;
     private TextView whenEmpty, info;
 
     public static Intent makeIntent(Context context) {
@@ -66,6 +66,8 @@ public class ConfigureChildActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        manager = ChildManager.getInstance();
+        manager.setKids(loadSavedKids(ConfigureChildActivity.this));
         if (manager.getKids().isEmpty()) {
             whenEmpty.setVisibility(View.VISIBLE);
             info.setVisibility(View.VISIBLE);
@@ -81,12 +83,12 @@ public class ConfigureChildActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        saveKids();
+        saveKids(ConfigureChildActivity.this);
         super.onDestroy();
     }
 
-    private void saveKids() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ConfigureChildActivity.this);
+    public static void saveKids(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
         Gson gson = new Gson();
         String json = gson.toJson(manager.getKids());

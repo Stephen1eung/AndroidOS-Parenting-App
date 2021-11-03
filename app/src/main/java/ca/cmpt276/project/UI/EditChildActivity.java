@@ -1,5 +1,7 @@
 package ca.cmpt276.project.UI;
 
+import static ca.cmpt276.project.UI.ConfigureChildActivity.saveKids;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -62,6 +64,7 @@ public class EditChildActivity extends AppCompatActivity {
             case R.id.saveBtn:
                 manager.getKids().get(kidIndex).setName(name.getText().toString());
                 Toast.makeText(EditChildActivity.this, "CHILD EDITED", Toast.LENGTH_SHORT).show();
+                saveKids(EditChildActivity.this);
                 finish();
                 return true;
             case R.id.deleteBtn:
@@ -73,6 +76,7 @@ public class EditChildActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 manager.removeKid(kidIndex);
+                                saveKids(EditChildActivity.this);
                                 Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
                                 finish();
                             }

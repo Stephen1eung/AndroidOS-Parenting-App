@@ -15,12 +15,18 @@ public class ChildManager implements Iterable<Child> {
     }
 
     public ArrayList<Child> getKids() {
+        if (kids == null) {
+            kids = new ArrayList<>();
+        }
         return this.kids;
     }
 
     public void setKids(ArrayList<Child> kidsList) { this.kids = kidsList; }
 
     public void addKid(Child child) {
+        if (kids == null) {
+            kids = new ArrayList<>();
+        }
         kids.add(child);
     }
 
