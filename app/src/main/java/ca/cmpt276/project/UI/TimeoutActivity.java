@@ -1,10 +1,16 @@
 package ca.cmpt276.project.UI;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -16,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.util.Locale;
 
@@ -33,6 +41,8 @@ public class TimeoutActivity extends AppCompatActivity {
     private long TIME_LEFT, END_TIME;
     private CountDownTimer countDownTimer;
     private Button startAndPauseBtn, resetBtn, setBtn;
+    public static final String CHANNEL = "Timer";
+    private NotificationManagerCompat notificationManager;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, TimeoutActivity.class);
@@ -56,6 +66,7 @@ public class TimeoutActivity extends AppCompatActivity {
         userInput = findViewById(R.id.userInput);
         countDown = findViewById(R.id.countDown);
         startAndPauseBtn = findViewById(R.id.startAndPauseBtn);
+        notificationManager = NotificationManagerCompat.from(this);
     }
 
     private void setTimer(long time) {
@@ -97,6 +108,7 @@ public class TimeoutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timerRunning = false;
+                createFinishNotification();
                 updateBtnStates();
             }
         }.start();
@@ -225,5 +237,44 @@ public class TimeoutActivity extends AppCompatActivity {
                 updateBtnStates();
             } else startTimer();
         }
+    }
+    private void createFinishNotification(){
+        NotificationChannel channel = new NotificationChannel(CHANNEL,"Timer Finished", NotificationManager.IMPORTANCE_HIGH);
+        channel.setDescription("Timer Notification");
+
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
+        sendNotificationChannel();
+    }
+
+    public void sendNotificationChannel(){
+        String title = "Timer";
+        String message = "FINISHED";
+
+        Intent timerIntent = new Intent(this,TimeoutActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,0,timerIntent,0);
+
+        Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
+        //need to make stop button
+        broadcastIntent.putExtra("toastmessage", message);
+        PendingIntent actionIntent = PendingIntent.getBroadcast(this,0,broadcastIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        //verify sound/vibration is working
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        Notification notification = new NotificationCompat.Builder(this,CHANNEL)
+                .setSmallIcon(R.drawable.ic_done)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setColor(Color.BLACK)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setVibrate( new long []{ 1000 , 1000 , 1000 , 1000 , 1000 })
+                .setSound(alarmSound)
+                .addAction(R.mipmap.ic_launcher, "Toast", actionIntent)
+                .build();
+
+        notificationManager.notify(1,notification);
     }
 }
