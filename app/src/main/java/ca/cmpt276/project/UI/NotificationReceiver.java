@@ -1,3 +1,4 @@
+//NotificationReceiver: Used to receive button intent click as well as stopping alarm when clicked
 package ca.cmpt276.project.UI;
 
 import android.content.BroadcastReceiver;
@@ -17,6 +18,6 @@ public class NotificationReceiver extends BroadcastReceiver {
         Uri alarmUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
         ringtone.stop();
-        Log.d("Timer", "sound off");
+        //Log.d("Timer", "sound off");
     }
 }

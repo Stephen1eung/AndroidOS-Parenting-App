@@ -1,3 +1,5 @@
+//TimeoutActivity: creates a 1,2,3,5,10 or custom minute timer that has an alarm with notification stop button.
+
 package ca.cmpt276.project.UI;
 
 import android.app.Notification;
@@ -31,6 +33,7 @@ import ca.cmpt276.project.R;
 
 // https://www.youtube.com/watch?v=MDuGwI6P-X8&list=PLrnPJCHvNZuB8wxqXCwKw2_NkyEmFwcSd&index=1&ab_channel=CodinginFlow
 // a lot of the code was from that youtube video above, I simply added shared pref and user input (the video was missing those)
+
 public class TimeoutActivity extends AppCompatActivity {
     private long START_TIME = 60000;
     RadioGroup group;
@@ -248,7 +251,7 @@ public class TimeoutActivity extends AppCompatActivity {
         PendingIntent actionIntent = PendingIntent.getBroadcast(this,0,broadcastIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        Log.d("Timer", "sound on");
+        //Log.d("Timer", "sound on");
         Notification notification = new NotificationCompat.Builder(this,CHANNEL)
                 .setSmallIcon(R.drawable.ic_done)
                 .setContentTitle(title)
