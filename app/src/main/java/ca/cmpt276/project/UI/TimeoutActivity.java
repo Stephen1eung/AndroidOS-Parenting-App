@@ -7,9 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.media.MediaActionSound;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -80,9 +78,7 @@ public class TimeoutActivity extends AppCompatActivity {
             if (timerRunning) pauseTimer();
             else startTimer();
         });
-
         resetBtn.setOnClickListener(view -> resetTimer());
-
         setBtn.setOnClickListener(view -> {
             if (!userInput.getText().toString().isEmpty()) {
                 if (Long.parseLong(userInput.getText().toString()) == 0) {
@@ -105,7 +101,6 @@ public class TimeoutActivity extends AppCompatActivity {
                 TIME_LEFT = millisUntilFinished;
                 updateCounter();
             }
-
             @Override
             public void onFinish() {
                 timerRunning = false;
@@ -138,7 +133,6 @@ public class TimeoutActivity extends AppCompatActivity {
         if (hours > 0) timeLeftFormatted = String.format(Locale.getDefault(),
                 "%d:%02d:%02d", hours, minutes, seconds);
         else timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-
         countDown.setText(timeLeftFormatted);
     }
 
@@ -147,11 +141,11 @@ public class TimeoutActivity extends AppCompatActivity {
             userInput.setVisibility(View.INVISIBLE);
             setBtn.setVisibility(View.INVISIBLE);
             resetBtn.setVisibility(View.INVISIBLE);
-            startAndPauseBtn.setText("Pause");
+            startAndPauseBtn.setText(R.string.Pause);
         } else {
             userInput.setVisibility(View.VISIBLE);
             setBtn.setVisibility(View.VISIBLE);
-            startAndPauseBtn.setText("Start");
+            startAndPauseBtn.setText(R.string.Start);
 
             if (TIME_LEFT < 1000) {
                 startAndPauseBtn.setVisibility(View.INVISIBLE);
@@ -180,20 +174,16 @@ public class TimeoutActivity extends AppCompatActivity {
     }
 
     private void populateTimeOptions() {
-
         int[] boardRow = getResources().getIntArray(R.array.timeOptions);
 
         for (int row : boardRow) {
             RadioButton btn = new RadioButton(this);
             btn.setText(getString(R.string.timeOptionString, row));
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    long time = row * 60000;
-                    setTimer(time);
-                    saveDefaultOption(row);
-                    defaultOption = row;
-                }
+            btn.setOnClickListener(view -> {
+                long time = row * 60000L;
+                setTimer(time);
+                saveDefaultOption(row);
+                defaultOption = row;
             });
             group.addView(btn);
             if (row == getDefaultOption()) btn.setChecked(true);
@@ -218,7 +208,6 @@ public class TimeoutActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         SharedPreferences prefs = getSharedPreferences("timerOutPref", MODE_PRIVATE);
         START_TIME = prefs.getLong("START_TIME", 60000);
         TIME_LEFT = prefs.getLong("TIME_LEFT", START_TIME);
@@ -230,7 +219,6 @@ public class TimeoutActivity extends AppCompatActivity {
         if (timerRunning) {
             END_TIME = prefs.getLong("END_TIME", 0);
             TIME_LEFT = END_TIME - System.currentTimeMillis();
-
             if (TIME_LEFT < 0) {
                 TIME_LEFT = 0;
                 timerRunning = false;
@@ -239,6 +227,7 @@ public class TimeoutActivity extends AppCompatActivity {
             } else startTimer();
         }
     }
+
     private void createFinishNotification(){
         NotificationChannel channel = new NotificationChannel(CHANNEL,"Timer Finished", NotificationManager.IMPORTANCE_HIGH);
         channel.setDescription("Timer Notification");
@@ -254,13 +243,11 @@ public class TimeoutActivity extends AppCompatActivity {
 
         Intent timerIntent = new Intent(this,TimeoutActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,0,timerIntent,0);
-
         Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
         broadcastIntent.putExtra("Stop Timer", message);
         PendingIntent actionIntent = PendingIntent.getBroadcast(this,0,broadcastIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        //verify vibration is working
-
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         Log.d("Timer", "sound on");
         Notification notification = new NotificationCompat.Builder(this,CHANNEL)
                 .setSmallIcon(R.drawable.ic_done)
@@ -275,10 +262,6 @@ public class TimeoutActivity extends AppCompatActivity {
                 .setSound(alarmSound)
                 .addAction(R.mipmap.ic_launcher, "Stop Timer", actionIntent)
                 .build();
-
         notificationManager.notify(1,notification);
-        if(!timerRunning){
-
-        }
     }
 }
