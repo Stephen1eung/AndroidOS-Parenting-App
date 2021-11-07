@@ -9,10 +9,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.MediaActionSound;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,7 +55,6 @@ public class TimeoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeout);
         setTitle(R.string.timeOutTitle);
-
         initAllItems();
         populateTimeOptions();
         setupTimer();
@@ -255,12 +256,12 @@ public class TimeoutActivity extends AppCompatActivity {
         PendingIntent contentIntent = PendingIntent.getActivity(this,0,timerIntent,0);
 
         Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
-        //need to make stop button
-        broadcastIntent.putExtra("toastmessage", message);
+        broadcastIntent.putExtra("Stop Timer", message);
         PendingIntent actionIntent = PendingIntent.getBroadcast(this,0,broadcastIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        //verify sound/vibration is working
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        //verify vibration is working
 
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Log.d("Timer", "sound on");
         Notification notification = new NotificationCompat.Builder(this,CHANNEL)
                 .setSmallIcon(R.drawable.ic_done)
                 .setContentTitle(title)
@@ -272,9 +273,12 @@ public class TimeoutActivity extends AppCompatActivity {
                 .setAutoCancel(true)
                 .setVibrate( new long []{ 1000 , 1000 , 1000 , 1000 , 1000 })
                 .setSound(alarmSound)
-                .addAction(R.mipmap.ic_launcher, "Toast", actionIntent)
+                .addAction(R.mipmap.ic_launcher, "Stop Timer", actionIntent)
                 .build();
 
         notificationManager.notify(1,notification);
+        if(!timerRunning){
+
+        }
     }
 }
