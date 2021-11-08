@@ -33,6 +33,8 @@ import ca.cmpt276.parentapp.model.CoinHistory;
 import ca.cmpt276.parentapp.model.CoinHistoryManager;
 
 public class FlipCoinActivity extends AppCompatActivity {
+    TextView LastPickView;
+
     private String PlayersName;
     private int PlayerChoice = -1; // 0 = head, 1 = tail
 
@@ -117,6 +119,8 @@ public class FlipCoinActivity extends AppCompatActivity {
     protected void onStart() {
         if (loadSavedKids(FlipCoinActivity.this) != null) {
             coinHistoryManager.setCoinHistoryArrayList(loadSavedKids(FlipCoinActivity.this));
+            LastPickView = findViewById(R.id.LastPick);
+            LastPickView.setText("Last Pick:" + coinHistoryManager.getCoinHistory().get(0).getPlayersName());
         }
         super.onStart();
     }

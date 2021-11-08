@@ -84,10 +84,10 @@
         app:layout_constraintBottom_toTopOf="@+id/CoinFlipImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/pickAChild2" />
+        app:layout_constraintTop_toTopOf="@+id/LastPick" />
 
     <TextView
-        android:id="@+id/pickAChild2"
+        android:id="@+id/LastPick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
