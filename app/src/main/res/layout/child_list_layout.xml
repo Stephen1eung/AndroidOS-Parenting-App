@@ -8,19 +8,19 @@
     android:background="#081317">
 
     <ImageView
-        android:id="@+id/ChildImageView"
+        android:id="@+id/CoinImageView"
         android:layout_width="0dp"
         android:layout_height="114dp"
         android:layout_marginStart="31dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="49dp"
-        app:layout_constraintEnd_toStartOf="@+id/ChildsName"
+        app:layout_constraintEnd_toStartOf="@+id/CoinTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/child" />
 
     <TextView
-        android:id="@+id/ChildsName"
+        android:id="@+id/CoinTextView"
         android:layout_width="0dp"
         android:layout_height="36dp"
         android:layout_marginEnd="93dp"
@@ -29,6 +29,6 @@
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ChildImageView"
+        app:layout_constraintStart_toEndOf="@+id/CoinImageView"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

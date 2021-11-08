@@ -30,4 +30,14 @@ public class CoinHistory {
     public boolean isWinOrNot() {
         return WinOrNot;
     }
+
+    @Override
+    public String toString() {
+        return "CoinHistory{" +
+                "FlipDate=" + FlipDate +
+                ", PlayersName='" + PlayersName + '\'' +
+                ", PlayerChoice=" + PlayerChoice +
+                ", WinOrNot=" + WinOrNot +
+                '}';
+    }
 }

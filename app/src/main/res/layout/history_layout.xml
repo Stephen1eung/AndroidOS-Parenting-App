@@ -2,58 +2,34 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/childImage"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#081317">
 
-    <TextView
-        android:id="@+id/DateOfFlip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="93dp"
-        android:text="Date of Flip"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/NameOfPlayer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/PlayersPick"
-        app:layout_constraintTop_toTopOf="@+id/NameOfPlayer"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/PlayersPick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="41dp"
-        android:layout_marginBottom="4dp"
-        android:text="PlayersPick"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/DateOfFlip"
-        app:layout_constraintStart_toEndOf="@+id/WinOrLoseImageView"
-        app:layout_constraintTop_toBottomOf="@+id/NameOfPlayer" />
-
-    <TextView
-        android:id="@+id/NameOfPlayer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="4dp"
-        android:text="NameOfPlayer"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/PlayersPick"
-        app:layout_constraintStart_toStartOf="@+id/PlayersPick"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
-        android:id="@+id/WinOrLoseImageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginEnd="24dp"
+        android:id="@+id/CoinImageView"
+        android:layout_width="134dp"
+        android:layout_height="159dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/PlayersPick"
+        app:layout_constraintEnd_toStartOf="@+id/CoinTextView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/win" />
+
+    <TextView
+        android:id="@+id/CoinTextView"
+        android:layout_width="163dp"
+        android:layout_height="96dp"
+        android:layout_marginEnd="72dp"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.478" />
 </androidx.constraintlayout.widget.ConstraintLayout>

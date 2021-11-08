@@ -10,10 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
+            android:name=".UI.FlipCoin.FlipHistoryActivity"
+            android:exported="false"
+            android:parentActivityName=".UI.FlipCoin.FlipCoinActivity"
+            />
+        <activity
             android:name=".UI.FlipCoin.FlipCoinActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
-            />
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".UI.TimeoutTimer.TimeoutTimerActivity"
             android:exported="false"

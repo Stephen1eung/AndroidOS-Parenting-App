@@ -134,10 +134,10 @@ public class ConfigureMyChildrenActivity extends AppCompatActivity {
             }
 
             Child currKid = manager.getChildArrayList().get(position);
-            TextView txt = itemView.findViewById(R.id.ChildsName);
+            TextView txt = itemView.findViewById(R.id.CoinTextView);
             txt.setText(currKid.getName());
 
-            ImageView childImg = itemView.findViewById(R.id.ChildImageView);
+            ImageView childImg = itemView.findViewById(R.id.CoinImageView);
             childImg.setImageResource(R.drawable.child);
 
             return itemView;
