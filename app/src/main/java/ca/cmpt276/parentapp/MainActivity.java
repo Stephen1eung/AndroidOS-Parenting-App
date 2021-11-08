@@ -1,7 +1,6 @@
 package ca.cmpt276.parentapp;
 
 import static ca.cmpt276.parentapp.UI.ConfigureMyChildrenActivity.loadSavedKids;
-import static ca.cmpt276.parentapp.UI.FlipCoinActivity.loadSavedHistory;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,15 +9,11 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ca.cmpt276.parentapp.UI.ConfigureMyChildrenActivity;
-import ca.cmpt276.parentapp.UI.FlipCoinActivity;
 import ca.cmpt276.parentapp.UI.TimeoutTimerActivity;
 import ca.cmpt276.parentapp.model.ChildManager;
-import ca.cmpt276.parentapp.model.CoinHistoryManager;
 
 public class MainActivity extends AppCompatActivity {
-
     ChildManager childManager;
-    CoinHistoryManager coinHistoryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +24,6 @@ public class MainActivity extends AppCompatActivity {
         childManager = ChildManager.getInstance();
         childManager.setChild(loadSavedKids(MainActivity.this));
 
-
-        coinHistoryManager = CoinHistoryManager.getInstance();
-        coinHistoryManager.setCoinHistoryArrayList(loadSavedHistory(MainActivity.this));
-
         FlipCoinBtn();
         TimeoutTimerBtn();
         ConfigMyChildBtn();
@@ -41,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private void FlipCoinBtn() {
         Button btn = findViewById(R.id.FlipCoinBtn);
         btn.setOnClickListener(view -> {
-            Intent intent = FlipCoinActivity.makeIntent(MainActivity.this);
-            startActivity(intent);
+            // Intent intent = FlipCoinActivity.makeIntent(MainActivity.this);
+            // startActivity(intent);
         });
     }
 
