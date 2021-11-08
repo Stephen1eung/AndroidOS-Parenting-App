@@ -120,7 +120,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         if (loadSavedKids(FlipCoinActivity.this) != null) {
             coinHistoryManager.setCoinHistoryArrayList(loadSavedKids(FlipCoinActivity.this));
             LastPickView = findViewById(R.id.LastPick);
-            LastPickView.setText("Last Pick:" + coinHistoryManager.getCoinHistory().get(0).getPlayersName());
+            LastPickView.setText("Last Pick:" + coinHistoryManager.getCoinHistory().get(coinHistoryManager.getCoinHistory().size()-1).getPlayersName());
         }
         super.onStart();
     }
