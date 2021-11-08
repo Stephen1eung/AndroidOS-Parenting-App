@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -14,10 +15,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child;
@@ -56,6 +56,17 @@ public class FlipCoinActivity extends AppCompatActivity {
         FlipBtn.setOnClickListener(view -> {
             if (PlayersName.equals("") || PlayerChoice == -1) {
                 Toast.makeText(FlipCoinActivity.this, "Pick a kid or side", Toast.LENGTH_SHORT).show();
+            } else {
+                ImageView coinImage = findViewById(R.id.CoinFlipImage);
+
+                int pick = new Random().nextInt(2);
+                if (pick == 1) coinImage.setImageResource(R.drawable.head);
+                else coinImage.setImageResource(R.drawable.tail);
+
+                RotateAnimation rotate = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
+                        0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(1000);
+                coinImage.startAnimation(rotate);
             }
         });
     }
