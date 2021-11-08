@@ -2,9 +2,11 @@ package ca.cmpt276.parentapp.UI.FlipCoin;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
@@ -16,6 +18,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,7 +36,7 @@ public class FlipCoinActivity extends AppCompatActivity {
     private String PlayersName;
     private int PlayerChoice = -1; // 0 = head, 1 = tail
 
-    private CoinHistoryManager coinHistoryManager;
+    private static CoinHistoryManager coinHistoryManager;
     private ChildManager childManager;
 
     public static Intent makeIntent(Context context) {
@@ -52,6 +58,24 @@ public class FlipCoinActivity extends AppCompatActivity {
         PlayerPickBtn();
         FlipHistoryBtn();
         PopulateChildrenOptions();
+    }
+
+    public static ArrayList<CoinHistory> loadSavedKids(Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString("SavedFlips", "");
+        Type type = new TypeToken<ArrayList<CoinHistory>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public static void saveKids(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(coinHistoryManager.getCoinHistory());
+        editor.putString("SavedFlips", json);
+        editor.apply();
     }
 
     private void FlipHistoryBtn() {
@@ -84,8 +108,23 @@ public class FlipCoinActivity extends AppCompatActivity {
                         PlayerChoice == pick);
                 Toast.makeText(FlipCoinActivity.this, newCoinHistory.toString()+ "", Toast.LENGTH_SHORT).show();
                 coinHistoryManager.addCoinHistory(newCoinHistory);
+                saveKids(FlipCoinActivity.this);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        if (loadSavedKids(FlipCoinActivity.this) != null) {
+            coinHistoryManager.setCoinHistoryArrayList(loadSavedKids(FlipCoinActivity.this));
+        }
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        saveKids(FlipCoinActivity.this);
+        super.onDestroy();
     }
 
     private void PlayerPickBtn() {

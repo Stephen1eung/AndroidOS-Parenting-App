@@ -15,8 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import ca.cmpt276.parentapp.R;
-import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureMyChildrenActivity;
-import ca.cmpt276.parentapp.model.Child;
 import ca.cmpt276.parentapp.model.CoinHistory;
 import ca.cmpt276.parentapp.model.CoinHistoryManager;
 
@@ -60,8 +58,9 @@ public class FlipHistoryActivity extends AppCompatActivity {
             }
 
             CoinHistory currKid = coinHistoryManager.getCoinHistory().get(position);
+
             TextView txt = itemView.findViewById(R.id.CoinTextView);
-            txt.setText(currKid.toString());
+            txt.setText(currKid.getPlayersName());
 
             return itemView;
         }
