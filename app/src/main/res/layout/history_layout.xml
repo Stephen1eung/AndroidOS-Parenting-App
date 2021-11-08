@@ -22,14 +22,14 @@
 
     <TextView
         android:id="@+id/CoinTextView"
-        android:layout_width="163dp"
-        android:layout_height="96dp"
-        android:layout_marginEnd="72dp"
+        android:layout_width="240dp"
+        android:layout_height="116dp"
+        android:layout_marginEnd="4dp"
         android:text="TextView"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.478" />
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
