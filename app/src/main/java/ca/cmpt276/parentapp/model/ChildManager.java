@@ -1,11 +1,14 @@
 package ca.cmpt276.parentapp.model;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ChildManager implements Iterable<Child> {
-    private static ChildManager instance = new ChildManager();
+    private static final ChildManager instance = new ChildManager();
     private ArrayList<Child> childArrayList = new ArrayList<>();
+
     private ChildManager() {
 
     }
@@ -21,7 +24,9 @@ public class ChildManager implements Iterable<Child> {
         return this.childArrayList;
     }
 
-    public void setChild(ArrayList<Child> kidsList) { this.childArrayList = kidsList; }
+    public void setChild(ArrayList<Child> kidsList) {
+        this.childArrayList = kidsList;
+    }
 
     public void addChild(Child child) {
         if (childArrayList == null) {
@@ -34,6 +39,7 @@ public class ChildManager implements Iterable<Child> {
         childArrayList.remove(index);
     }
 
+    @NonNull
     @Override
     public Iterator<Child> iterator() {
         return childArrayList.iterator();

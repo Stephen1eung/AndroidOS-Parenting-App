@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0F2027"
-    tools:context=".UI.TimeoutTimerActivity">
+    tools:context=".UI.TimeoutTimer.TimeoutTimerActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

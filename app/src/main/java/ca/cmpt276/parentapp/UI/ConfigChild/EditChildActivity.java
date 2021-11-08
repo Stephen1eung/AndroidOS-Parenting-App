@@ -1,6 +1,6 @@
-package ca.cmpt276.parentapp.UI;
+package ca.cmpt276.parentapp.UI.ConfigChild;
 
-import static ca.cmpt276.parentapp.UI.ConfigureMyChildrenActivity.saveKids;
+import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureMyChildrenActivity.saveKids;
 
 import android.app.AlertDialog;
 import android.content.Context;

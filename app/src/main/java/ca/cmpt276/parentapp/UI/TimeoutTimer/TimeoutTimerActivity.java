@@ -1,4 +1,4 @@
-package ca.cmpt276.parentapp.UI;
+package ca.cmpt276.parentapp.UI.TimeoutTimer;
 
 import androidx.appcompat.app.AppCompatActivity;
 

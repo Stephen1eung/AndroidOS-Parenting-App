@@ -10,19 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
-            android:name=".UI.TimeoutTimerActivity"
+            android:name=".UI.FlipCoin.FlipCoinActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            />
+        <activity
+            android:name=".UI.TimeoutTimer.TimeoutTimerActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".UI.EditChildActivity"
+            android:name=".UI.ConfigChild.EditChildActivity"
             android:exported="false"
-            android:parentActivityName=".UI.ConfigureMyChildrenActivity" />
+            android:parentActivityName=".UI.ConfigChild.ConfigureMyChildrenActivity" />
         <activity
-            android:name=".UI.AddChildActivity"
+            android:name=".UI.ConfigChild.AddChildActivity"
             android:exported="false"
-            android:parentActivityName=".UI.ConfigureMyChildrenActivity" />
+            android:parentActivityName=".UI.ConfigChild.ConfigureMyChildrenActivity" />
         <activity
-            android:name=".UI.ConfigureMyChildrenActivity"
+            android:name=".UI.ConfigChild.ConfigureMyChildrenActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity

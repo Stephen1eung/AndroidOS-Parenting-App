@@ -1,4 +1,4 @@
-package ca.cmpt276.parentapp.UI;
+package ca.cmpt276.parentapp.UI.ConfigChild;
 
 import android.content.Context;
 import android.content.Intent;

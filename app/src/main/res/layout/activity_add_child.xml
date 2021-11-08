@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0F2027"
-    tools:context=".UI.AddChildActivity">
+    tools:context=".UI.ConfigChild.AddChildActivity">
 
     <EditText
         android:id="@+id/nameOfChild"

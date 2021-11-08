@@ -5,92 +5,110 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0F2027"
-    tools:context=".UI.FlipCoinActivity">
-
-    <Button
-        android:id="@+id/Tail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginBottom="150dp"
-        android:text="Tail"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/FlipBtn" />
-
-    <Button
-        android:id="@+id/Head"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="69dp"
-        android:text="Head"
-        app:layout_constraintEnd_toEndOf="@+id/FlipBtn"
-        app:layout_constraintTop_toBottomOf="@+id/FlipBtn" />
+    tools:context=".UI.FlipCoin.FlipCoinActivity">
 
     <ImageView
-        android:id="@+id/CoinImageView"
-        android:layout_width="173dp"
-        android:layout_height="171dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/CoinFlipImage"
+        android:layout_width="166dp"
+        android:layout_height="138dp"
+        android:layout_marginBottom="41dp"
+        app:layout_constraintBottom_toTopOf="@+id/PickAChild"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.412"
         app:srcCompat="@drawable/head" />
 
-    <RadioGroup
-        android:id="@+id/ChildOptions"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="19dp"
-        android:gravity="center|left"
-        app:layout_constraintBottom_toTopOf="@+id/childsChoiceTextView"
-        app:layout_constraintEnd_toStartOf="@+id/Tail"
-        app:layout_constraintStart_toStartOf="@+id/childsChoiceTextView"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
-        android:id="@+id/FlipBtn"
+        android:id="@+id/TAIL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:text="Flip"
-        app:layout_constraintBottom_toTopOf="@+id/Tail"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="33dp"
+        android:text="TAIL"
+        app:layout_constraintStart_toEndOf="@+id/FLIP"
+        app:layout_constraintTop_toBottomOf="@+id/ChildernRadioGroup" />
+
+    <Button
+        android:id="@+id/HEAD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="5dp"
+        android:text="HEAD"
+        app:layout_constraintBottom_toTopOf="@+id/FlipHistoryBtn"
+        app:layout_constraintEnd_toStartOf="@+id/FLIP" />
+
+    <Button
+        android:id="@+id/FLIP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginBottom="5dp"
+        android:text="FLIP"
+        app:layout_constraintBottom_toTopOf="@+id/FlipHistoryBtn"
+        app:layout_constraintStart_toStartOf="@+id/FlipHistoryBtn" />
+
+    <RadioGroup
+        android:id="@+id/ChildernRadioGroup"
+        android:layout_width="0dp"
+        android:layout_height="167dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="17dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/PickAChild"
+        app:layout_constraintStart_toStartOf="@+id/PickAChild"
+        app:layout_constraintTop_toBottomOf="@+id/PickAChild" />
+
+    <TextView
+        android:id="@+id/PickAChild"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="333dp"
+        android:text="Pick a Child"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/ChildsChoiceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Child's Choice: None"
+        android:id="@+id/pickAChild"
+        android:layout_width="305dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginBottom="43dp"
+        android:gravity="center"
+        android:text="Child's Pick: None"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/CoinFlipImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Tail" />
+        app:layout_constraintTop_toTopOf="@+id/pickAChild2" />
 
     <TextView
-        android:id="@+id/childsChoiceTextView"
+        android:id="@+id/pickAChild2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="156dp"
-        android:text="Last Time:"
+        android:layout_marginTop="24dp"
+        android:text="Who Picked The Last Time: None"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/HistoryBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="HISTORY"
+        android:id="@+id/FlipHistoryBtn"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:text="Flip History"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TAIL" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

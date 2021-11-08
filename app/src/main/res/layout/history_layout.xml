@@ -1,21 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="#081317">
+
+    <TextView
+        android:id="@+id/DateOfFlip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="93dp"
+        android:text="Date of Flip"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/NameOfPlayer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/PlayersPick"
+        app:layout_constraintTop_toTopOf="@+id/NameOfPlayer"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/PlayersPick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="41dp"
+        android:layout_marginBottom="4dp"
+        android:text="PlayersPick"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/DateOfFlip"
+        app:layout_constraintStart_toEndOf="@+id/WinOrLoseImageView"
+        app:layout_constraintTop_toBottomOf="@+id/NameOfPlayer" />
 
     <TextView
         android:id="@+id/NameOfPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="player"
-        tools:layout_editor_absoluteX="113dp"
-        tools:layout_editor_absoluteY="39dp" />
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="4dp"
+        android:text="NameOfPlayer"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/PlayersPick"
+        app:layout_constraintStart_toStartOf="@+id/PlayersPick"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="196dp"
-        tools:layout_editor_absoluteY="39dp" />
+    <ImageView
+        android:id="@+id/WinOrLoseImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/PlayersPick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/win" />
 </androidx.constraintlayout.widget.ConstraintLayout>
