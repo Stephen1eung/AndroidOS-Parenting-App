@@ -60,9 +60,11 @@ public class FlipCoinActivity extends AppCompatActivity {
     public static ArrayList<CoinHistory> loadSavedHistory(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
+
         String json = sharedPrefs.getString("SavedHistory", "");
         Type type = new TypeToken<ArrayList<CoinHistory>>() {
         }.getType();
+
         return gson.fromJson(json, type);
     }
 
