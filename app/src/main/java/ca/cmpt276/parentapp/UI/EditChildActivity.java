@@ -1,0 +1,111 @@
+package ca.cmpt276.parentapp.UI;
+
+import static ca.cmpt276.parentapp.UI.ConfigureMyChildrenActivity.saveKids;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import ca.cmpt276.parentapp.R;
+import ca.cmpt276.parentapp.model.ChildManager;
+
+public class EditChildActivity extends AppCompatActivity {
+    private static final String INDEX_NAME = "ca.cmpt276.project.UI - index";
+    private EditText name;
+    private ChildManager manager;
+    private int kidIndex;
+
+    public static Intent makeIntent(Context context, int index) {
+        Intent intent = new Intent(context, EditChildActivity.class);
+        intent.putExtra(INDEX_NAME, index);
+        return intent;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_child);
+        setTitle(R.string.EditChildTitle);
+
+        name = findViewById(R.id.nameOfChild);
+        manager = ChildManager.getInstance();
+
+        getIndexFromIntent();
+        fillInFields();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_child_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void getIndexFromIntent() {
+        Intent intent = getIntent();
+        kidIndex = intent.getIntExtra(INDEX_NAME, 0);
+    }
+
+    private void fillInFields() {
+        name.setText(manager.getChildArrayList().get(kidIndex).getName());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.saveBtn:
+                manager.getChildArrayList().get(kidIndex).setName(name.getText().toString());
+                Toast.makeText(EditChildActivity.this, "CHILD EDITED", Toast.LENGTH_SHORT).show();
+                saveKids(EditChildActivity.this);
+                finish();
+                return true;
+            case R.id.deleteBtn:
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditChildActivity.this);
+                builder.setIcon(R.drawable.warning)
+                        .setTitle("Closing Activity")
+                        .setMessage("Are you sure you want to DELETE this kid?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                manager.removeChild(kidIndex);
+                                saveKids(EditChildActivity.this);
+                                Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.warning)
+                .setTitle("Closing Activity")
+                .setMessage("Seems like you have made some changes to the data, are you sure you want to CANCEL?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+}
