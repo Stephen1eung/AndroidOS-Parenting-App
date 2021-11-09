@@ -153,7 +153,7 @@ public class FlipCoinActivity extends AppCompatActivity {
 
         if (ChildArray.isEmpty()) {
             TextView textView = new TextView(this);
-            textView.setTextColor(Color.WHITE);
+            textView.setTextColor(Color.BLACK);
             textView.setText("No Children");
             group.addView(textView);
         } else {
@@ -161,10 +161,10 @@ public class FlipCoinActivity extends AppCompatActivity {
                 RadioButton btn = new RadioButton(this);
                 ColorStateList colorStateList = new ColorStateList(
                         new int[][]{new int[]{-android.R.attr.state_enabled}, new int[]{android.R.attr.state_enabled}},
-                        new int[]{Color.WHITE, Color.WHITE}
+                        new int[]{Color.BLACK, Color.BLACK}
                 );
 
-                btn.setTextColor(Color.WHITE);
+                btn.setTextColor(Color.BLACK);
                 btn.setButtonTintList(colorStateList);
                 btn.setText(i.getName());
 

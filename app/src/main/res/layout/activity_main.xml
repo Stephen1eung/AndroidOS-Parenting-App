@@ -7,6 +7,16 @@
     android:background="#0F2027"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="452sp"
+        android:layout_height="754sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/main_background"
+        tools:ignore="ContentDescription" />
+
     <Button
         android:id="@+id/FlipCoinBtn"
         android:layout_width="254dp"

@@ -8,6 +8,16 @@
     tools:context=".UI.FlipCoin.FlipCoinActivity">
 
     <ImageView
+        android:layout_width="452sp"
+        android:layout_height="754sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/coinflip_background"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
         android:id="@+id/CoinFlipImage"
         android:layout_width="166sp"
         android:layout_height="138sp"
@@ -65,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="245dp"
         android:text="Pick a Child"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +89,7 @@
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:text="Child's Pick: None"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/CoinFlipImage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="Who Picked The Last Time: None"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
