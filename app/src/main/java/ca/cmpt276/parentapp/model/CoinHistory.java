@@ -1,21 +1,23 @@
 package ca.cmpt276.parentapp.model;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDateTime;
 
 public class CoinHistory {
-    private LocalDateTime FlipDate;
-    private String PlayersName;
-    private int PlayerChoice; // 0 = head, 1 = tail
-    private boolean WinOrNot;
+    private final String FlipDate;
+    private final String PlayersName;
+    private final int PlayerChoice; // 0 = head, 1 = tail
+    private final boolean WinOrNot;
 
-    public CoinHistory(LocalDateTime flipDate, String playersName, int playerChoice, boolean winOrNot) {
+    public CoinHistory(String flipDate, String playersName, int playerChoice, boolean winOrNot) {
         FlipDate = flipDate;
         PlayersName = playersName;
         PlayerChoice = playerChoice;
         WinOrNot = winOrNot;
     }
 
-    public LocalDateTime getFlipDate() {
+    public String getFlipDate() {
         return FlipDate;
     }
 
@@ -31,10 +33,11 @@ public class CoinHistory {
         return WinOrNot;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "CoinHistory{" +
-                "FlipDate=" + FlipDate +
+                "FlipDate=" + FlipDate.toString() +
                 ", PlayersName='" + PlayersName + '\'' +
                 ", PlayerChoice=" + PlayerChoice +
                 ", WinOrNot=" + WinOrNot +

@@ -60,8 +60,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
             CoinHistory currKid = coinHistoryManager.getCoinHistory().get(position);
 
             TextView txt = itemView.findViewById(R.id.CoinTextView);
-            String str = currKid.getPlayersName() +"";
-            txt.setText(str);
+            txt.setText(currKid.toString());
 
             ImageView imageView = itemView.findViewById(R.id.CoinImageView);
             if (currKid.isWinOrNot()) {

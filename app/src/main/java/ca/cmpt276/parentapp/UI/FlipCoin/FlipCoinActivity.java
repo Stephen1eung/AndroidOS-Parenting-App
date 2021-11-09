@@ -7,7 +7,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -62,7 +62,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         PopulateChildrenOptions();
     }
 
-    public static ArrayList<CoinHistory> loadSavedKids(Context context) {
+    public static ArrayList<CoinHistory> loadSavedFlips(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = sharedPrefs.getString("SavedFlips", "");
@@ -71,7 +71,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         return gson.fromJson(json, type);
     }
 
-    public static void saveKids(Context context) {
+    public static void saveFlip(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
         Gson gson = new Gson();
@@ -106,19 +106,20 @@ public class FlipCoinActivity extends AppCompatActivity {
                 rotate.setDuration(1000);
                 coinImage.startAnimation(rotate);
 
-                CoinHistory newCoinHistory = new CoinHistory(LocalDateTime.now(), PlayersName, PlayerChoice,
+                CoinHistory newCoinHistory = new CoinHistory(LocalDateTime.now().toString(), PlayersName, PlayerChoice,
                         PlayerChoice == pick);
                 Toast.makeText(FlipCoinActivity.this, newCoinHistory.toString()+ "", Toast.LENGTH_SHORT).show();
                 coinHistoryManager.addCoinHistory(newCoinHistory);
-                saveKids(FlipCoinActivity.this);
+                saveFlip(FlipCoinActivity.this);
             }
         });
     }
 
     @Override
     protected void onStart() {
-        if (loadSavedKids(FlipCoinActivity.this).size() > 0) {
-            coinHistoryManager.setCoinHistoryArrayList(loadSavedKids(FlipCoinActivity.this));
+        coinHistoryManager.setCoinHistoryArrayList(loadSavedFlips(FlipCoinActivity.this));
+        if (coinHistoryManager.getCoinHistory() != null && !coinHistoryManager.getCoinHistory().isEmpty()) {
+            coinHistoryManager.setCoinHistoryArrayList(loadSavedFlips(FlipCoinActivity.this));
             LastPickView = findViewById(R.id.LastPick);
             LastPickView.setText("Last Pick:" + coinHistoryManager.getCoinHistory().get(coinHistoryManager.getCoinHistory().size()-1).getPlayersName());
         }
@@ -127,7 +128,7 @@ public class FlipCoinActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        saveKids(FlipCoinActivity.this);
+        saveFlip(FlipCoinActivity.this);
         super.onDestroy();
     }
 

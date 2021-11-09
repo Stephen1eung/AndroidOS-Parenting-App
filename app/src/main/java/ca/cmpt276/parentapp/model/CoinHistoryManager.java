@@ -18,6 +18,7 @@ public class CoinHistoryManager implements Iterable<CoinHistory> {
     }
 
     public ArrayList<CoinHistory> getCoinHistory() {
+        if (coinHistoryArrayList == null) coinHistoryArrayList = new ArrayList<>();
         return coinHistoryArrayList;
     }
 
