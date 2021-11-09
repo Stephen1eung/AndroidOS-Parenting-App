@@ -92,7 +92,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         Button FlipBtn = findViewById(R.id.FLIP);
 
         FlipBtn.setOnClickListener(view -> {
-            if (PlayersName.equals("") || PlayerChoice == -1) {
+            if ((!childManager.getChildArrayList().isEmpty() && PlayersName.equals("")) || PlayerChoice == -1) {
                 Toast.makeText(FlipCoinActivity.this, "Pick a kid or side", Toast.LENGTH_SHORT).show();
             } else {
                 ImageView coinImage = findViewById(R.id.CoinFlipImage);
@@ -117,7 +117,7 @@ public class FlipCoinActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        if (loadSavedKids(FlipCoinActivity.this) != null) {
+        if (loadSavedKids(FlipCoinActivity.this).size() > 0) {
             coinHistoryManager.setCoinHistoryArrayList(loadSavedKids(FlipCoinActivity.this));
             LastPickView = findViewById(R.id.LastPick);
             LastPickView.setText("Last Pick:" + coinHistoryManager.getCoinHistory().get(coinHistoryManager.getCoinHistory().size()-1).getPlayersName());
