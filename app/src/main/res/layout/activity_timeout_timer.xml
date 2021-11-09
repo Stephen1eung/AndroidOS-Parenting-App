@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#0F2027"
     tools:context=".UI.TimeoutTimer.TimeoutTimerActivity">
+
     <ImageView
         android:layout_width="452sp"
         android:layout_height="754sp"
@@ -13,6 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/timer_background"
         tools:ignore="ContentDescription" />
 
     <RadioGroup

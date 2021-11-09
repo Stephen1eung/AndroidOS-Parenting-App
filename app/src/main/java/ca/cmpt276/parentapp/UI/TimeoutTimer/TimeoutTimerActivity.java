@@ -1,15 +1,13 @@
 package ca.cmpt276.parentapp.UI.TimeoutTimer;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationManagerCompat;
-
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,12 +16,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
+
 import java.util.Locale;
 
 import ca.cmpt276.parentapp.R;
+import ca.cmpt276.parentapp.UI.Notification.NotificationIntentService;
+import ca.cmpt276.parentapp.UI.Notification.NotificationReceiver;
 
 // https://www.youtube.com/watch?v=MDuGwI6P-X8&list=PLrnPJCHvNZuB8wxqXCwKw2_NkyEmFwcSd&index=1&ab_channel=CodinginFlow
 // a lot of the code was from that youtube video above, I simply added shared pref and user input (the video was missing those)
+
 public class TimeoutTimerActivity extends AppCompatActivity {
     private long START_TIME = 60000;
     RadioGroup group;
@@ -37,6 +41,9 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     public static final String CHANNEL = "Timer";
     private NotificationManagerCompat notificationManager;
 
+    private static final String ACTION_START_NOTIFICATION_SERVICE = "ACTION_START_NOTIFICATION_SERVICE";
+    private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, TimeoutTimerActivity.class);
     }
@@ -49,6 +56,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         initAllItems();
         populateTimeOptions();
         setupTimer();
+        startService(new Intent(this, NotificationIntentService.class));
     }
 
     private void initAllItems() {
@@ -92,12 +100,14 @@ public class TimeoutTimerActivity extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 TIME_LEFT = millisUntilFinished;
+                Log.d("Time Left", String.valueOf(TIME_LEFT));
                 updateCounter();
             }
             @Override
             public void onFinish() {
                 timerRunning = false;
-                // createFinishNotification();
+                Log.d("Alarm", "Set");
+                setupAlarm(getApplicationContext());
                 updateBtnStates();
             }
         }.start();
@@ -171,15 +181,6 @@ public class TimeoutTimerActivity extends AppCompatActivity {
 
         for (int row : boardRow) {
             RadioButton btn = new RadioButton(this);
-
-            ColorStateList colorStateList = new ColorStateList(
-                    new int[][]{new int[]{-android.R.attr.state_enabled}, new int[]{android.R.attr.state_enabled}},
-                    new int[]{Color.WHITE, Color.WHITE}
-            );
-
-            btn.setTextColor(Color.WHITE);
-            btn.setButtonTintList(colorStateList);
-
             btn.setText(getString(R.string.timeOptionString, row));
             btn.setOnClickListener(view -> {
                 long time = row * 60000L;
@@ -203,7 +204,6 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         editor.putLong("END_TIME", END_TIME);
         editor.apply();
 
-        if (countDownTimer != null) countDownTimer.cancel();
         super.onStop();
     }
 
@@ -230,5 +230,15 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         }
     }
 
+    public void setupAlarm(Context context) {
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager.AlarmClockInfo alarmManager = new AlarmManager.AlarmClockInfo(END_TIME,getStartPendingIntent(context));
+        am.setAlarmClock(alarmManager,getStartPendingIntent(context));
+    }
 
+    private static PendingIntent getStartPendingIntent(Context context) {
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.setAction(ACTION_START_NOTIFICATION_SERVICE);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 }
