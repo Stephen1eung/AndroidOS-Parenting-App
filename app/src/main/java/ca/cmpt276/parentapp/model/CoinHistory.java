@@ -36,11 +36,9 @@ public class CoinHistory {
     @NonNull
     @Override
     public String toString() {
-        return "CoinHistory{" +
-                "FlipDate=" + FlipDate.toString() +
-                ", PlayersName='" + PlayersName + '\'' +
-                ", PlayerChoice=" + PlayerChoice +
-                ", WinOrNot=" + WinOrNot +
-                '}';
+        String childChoice = PlayerChoice == 0 ? "head" : "tail";
+        return "Flip Date" + FlipDate + "\n" +
+                "Child's Name: " + PlayersName + "\n" +
+                "Child's Choice: " + childChoice + "\n";
     }
 }
