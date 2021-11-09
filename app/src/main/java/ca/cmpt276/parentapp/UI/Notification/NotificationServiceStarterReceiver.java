@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.legacy.content.WakefulBroadcastReceiver;
 
-final class NotificationServiceStarterReceiver extends WakefulBroadcastReceiver {
+public final class NotificationServiceStarterReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

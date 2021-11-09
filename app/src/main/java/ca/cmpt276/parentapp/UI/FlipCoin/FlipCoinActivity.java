@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.animation.RotateAnimation;
@@ -104,6 +105,10 @@ public class FlipCoinActivity extends AppCompatActivity {
                 RotateAnimation rotate = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
                         0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
                 rotate.setDuration(1000);
+
+                MediaPlayer mp = MediaPlayer.create(FlipCoinActivity.this, R.raw.flip_sound);
+                mp.start();
+
                 coinImage.startAnimation(rotate);
 
                 CoinHistory newCoinHistory = new CoinHistory(LocalDateTime.now().toString(), PlayersName, PlayerChoice,
