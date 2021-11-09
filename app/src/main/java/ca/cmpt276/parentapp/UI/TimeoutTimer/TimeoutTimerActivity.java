@@ -241,4 +241,5 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         intent.setAction(ACTION_START_NOTIFICATION_SERVICE);
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+
 }
