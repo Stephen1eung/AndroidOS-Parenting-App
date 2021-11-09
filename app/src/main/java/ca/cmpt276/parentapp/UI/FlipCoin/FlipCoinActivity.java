@@ -169,7 +169,11 @@ public class FlipCoinActivity extends AppCompatActivity {
                 btn.setText(i.getName());
 
                 btn.setOnClickListener(view -> PlayersName = i.getName());
-
+                if (coinHistoryManager.getCoinHistory().size() > 0) {
+                    if(coinHistoryManager.getCoinHistory().get(coinHistoryManager.getCoinHistory().size()-1).getPlayersName() != i.getName()) {
+                        btn.setChecked(true);
+                    }
+                }
                 group.addView(btn);
             }
         }
