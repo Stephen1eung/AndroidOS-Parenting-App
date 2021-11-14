@@ -2,18 +2,25 @@ package ca.cmpt276.parentapp.UI.ConfigChild;
 
 import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureMyChildrenActivity.saveKids;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.File;
+import java.util.Objects;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.ChildManager;
@@ -23,6 +30,8 @@ public class EditChildActivity extends AppCompatActivity {
     private EditText name;
     private ChildManager manager;
     private int kidIndex;
+    private ImageView childImg;
+    private Uri childImgPath;
 
     public static Intent makeIntent(Context context, int index) {
         Intent intent = new Intent(context, EditChildActivity.class);
@@ -56,8 +65,20 @@ public class EditChildActivity extends AppCompatActivity {
 
     private void fillInFields() {
         name.setText(manager.getChildArrayList().get(kidIndex).getName());
+        childImg = findViewById(R.id.ChildImagePreview);
+        childImg.setImageResource(R.drawable.child);
+//        String idToStr = "android.resource://" + Objects.requireNonNull(R.class.getPackage()).getName() + "/" + R.drawable.child;
+//        Uri path = Uri.parse(idToStr);
+//        if (manager.getChildArrayList().get(kidIndex).getImgPath() != idToStr) {
+//            File imgFile = new File(manager.getChildArrayList().get(kidIndex).getImgPath());
+//            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//            childImg.setImageBitmap(myBitmap);
+//        } else {
+//            childImg.setImageURI(path);
+//        }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -72,14 +93,11 @@ public class EditChildActivity extends AppCompatActivity {
                 builder.setIcon(R.drawable.warning)
                         .setTitle("Closing Activity")
                         .setMessage("Are you sure you want to DELETE this kid?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                manager.removeChild(kidIndex);
-                                saveKids(EditChildActivity.this);
-                                Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            manager.removeChild(kidIndex);
+                            saveKids(EditChildActivity.this);
+                            Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
+                            finish();
                         })
                         .setNegativeButton("No", null)
                         .show();
@@ -98,13 +116,7 @@ public class EditChildActivity extends AppCompatActivity {
                 .setIcon(R.drawable.warning)
                 .setTitle("Closing Activity")
                 .setMessage("Seems like you have made some changes to the data, are you sure you want to CANCEL?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-
-                })
+                .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
                 .show();
     }

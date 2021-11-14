@@ -3,6 +3,7 @@ package ca.cmpt276.parentapp.UI.ConfigChild;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -18,8 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -32,13 +38,26 @@ public class ConfigureMyChildrenActivity extends AppCompatActivity {
     private ImageView DownArrow;
     private TextView whenEmpty, info;
 
+    public static final class UriAdapter extends TypeAdapter<Uri> {
+        @Override
+        public void write(JsonWriter out, Uri uri) throws IOException {
+            out.value(uri.toString());
+        }
+
+        @Override
+        public Uri read(JsonReader in) throws IOException {
+            return Uri.parse(in.nextString());
+        }
+    }
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, ConfigureMyChildrenActivity.class);
     }
 
     public static ArrayList<Child> loadSavedKids(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Gson gson = new Gson();
+        // https://stackoverflow.com/questions/22533432/create-object-from-gson-string-doesnt-work
+        Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
         String json = sharedPrefs.getString("SavedKids", "");
         Type type = new TypeToken<ArrayList<Child>>() {
         }.getType();
@@ -48,7 +67,7 @@ public class ConfigureMyChildrenActivity extends AppCompatActivity {
     public static void saveKids(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
         String json = gson.toJson(manager.getChildArrayList());
         editor.putString("SavedKids", json);
         editor.apply();

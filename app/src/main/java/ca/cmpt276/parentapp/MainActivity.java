@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         setTitle(R.string.MainActivityTitle);
 
         childManager = ChildManager.getInstance();
-        childManager.setChild(loadSavedKids(MainActivity.this));
 
         FlipCoinBtn();
         TimeoutTimerBtn();
