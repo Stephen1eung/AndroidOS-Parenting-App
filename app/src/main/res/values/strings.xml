@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">ParentApp</string>
+    <!-- Activity Titles -->
+    <string name="MainActivityTitle">Practical Parent app</string>
+    <string name="ConfigChildTitle">Configure My Children</string>
+    <string name="FlipCoinTitle">Flip Coin</string>
+    <string name="TimeoutTimerTitle">Timeout Timer</string>
+    <string name="AddChildTitle">Add Child</string>
+    <string name="EditChildTitle">Edit Child</string>
+
+    <!-- Activity ids -->
+    <string name="configure_my_children">Configure My Children</string>
+    <string name="flip_coin">Flip Coin</string>
+    <string name="timeout_timer">Timeout Timer</string>
+    <string name="EmptyStateDesc">Click on the + sign to add your kid to the list</string>
+    <string name="no_child">No Child</string>
+    <string name="arrowimage">ArrowImage</string>
+    <string name="addchild">AddChild</string>
+    <string name="name">Name</string>
+    <string name="save_btn">saveBtn</string>
+    <string name="deleteBtn">delete_btn</string>
+    <string name="child_s_name">Child\'s Name:</string>
+
+
+    <integer-array name="timeOptions">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+    </integer-array>
+    <string name="timeOptionString">%1$d mins</string>
+    <string name="Pause">Pause</string>
+    <string name="Start">Start</string>
+
+</resources>
