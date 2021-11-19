@@ -9,4 +9,13 @@
     <string name="deleteBtn">deleteBtn</string>
     <string name="Pause">Pause</string>
     <string name="Start">Start</string>
+    <string name="Authors_text">The application Parent App was created in Fall of 2021, by 4 students attending Simon Fraser University,
+        Stephen Leung, Kia Jalali, Ricky (last name) and Tanjodh (last name). They teamed up to work on </string>
+    <string name="Team_name">Team Chromium:</string>
+    <string name="link"><a href="https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt276/home">CMPT276\'s</a></string>
+    <string name="Main_Background"><a href="https://w0.peakpx.com/wallpaper/498/169/HD-wallpaper-animals-pattern-colorful-vector.jpg">Main Background</a></string>
+    <string name="Help">Help</string>
+    <string name="Authors_text2">final project.</string>
+    <string name="Copyright_title">Copyrights:</string>
+
 </resources>

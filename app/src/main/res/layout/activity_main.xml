@@ -68,4 +68,19 @@
         app:layout_constraintEnd_toEndOf="@+id/TimeoutBtn"
         app:layout_constraintStart_toStartOf="@+id/TimeoutBtn"
         tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+    <Button
+        android:id="@+id/HelpBtn"
+        android:layout_width="244dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/round_button"
+        android:text="@string/Help"
+        android:textColor="#FFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WhoseTurnBtn"
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

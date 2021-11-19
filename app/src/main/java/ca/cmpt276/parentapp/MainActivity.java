@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import ca.cmpt276.parentapp.UI.Help.HelpActivity;
 import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
 import ca.cmpt276.parentapp.UI.FlipCoin.FlipCoinActivity;
 import ca.cmpt276.parentapp.UI.TimeoutTimer.TimeoutTimerActivity;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         FlipCoinBtn();
         TimeoutTimerBtn();
         ConfigChildBtn();
+        HelpBtn();
     }
 
     private void FlipCoinBtn() {
@@ -42,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
         Button button = findViewById(R.id.ConfigChildBtn);
         button.setOnClickListener(view -> {
             Intent intent = ConfigureChildActivity.makeIntent(MainActivity.this);
+            startActivity(intent);
+        });
+    }
+
+    private void HelpBtn() {
+        Button button = findViewById(R.id.HelpBtn);
+        button.setOnClickListener(view -> {
+            Intent intent = HelpActivity.makeIntent(MainActivity.this);
             startActivity(intent);
         });
     }

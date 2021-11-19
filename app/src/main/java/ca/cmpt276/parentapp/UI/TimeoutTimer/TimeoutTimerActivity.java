@@ -1,5 +1,7 @@
 package ca.cmpt276.parentapp.UI.TimeoutTimer;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +20,8 @@ import androidx.core.app.NotificationManagerCompat;
 import java.util.Locale;
 
 import ca.cmpt276.parentapp.R;
+import ca.cmpt276.parentapp.UI.Notification.NotificationIntentService;
+import ca.cmpt276.parentapp.UI.Notification.NotificationReceiver;
 
 public class TimeoutTimerActivity extends AppCompatActivity {
     public static final String CHANNEL = "Timer";
@@ -32,6 +36,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     private Button startAndPauseBtn, resetBtn, setBtn;
     private NotificationManagerCompat notificationManager;
 
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, TimeoutTimerActivity.class);
     }
@@ -45,7 +50,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         initAllItems();
         setupTimer();
         setTimerBtn();
-        // startService(new Intent(this, NotificationIntentService.class));
+        startService(new Intent(this, NotificationIntentService.class));
     }
 
     private void setTimerBtn() {
@@ -69,7 +74,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         userInput = findViewById(R.id.userInput);
         countDown = findViewById(R.id.countDown);
         startAndPauseBtn = findViewById(R.id.startAndPauseBtn);
-        // notificationManager = NotificationManagerCompat.from(this);
+        notificationManager = NotificationManagerCompat.from(this);
     }
 
     private void setTimer(long time) {
@@ -110,7 +115,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
             public void onFinish() {
                 timerRunning = false;
                 Log.d("Alarm", "Set");
-                // setupAlarm(getApplicationContext());
+                setupAlarm(getApplicationContext());
                 updateBtnStates();
             }
         }.start();
@@ -203,4 +208,18 @@ public class TimeoutTimerActivity extends AppCompatActivity {
             } else startTimer();
         }
     }
+
+    public void setupAlarm(Context context) {
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager.AlarmClockInfo alarmManager = new AlarmManager.AlarmClockInfo(END_TIME,getStartPendingIntent(context));
+        am.setAlarmClock(alarmManager,getStartPendingIntent(context));
+    }
+
+    private static PendingIntent getStartPendingIntent(Context context) {
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.setAction(ACTION_START_NOTIFICATION_SERVICE);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+
 }
