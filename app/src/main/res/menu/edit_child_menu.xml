@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/saveBtn"
-        android:icon="@drawable/save_btn"
-        android:title="@string/save_btn"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/deleteBtn"
         android:icon="@drawable/delete_btn"
         android:title="@string/deleteBtn"

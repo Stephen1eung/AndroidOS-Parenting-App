@@ -1,10 +1,10 @@
-package ca.cmpt276.parentapp.model;
+package ca.cmpt276.parentapp.model.Child;
 
-import android.net.Uri;
+import androidx.annotation.NonNull;
 
 public class Child {
     private String name;
-    private String imgPath;
+
     public Child(String name) {
         this.name = name;
     }
@@ -17,14 +17,7 @@ public class Child {
         this.name = name;
     }
 
-    public String getImgPath() {
-        return imgPath;
-    }
-
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
-    }
-
+    @NonNull
     @Override
     public String toString() {
         return "Child's Name: " + name;

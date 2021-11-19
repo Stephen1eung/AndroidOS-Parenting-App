@@ -1,7 +1,5 @@
 package ca.cmpt276.parentapp.UI.TimeoutTimer;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,8 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,27 +18,19 @@ import androidx.core.app.NotificationManagerCompat;
 import java.util.Locale;
 
 import ca.cmpt276.parentapp.R;
-import ca.cmpt276.parentapp.UI.Notification.NotificationIntentService;
-import ca.cmpt276.parentapp.UI.Notification.NotificationReceiver;
-
-// https://www.youtube.com/watch?v=MDuGwI6P-X8&list=PLrnPJCHvNZuB8wxqXCwKw2_NkyEmFwcSd&index=1&ab_channel=CodinginFlow
-// a lot of the code was from that youtube video above, I simply added shared pref and user input (the video was missing those)
 
 public class TimeoutTimerActivity extends AppCompatActivity {
+    public static final String CHANNEL = "Timer";
+    private static final String ACTION_START_NOTIFICATION_SERVICE = "ACTION_START_NOTIFICATION_SERVICE";
+    private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
     private long START_TIME = 60000;
-    RadioGroup group;
-    private int defaultOption;
     private TextView countDown;
     private EditText userInput;
     private boolean timerRunning;
     private long TIME_LEFT, END_TIME;
     private CountDownTimer countDownTimer;
     private Button startAndPauseBtn, resetBtn, setBtn;
-    public static final String CHANNEL = "Timer";
     private NotificationManagerCompat notificationManager;
-
-    private static final String ACTION_START_NOTIFICATION_SERVICE = "ACTION_START_NOTIFICATION_SERVICE";
-    private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, TimeoutTimerActivity.class);
@@ -52,21 +40,36 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeout_timer);
-        setTitle(R.string.TimeoutTimerTitle);
+
+
         initAllItems();
-        populateTimeOptions();
         setupTimer();
-        startService(new Intent(this, NotificationIntentService.class));
+        setTimerBtn();
+        // startService(new Intent(this, NotificationIntentService.class));
+    }
+
+    private void setTimerBtn() {
+        Button oneMin, twoMin, threeMin, fourMin, fiveMin;
+        oneMin = findViewById(R.id.oneMin);
+        twoMin = findViewById(R.id.twoMin);
+        threeMin = findViewById(R.id.threeMin);
+        fourMin = findViewById(R.id.fourMin);
+        fiveMin = findViewById(R.id.fiveMin);
+
+        oneMin.setOnClickListener(view -> setTimer(60000L));
+        twoMin.setOnClickListener(view -> setTimer(2 * 60000L));
+        threeMin.setOnClickListener(view -> setTimer(3 * 60000L));
+        fourMin.setOnClickListener(view -> setTimer(4 * 60000L));
+        fiveMin.setOnClickListener(view -> setTimer(5 * 60000L));
     }
 
     private void initAllItems() {
-        group = findViewById(R.id.timeGroup);
         setBtn = findViewById(R.id.setBtn);
         resetBtn = findViewById(R.id.resetBtn);
         userInput = findViewById(R.id.userInput);
         countDown = findViewById(R.id.countDown);
         startAndPauseBtn = findViewById(R.id.startAndPauseBtn);
-        notificationManager = NotificationManagerCompat.from(this);
+        // notificationManager = NotificationManagerCompat.from(this);
     }
 
     private void setTimer(long time) {
@@ -86,7 +89,6 @@ public class TimeoutTimerActivity extends AppCompatActivity {
                     Toast.makeText(TimeoutTimerActivity.this, "Enter Positive Number", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                group.clearCheck();
                 long time = Long.parseLong(userInput.getText().toString()) * 60000;
                 setTimer(time);
                 userInput.setText("");
@@ -103,11 +105,12 @@ public class TimeoutTimerActivity extends AppCompatActivity {
                 Log.d("Time Left", String.valueOf(TIME_LEFT));
                 updateCounter();
             }
+
             @Override
             public void onFinish() {
                 timerRunning = false;
                 Log.d("Alarm", "Set");
-                setupAlarm(getApplicationContext());
+                // setupAlarm(getApplicationContext());
                 updateBtnStates();
             }
         }.start();
@@ -164,35 +167,6 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         }
     }
 
-    private int getDefaultOption() {
-        SharedPreferences sp = getPreferences(MODE_PRIVATE);
-        return sp.getInt("defaultOption", 3);
-    }
-
-    private void saveDefaultOption(int defaultOption) {
-        SharedPreferences sp = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("defaultOption", defaultOption);
-        editor.apply();
-    }
-
-    private void populateTimeOptions() {
-        int[] boardRow = getResources().getIntArray(R.array.timeOptions);
-
-        for (int row : boardRow) {
-            RadioButton btn = new RadioButton(this);
-            btn.setText(getString(R.string.timeOptionString, row));
-            btn.setOnClickListener(view -> {
-                long time = row * 60000L;
-                setTimer(time);
-                saveDefaultOption(row);
-                defaultOption = row;
-            });
-            group.addView(btn);
-            if (row == getDefaultOption()) btn.setChecked(true);
-        }
-    }
-
     @Override
     protected void onStop() {
         SharedPreferences sp = getSharedPreferences("timerOutPref", MODE_PRIVATE);
@@ -229,17 +203,4 @@ public class TimeoutTimerActivity extends AppCompatActivity {
             } else startTimer();
         }
     }
-
-    public void setupAlarm(Context context) {
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        AlarmManager.AlarmClockInfo alarmManager = new AlarmManager.AlarmClockInfo(END_TIME,getStartPendingIntent(context));
-        am.setAlarmClock(alarmManager,getStartPendingIntent(context));
-    }
-
-    private static PendingIntent getStartPendingIntent(Context context) {
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        intent.setAction(ACTION_START_NOTIFICATION_SERVICE);
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
 }

@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.cmpt276.parentapp">
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name= "android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
-
 
     <application
-        android:grantUriPermissions="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,14 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
-            android:name=".UI.FlipCoin.FlipHistoryActivity"
-            android:exported="false"
-            android:parentActivityName=".UI.FlipCoin.FlipCoinActivity"
-            />
-        <activity
             android:name=".UI.FlipCoin.FlipCoinActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:exported="false" />
         <activity
             android:name=".UI.TimeoutTimer.TimeoutTimerActivity"
             android:exported="false"
@@ -34,13 +20,13 @@
         <activity
             android:name=".UI.ConfigChild.EditChildActivity"
             android:exported="false"
-            android:parentActivityName=".UI.ConfigChild.ConfigureMyChildrenActivity" />
+            android:parentActivityName=".UI.ConfigChild.ConfigureChildActivity" />
         <activity
             android:name=".UI.ConfigChild.AddChildActivity"
             android:exported="false"
-            android:parentActivityName=".UI.ConfigChild.ConfigureMyChildrenActivity" />
+            android:parentActivityName=".UI.ConfigChild.ConfigureChildActivity" />
         <activity
-            android:name=".UI.ConfigChild.ConfigureMyChildrenActivity"
+            android:name=".UI.ConfigChild.ConfigureChildActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
@@ -48,23 +34,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="Stop Timer" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:name=".UI.Notification.NotificationIntentService"
-            android:enabled="true"
-            android:exported="false" />
-
-        <receiver android:name=".UI.Notification.NotificationReceiver" />
-        <receiver android:name=".UI.Notification.NotificationServiceStarterReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-                <action android:name="android.intent.action.TIME_SET" />
-            </intent-filter>
-        </receiver>
     </application>
+
 </manifest>

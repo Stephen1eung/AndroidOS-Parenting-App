@@ -1,4 +1,4 @@
-package ca.cmpt276.parentapp.model;
+package ca.cmpt276.parentapp.model.Child;
 
 import androidx.annotation.NonNull;
 
@@ -29,9 +29,6 @@ public class ChildManager implements Iterable<Child> {
     }
 
     public void addChild(Child child) {
-        if (childArrayList == null) {
-            childArrayList = new ArrayList<>();
-        }
         childArrayList.add(child);
     }
 

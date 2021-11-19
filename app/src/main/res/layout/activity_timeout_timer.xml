@@ -4,100 +4,149 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F2027"
+    android:background="@drawable/bg"
+    android:backgroundTint="#3F3F3F"
+    android:backgroundTintMode="multiply"
     tools:context=".UI.TimeoutTimer.TimeoutTimerActivity">
-
-    <ImageView
-        android:layout_width="452sp"
-        android:layout_height="754sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/timer_background"
-        tools:ignore="ContentDescription" />
-
-    <RadioGroup
-        android:id="@+id/timeGroup"
-        android:layout_width="411dp"
-        android:layout_height="64dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/setBtn"
-        android:layout_width="123dp"
-        android:layout_height="65dp"
-        android:layout_alignTop="@+id/userInput"
-        android:layout_marginTop="168dp"
-        android:layout_toEndOf="@+id/userInput"
-        android:text="Set"
-        app:layout_constraintBottom_toTopOf="@+id/countDown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/userInput"
-        app:layout_constraintTop_toTopOf="@+id/timeGroup" />
-
-    <EditText
-        android:id="@+id/userInput"
-        android:layout_width="123dp"
-        android:layout_height="49dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="172dp"
-        android:backgroundTint="#FFFFFF"
-        android:hint="Minutes"
-        android:inputType="number"
-        android:maxLength="4"
-        android:textColor="#FFFFFF"
-        android:textColorHighlight="#FFFFFF"
-        android:textColorHint="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/countDown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/timeGroup" />
-
-    <Button
-        android:id="@+id/startAndPauseBtn"
-        android:layout_width="98dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="36dp"
-        android:text="Start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countDown" />
 
     <Button
         android:id="@+id/resetBtn"
-        android:layout_width="106dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/round_button"
         android:text="reset"
-        android:visibility="invisible"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/startAndPauseBtn"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/round_button"
+        android:text="Start"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/resetBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/userInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="34dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:hint="Custom Time"
+        android:inputType="numberSigned"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@+id/fourMin"
+        app:layout_constraintTop_toBottomOf="@+id/oneMin"
+        tools:backgroundTint="#FFFFFF" />
+
+    <Button
+        android:id="@+id/setBtn"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_button"
+        android:text="Set Time"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startAndPauseBtn"
-        app:layout_constraintVertical_bias="0.0"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/userInput" />
+
+    <Button
+        android:id="@+id/oneMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="#24A06A"
+        android:text="1"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBaseline_toBaselineOf="@+id/twoMin"
+        app:layout_constraintEnd_toStartOf="@+id/twoMin"
+        app:layout_constraintStart_toEndOf="@+id/chooseTimeTextView" />
+
+    <Button
+        android:id="@+id/fiveMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#24A06A"
+        android:text="5"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBaseline_toBaselineOf="@+id/fourMin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fourMin" />
+
+    <Button
+        android:id="@+id/fourMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="#24A06A"
+        android:text="4"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toStartOf="@+id/fiveMin"
+        app:layout_constraintStart_toEndOf="@+id/threeMin"
+        app:layout_constraintTop_toTopOf="@+id/threeMin" />
+
+    <Button
+        android:id="@+id/twoMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="#24A06A"
+        android:text="2"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toStartOf="@+id/threeMin"
+        app:layout_constraintStart_toEndOf="@+id/oneMin"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/threeMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="#24A06A"
+        android:text="3"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBaseline_toBaselineOf="@+id/twoMin"
+        app:layout_constraintEnd_toStartOf="@+id/fourMin"
+        app:layout_constraintStart_toEndOf="@+id/twoMin" />
+
+    <TextView
+        android:id="@+id/chooseTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="24dp"
+        android:text="Choose Time:"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/oneMin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/countDown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_marginEnd="24dp"
         android:text="00:00"
-        android:textColor="@color/white"
-        android:textSize="60sp"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="@+id/setBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.536" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
