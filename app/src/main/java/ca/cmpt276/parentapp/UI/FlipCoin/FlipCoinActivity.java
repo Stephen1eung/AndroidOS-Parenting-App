@@ -1,30 +1,45 @@
 package ca.cmpt276.parentapp.UI.FlipCoin;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
-import ca.cmpt276.parentapp.UI.TimeoutTimer.TimeoutTimerActivity;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
+import ca.cmpt276.parentapp.model.Coin.Coin;
 import ca.cmpt276.parentapp.model.Coin.CoinManager;
 
 public class FlipCoinActivity extends AppCompatActivity {
     private ChildManager childManager;
     private CoinManager coinManager;
-    private String PlayersName;
+    private ImageView coinImage;
+    private int childIndex, lastChildIndex, PlayerChoice;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, FlipCoinActivity.class);
+    }
+
+    private void initItems() {
+        childManager = ChildManager.getInstance();
+        coinManager = CoinManager.getInstance();
+        coinImage = findViewById(R.id.coinImage);
     }
 
     @Override
@@ -32,10 +47,19 @@ public class FlipCoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flip_coin);
 
-        childManager = ChildManager.getInstance();
-        coinManager = CoinManager.getInstance();
-
+        initItems();
+        PlayerPickBtn();
         pickKid();
+        flipHistoryBtn();
+        FlipBtn();
+    }
+
+    private void flipHistoryBtn() {
+        Button FlipBtn = findViewById(R.id.FlipHistory);
+        FlipBtn.setOnClickListener(view -> {
+            Intent intent = FlipHistory.makeIntent(FlipCoinActivity.this);
+            startActivity(intent);
+        });
     }
 
     private void pickKid() {
@@ -45,21 +69,61 @@ public class FlipCoinActivity extends AppCompatActivity {
         for (Child i : ChildArray) {
             items.add(i.getName());
         }
-        ArrayAdapter<String> langAdapter = new ArrayAdapter<String>(this, R.layout.spinner_text, items);
-        langAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
-        dropdown.setAdapter(langAdapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.simple_spinner_dropdown, items);
+        dropdown.setAdapter(adapter);
 
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                PlayersName = (String) adapterView.getItemAtPosition(i);
+                childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
+                lastChildIndex = childIndex;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                PlayersName = "No One Selected";
+                childIndex = -1;
             }
         });
-
     }
+
+    private void FlipBtn() {
+        Button FlipBtn = findViewById(R.id.Flip);
+        FlipBtn.setOnClickListener(view -> {
+            int pick = new Random().nextInt(2);
+
+            // add image later
+            if (pick == 1) coinImage.setImageResource(R.drawable.head);
+            else coinImage.setImageResource(R.drawable.tail);
+            RotateAnimation rotate = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
+                    0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+            rotate.setDuration(1000);
+            MediaPlayer mp = MediaPlayer.create(FlipCoinActivity.this, R.raw.flip_sound);
+            mp.start();
+            coinImage.startAnimation(rotate);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTime = LocalDateTime.now();
+            String formattedDateTime = dateTime.format(formatter);
+
+            Coin newCoin = new Coin(formattedDateTime, childIndex, PlayerChoice, PlayerChoice == pick);
+            Toast.makeText(FlipCoinActivity.this, newCoin + "", Toast.LENGTH_SHORT).show();
+            coinManager.addCoinHistory(newCoin);
+            // SHARED PREF SETTING
+        });
+    }
+
+    private void PlayerPickBtn() {
+        Button head = findViewById(R.id.Head);
+        head.setOnClickListener(view -> {
+            PlayerChoice = 0;
+            Toast.makeText(FlipCoinActivity.this, "Player Choice: Head", Toast.LENGTH_SHORT).show();
+        });
+
+        Button tail = findViewById(R.id.Tail);
+        tail.setOnClickListener(view -> {
+            PlayerChoice = 1;
+            Toast.makeText(FlipCoinActivity.this, "Player Choice: Tail", Toast.LENGTH_SHORT).show();
+        });
+    }
+
 }

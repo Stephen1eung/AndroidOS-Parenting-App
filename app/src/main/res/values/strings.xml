@@ -22,5 +22,6 @@
     <string name="no_task">No Task</string>
     <string name="Edit_Task">Edit Task</string>
     <string name="helpBtn">helpBtn</string>
+    <string name="no_history">No History</string>
 
 </resources>

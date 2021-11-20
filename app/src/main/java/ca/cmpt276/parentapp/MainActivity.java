@@ -1,5 +1,7 @@
 package ca.cmpt276.parentapp;
 
+import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.loadSavedKids;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +16,7 @@ import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
 import ca.cmpt276.parentapp.UI.FlipCoin.FlipCoinActivity;
 import ca.cmpt276.parentapp.UI.TimeoutTimer.TimeoutTimerActivity;
 import ca.cmpt276.parentapp.UI.WhoseTurn.WhoseTurnActivity;
+import ca.cmpt276.parentapp.model.Child.ChildManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,11 +31,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initChildList();
         FlipCoinBtn();
         TimeoutTimerBtn();
         ConfigChildBtn();
         HelpBtn();
         WhoseTurnBtn();
+    }
+
+    private void initChildList() {
+        ChildManager childManager = ChildManager.getInstance();
+        childManager.setChild(loadSavedKids(MainActivity.this));
     }
 
     private void FlipCoinBtn() {

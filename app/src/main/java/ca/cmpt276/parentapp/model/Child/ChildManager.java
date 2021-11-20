@@ -24,6 +24,20 @@ public class ChildManager implements Iterable<Child> {
         return this.childArrayList;
     }
 
+    public Child findChildByName(String name) {
+        for (Child i : childArrayList) {
+            if (i.getName().equals(name)) return i;
+        }
+        return null;
+    }
+
+    public int findChildIndex(String name) {
+        for (int i = 0; i < childArrayList.size(); i++) {
+            if (childArrayList.get(i).getName().equals(name)) return i;
+        }
+        return -1;
+    }
+
     public void setChild(ArrayList<Child> kidsList) {
         this.childArrayList = kidsList;
     }
