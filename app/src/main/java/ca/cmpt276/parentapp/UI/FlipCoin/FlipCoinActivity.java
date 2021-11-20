@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -19,6 +21,7 @@ import ca.cmpt276.parentapp.model.Coin.CoinManager;
 public class FlipCoinActivity extends AppCompatActivity {
     private ChildManager childManager;
     private CoinManager coinManager;
+    private String PlayersName;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, FlipCoinActivity.class);
@@ -44,6 +47,18 @@ public class FlipCoinActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
-    }
 
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                PlayersName = (String) adapterView.getItemAtPosition(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                PlayersName = "No One Selected";
+            }
+        });
+
+    }
 }
