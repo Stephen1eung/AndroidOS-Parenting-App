@@ -1,6 +1,8 @@
 package ca.cmpt276.parentapp.UI.WhoseTurn;
 
 
+import static ca.cmpt276.parentapp.UI.WhoseTurn.WhoseTurnActivity.saveTasks;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -58,6 +60,7 @@ public class EditTask extends AppCompatActivity {
         editTaskBtn.setOnClickListener(view -> {
             if (!taskDesc.getText().toString().equals("")) {
                 taskManager.getTaskArrayList().get(taskIndex).setTaskDesc(taskDesc.getText().toString());
+                saveTasks(EditTask.this);
                 finish();
             } else {
                 Toast.makeText(EditTask.this, "Task Cannot be empty", Toast.LENGTH_SHORT).show();

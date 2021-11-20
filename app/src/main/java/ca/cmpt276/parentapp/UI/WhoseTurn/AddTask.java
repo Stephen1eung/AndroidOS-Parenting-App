@@ -1,5 +1,7 @@
 package ca.cmpt276.parentapp.UI.WhoseTurn;
 
+import static ca.cmpt276.parentapp.UI.WhoseTurn.WhoseTurnActivity.saveTasks;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -39,7 +41,7 @@ public class AddTask extends AppCompatActivity {
             if (!taskDesc.getText().toString().equals("")) {
                 String TaskDesc = taskDesc.getText().toString();
                 taskManager.addTask(new Task(TaskDesc));
-                // SHARED PREF ADDED TO THIS LINE
+                saveTasks(AddTask.this);
                 finish();
             } else {
                 Toast.makeText(AddTask.this, "Describe The task, cannot be empty", Toast.LENGTH_SHORT).show();

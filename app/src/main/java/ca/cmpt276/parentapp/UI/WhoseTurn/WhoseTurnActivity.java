@@ -2,7 +2,9 @@ package ca.cmpt276.parentapp.UI.WhoseTurn;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,6 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
 import ca.cmpt276.parentapp.UI.ConfigChild.EditChildActivity;
@@ -23,7 +31,7 @@ import ca.cmpt276.parentapp.model.Tasks.Task;
 import ca.cmpt276.parentapp.model.Tasks.TaskManager;
 
 public class WhoseTurnActivity extends AppCompatActivity {
-    private final TaskManager taskManager = TaskManager.getInstance();
+    private static TaskManager taskManager = TaskManager.getInstance();
     private TextView NoTaskTextView;
 
     public static Intent makeIntent(Context context) {
@@ -31,7 +39,14 @@ public class WhoseTurnActivity extends AppCompatActivity {
     }
 
     private void initItems() {
+        taskManager.setTaskArrayList(loadSavedTasks(WhoseTurnActivity.this));
         NoTaskTextView = findViewById(R.id.NoTaskTextView);
+    }
+
+    @Override
+    protected void onDestroy() {
+        saveTasks(WhoseTurnActivity.this);
+        super.onDestroy();
     }
 
     @Override
@@ -54,6 +69,25 @@ public class WhoseTurnActivity extends AppCompatActivity {
         listAllTasks();
         itemClick();
         addTaskBtn();
+    }
+
+    public static ArrayList<Task> loadSavedTasks(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("SavedTasks", "");
+        Type type = new TypeToken<ArrayList<Task>>() {
+
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public static void saveTasks(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(taskManager.getTaskArrayList());
+        editor.putString("SavedTasks", json);
+        editor.apply();
     }
 
     private void listAllTasks() {
