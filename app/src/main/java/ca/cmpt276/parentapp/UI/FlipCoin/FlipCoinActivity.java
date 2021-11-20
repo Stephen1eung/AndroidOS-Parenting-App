@@ -85,8 +85,13 @@ public class FlipCoinActivity extends AppCompatActivity {
         Spinner dropdown = findViewById(R.id.pickchild);
         ArrayList<Child> ChildArray = childManager.getChildArrayList();
         ArrayList<String> items = new ArrayList<>();
-        for (Child i : ChildArray) {
-            items.add(i.getName());
+        if (ChildArray.size() == 0) {
+            items.add("NO CHILDREN");
+        }
+        else {
+            for (Child i : ChildArray) {
+                items.add(i.getName());
+            }
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.simple_spinner_dropdown, items);
         dropdown.setAdapter(adapter);
@@ -94,8 +99,13 @@ public class FlipCoinActivity extends AppCompatActivity {
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
-                lastChildIndex = childIndex;
+                if (adapterView.getItemAtPosition(i).toString() == "DEFAULT") {
+                    childIndex = -1;
+                }
+                else {
+                    childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
+                    lastChildIndex = childIndex;
+                }
             }
 
             @Override
