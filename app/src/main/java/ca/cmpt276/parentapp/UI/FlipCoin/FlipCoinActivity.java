@@ -41,7 +41,7 @@ public class FlipCoinActivity extends AppCompatActivity {
     private void pickKid() {
         Spinner dropdown = findViewById(R.id.pickchild);
         ArrayList<Child> ChildArray = childManager.getChildArrayList();
-        ArrayList<String> items = new ArrayList<String>();
+        ArrayList<String> items = new ArrayList<>();
         for (Child i : ChildArray) {
             items.add(i.getName());
         }

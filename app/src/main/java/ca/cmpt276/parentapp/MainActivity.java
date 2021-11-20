@@ -10,6 +10,7 @@ import ca.cmpt276.parentapp.UI.Help.HelpActivity;
 import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
 import ca.cmpt276.parentapp.UI.FlipCoin.FlipCoinActivity;
 import ca.cmpt276.parentapp.UI.TimeoutTimer.TimeoutTimerActivity;
+import ca.cmpt276.parentapp.UI.WhoseTurn.WhoseTurnActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         TimeoutTimerBtn();
         ConfigChildBtn();
         HelpBtn();
+        WhoseTurnBtn();
     }
 
     private void FlipCoinBtn() {
@@ -52,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
         Button button = findViewById(R.id.HelpBtn);
         button.setOnClickListener(view -> {
             Intent intent = HelpActivity.makeIntent(MainActivity.this);
+            startActivity(intent);
+        });
+    }
+
+    private void WhoseTurnBtn() {
+        Button button = findViewById(R.id.WhoseTurnBtn);
+        button.setOnClickListener(view -> {
+            Intent intent = WhoseTurnActivity.makeIntent(MainActivity.this);
             startActivity(intent);
         });
     }

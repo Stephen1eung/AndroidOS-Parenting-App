@@ -50,6 +50,20 @@ public class EditChildActivity extends AppCompatActivity {
         initItems();
         getIndexFromIntent();
         fillInFields();
+        saveEdited();
+    }
+
+    private void saveEdited() {
+        Button editChildBtn = findViewById(R.id.addChildToListBtn);
+        editChildBtn.setOnClickListener(view -> {
+            if (!name.getText().toString().equals("")) {
+                childManager.getChildArrayList().get(kidIndex).setName(name.getText().toString());
+                saveKids(EditChildActivity.this);
+                finish();
+            } else {
+                Toast.makeText(EditChildActivity.this, "Name Cannot be empty", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getIndexFromIntent() {

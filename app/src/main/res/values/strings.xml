@@ -17,5 +17,9 @@
     <string name="Help">Help</string>
     <string name="Authors_text2">final project.</string>
     <string name="Copyright_title">Copyrights:</string>
+    <string name="add_child">Add Child</string>
+    <string name="add_task">Add Task</string>
+    <string name="no_task">No Task</string>
+    <string name="Edit_Task">Edit Task</string>
 
 </resources>

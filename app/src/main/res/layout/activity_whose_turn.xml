@@ -7,24 +7,25 @@
     android:background="@drawable/bg"
     android:backgroundTint="#505050"
     android:backgroundTintMode="multiply"
-    tools:context=".UI.ConfigChild.ConfigureChildActivity">
+    tools:context=".UI.WhoseTurn.WhoseTurnActivity">
 
     <TextView
-        android:id="@+id/NoChildTextView"
+        android:id="@+id/NoTaskTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:text="@string/no_child"
+        android:text="@string/no_task"
         android:textColor="#FFFFFF"
-        android:textSize="34sp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13" />
 
     <ListView
-        android:id="@+id/ChildListView"
-        android:layout_width="413dp"
+        android:id="@+id/TaskListView"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,13 +33,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/addChildToListBtn"
+        android:id="@+id/AddTaskBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/round_button"
-        android:text="@string/add_child"
+        android:text="@string/add_task"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -3,6 +3,7 @@
     package="ca.cmpt276.parentapp">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,9 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
-            android:name=".UI.FlipCoin.FlipCoinActivity"
+            android:name=".UI.WhoseTurn.EditTask"
+            android:exported="false"
+            android:parentActivityName=".UI.WhoseTurn.WhoseTurnActivity"
+            />
+        <activity
+            android:name=".UI.WhoseTurn.AddTask"
+            android:exported="false"
+            android:parentActivityName=".UI.WhoseTurn.WhoseTurnActivity"
+            />
+        <activity
+            android:name=".UI.WhoseTurn.WhoseTurnActivity"
+            android:exported="false"
             android:parentActivityName=".MainActivity"
-            android:exported="false" />
+            />
+        <activity
+            android:name=".UI.FlipCoin.FlipCoinActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".UI.TimeoutTimer.TimeoutTimerActivity"
             android:exported="false"
