@@ -2,8 +2,10 @@ package ca.cmpt276.parentapp.UI.FlipCoin;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
@@ -15,6 +17,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,7 +45,20 @@ public class FlipCoinActivity extends AppCompatActivity {
     private void initItems() {
         childManager = ChildManager.getInstance();
         coinManager = CoinManager.getInstance();
+        coinManager.setCoinHistoryArrayList(loadSavedFlips(FlipCoinActivity.this));
         coinImage = findViewById(R.id.coinImage);
+    }
+
+    @Override
+    protected void onStart() {
+        initItems();
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        saveFlip(FlipCoinActivity.this);
+        super.onDestroy();
     }
 
     @Override
@@ -108,7 +127,7 @@ public class FlipCoinActivity extends AppCompatActivity {
             Coin newCoin = new Coin(formattedDateTime, childIndex, PlayerChoice, PlayerChoice == pick);
             Toast.makeText(FlipCoinActivity.this, newCoin + "", Toast.LENGTH_SHORT).show();
             coinManager.addCoinHistory(newCoin);
-            // SHARED PREF SETTING
+            saveFlip(FlipCoinActivity.this);
         });
     }
 
@@ -126,4 +145,22 @@ public class FlipCoinActivity extends AppCompatActivity {
         });
     }
 
+
+    public static ArrayList<Coin> loadSavedFlips(Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString("SavedFlips", "");
+        Type type = new TypeToken<ArrayList<Coin>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public static void saveFlip(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(CoinManager.getInstance().getCoinHistory());
+        editor.putString("SavedFlips", json);
+        editor.apply();
+    }
 }

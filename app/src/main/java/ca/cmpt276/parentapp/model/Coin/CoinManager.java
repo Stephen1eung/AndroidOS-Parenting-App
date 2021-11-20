@@ -22,6 +22,7 @@ public class CoinManager implements  Iterable<Coin>{
     }
 
     public void addCoinHistory(Coin coinHistory) {
+        if (coinHistoryArrayList == null) coinHistoryArrayList = new ArrayList<>();
         coinHistoryArrayList.add(coinHistory);
     }
 
