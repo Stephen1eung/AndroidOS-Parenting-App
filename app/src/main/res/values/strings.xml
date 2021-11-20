@@ -21,5 +21,6 @@
     <string name="add_task">Add Task</string>
     <string name="no_task">No Task</string>
     <string name="Edit_Task">Edit Task</string>
+    <string name="helpBtn">helpBtn</string>
 
 </resources>

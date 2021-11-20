@@ -93,7 +93,7 @@ public class EditChildActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
-        } else if (item.getItemId() == R.id.deleteBtn) {
+        } else if (item.getItemId() == R.id.helpBtn) {
             AlertDialog.Builder builder = new AlertDialog.Builder(EditChildActivity.this);
             builder.setIcon(R.drawable.warning)
                     .setTitle("Closing Activity")

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#3F3F3F"
+    android:background="@drawable/bg"
+    android:backgroundTint="#2C2C2C"
     android:backgroundTintMode="multiply"
     tools:context=".UI.Help.HelpActivity">
 
@@ -16,10 +17,10 @@
         android:layout_marginTop="16sp"
         android:text="@string/Team_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
         android:textStyle="bold"
-        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/help_authors"
@@ -27,10 +28,11 @@
         android:layout_height="wrap_content"
         android:text="@string/Authors_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/help_team_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/help_team_name" />
+
     <TextView
         android:id="@+id/help_CMPT276_link"
         android:layout_width="92sp"
@@ -39,9 +41,10 @@
         android:layout_marginTop="84sp"
         android:text="@string/link"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#0000FF"
+        android:textColor="#69B5FF"
         app:layout_constraintStart_toStartOf="@+id/help_authors"
-        app:layout_constraintTop_toTopOf="@+id/help_authors"/>
+        app:layout_constraintTop_toTopOf="@+id/help_authors" />
+
     <TextView
         android:id="@+id/help_authors2"
         android:layout_width="wrap_content"
@@ -50,9 +53,9 @@
         android:layout_marginTop="84sp"
         android:text="@string/Authors_text2"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/black"
+        android:textColor="#85FFE6"
         app:layout_constraintStart_toEndOf="@+id/help_CMPT276_link"
-        app:layout_constraintTop_toTopOf="@+id/help_authors"/>
+        app:layout_constraintTop_toTopOf="@+id/help_authors" />
 
 
     <TextView
@@ -63,10 +66,10 @@
         android:layout_marginTop="16dp"
         android:text="@string/Copyright_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/help_authors"/>
+        app:layout_constraintTop_toBottomOf="@+id/help_authors" />
 
     <TextView
         android:id="@+id/help_CR_main_background"

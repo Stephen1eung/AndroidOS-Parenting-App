@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ca.cmpt276.parentapp.R;
-import ca.cmpt276.parentapp.UI.ConfigChild.EditChildActivity;
 import ca.cmpt276.parentapp.model.Tasks.TaskManager;
 
 public class EditTask extends AppCompatActivity {
@@ -82,7 +81,7 @@ public class EditTask extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
-        } else if (item.getItemId() == R.id.deleteBtn) {
+        } else if (item.getItemId() == R.id.helpBtn) {
             AlertDialog.Builder builder = new AlertDialog.Builder(EditTask.this);
             builder.setIcon(R.drawable.warning)
                     .setTitle("Closing Activity")

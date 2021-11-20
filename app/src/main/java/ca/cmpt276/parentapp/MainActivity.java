@@ -1,9 +1,12 @@
 package ca.cmpt276.parentapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 
 import ca.cmpt276.parentapp.UI.Help.HelpActivity;
@@ -13,6 +16,12 @@ import ca.cmpt276.parentapp.UI.TimeoutTimer.TimeoutTimerActivity;
 import ca.cmpt276.parentapp.UI.WhoseTurn.WhoseTurnActivity;
 
 public class MainActivity extends AppCompatActivity {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,4 +74,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.helpBtn) {
+            Intent intent = HelpActivity.makeIntent(MainActivity.this);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
