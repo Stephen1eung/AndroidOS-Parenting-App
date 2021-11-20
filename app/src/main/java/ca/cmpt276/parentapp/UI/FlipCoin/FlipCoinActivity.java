@@ -45,8 +45,9 @@ public class FlipCoinActivity extends AppCompatActivity {
         for (Child i : ChildArray) {
             items.add(i.getName());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);
+        ArrayAdapter<String> langAdapter = new ArrayAdapter<String>(this, R.layout.spinner_text, items);
+        langAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+        dropdown.setAdapter(langAdapter);
 
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
