@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 
 public class Child {
     private String name;
-    private Bitmap img;
-    public Child(String name, Bitmap bitmap) {
+    private String img;
+    public Child(String name, String bitmap) {
         this.name = name;
         this.img = bitmap;
     }
@@ -20,11 +20,11 @@ public class Child {
         this.name = name;
     }
 
-    public Bitmap getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(Bitmap img) {
+    public void setImg(String img) {
         this.img = img;
     }
 

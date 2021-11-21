@@ -5,17 +5,16 @@ import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveKid
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -25,7 +24,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.Child;
@@ -34,7 +37,8 @@ import ca.cmpt276.parentapp.model.Child.QueueManager;
 
 public class AddChildActivity extends AppCompatActivity {
     private EditText name;
-    private Bitmap childImage;
+    private String childImage;
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, AddChildActivity.class);
     }
@@ -56,7 +60,7 @@ public class AddChildActivity extends AppCompatActivity {
                         ImageView childImg = findViewById(R.id.ChildImageImageView);
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result);
-                            childImage = bitmap;
+                            childImage = saveToInternalStorage(bitmap);
                             childImg.setImageBitmap(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -75,6 +79,28 @@ public class AddChildActivity extends AppCompatActivity {
             }
         });
 
+    }
+    // https://stackoverflow.com/questions/17674634/saving-and-reading-bitmaps-images-from-internal-memory-in-android
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File myPath = new File(directory, "profile.jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(myPath);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert fos != null;
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
     }
 
     // https://www.youtube.com/watch?v=SMrB97JuIoM&ab_channel=CodinginFlow
@@ -117,7 +143,7 @@ public class AddChildActivity extends AppCompatActivity {
             if (!name.getText().toString().equals("")) {
                 String childName = name.getText().toString();
                 childManager.addChild(new Child(childName, childImage));
-                queueManager.addChild(new Child(childName, childImage));
+                // queueManager.addChild(new Child(childName, childImage));
                 saveKids(AddChildActivity.this);
                 ConfigureChildActivity.saveQueue(AddChildActivity.this);
                 finish();
