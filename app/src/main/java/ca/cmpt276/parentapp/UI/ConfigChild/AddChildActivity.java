@@ -4,6 +4,7 @@ import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveKid
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -27,19 +28,17 @@ import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
-import ca.cmpt276.parentapp.model.Child.QueueManager;
 
 public class AddChildActivity extends AppCompatActivity {
     private EditText name;
     private String childImage;
     private String imgName;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, AddChildActivity.class);
@@ -52,6 +51,31 @@ public class AddChildActivity extends AppCompatActivity {
 
         addItemBtn();
         addImgBtn();
+        takePictureBtn();
+    }
+    // https://developer.android.com/training/camera/photobasics
+    private void takePictureBtn() {
+        Button button = findViewById(R.id.takePictureBtn);
+        button.setOnClickListener(view -> {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            try {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            } catch (ActivityNotFoundException e) {
+                // display error state to the user
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            ImageView childImg = findViewById(R.id.ChildImageImageView);
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            childImage = saveToInternalStorage(imageBitmap);
+            childImg.setImageBitmap(imageBitmap);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void addImgBtn() {
@@ -63,7 +87,6 @@ public class AddChildActivity extends AppCompatActivity {
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result);
                             childImage = saveToInternalStorage(bitmap);
-                            Toast.makeText(AddChildActivity.this, imgName+"", Toast.LENGTH_SHORT).show();
                             childImg.setImageBitmap(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -83,6 +106,7 @@ public class AddChildActivity extends AppCompatActivity {
         });
 
     }
+
     // https://stackoverflow.com/questions/17674634/saving-and-reading-bitmaps-images-from-internal-memory-in-android
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
@@ -94,8 +118,8 @@ public class AddChildActivity extends AppCompatActivity {
             sb.append(randomChar.charAt(random.nextInt(randomChar.length())));
         }
         String fileName = sb.toString();
-        File myPath = new File(directory, fileName+".jpg");
-        imgName = fileName+".jpg";
+        File myPath = new File(directory, fileName + ".jpg");
+        imgName = fileName + ".jpg";
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(myPath);
@@ -146,7 +170,6 @@ public class AddChildActivity extends AppCompatActivity {
 
     private void addItemBtn() {
         ChildManager childManager = ChildManager.getInstance();
-        QueueManager queueManager = QueueManager.getInstance();
         name = findViewById(R.id.ChildNameEditText);
         Button button = findViewById(R.id.addChildToListBtn);
         button.setOnClickListener(view -> {

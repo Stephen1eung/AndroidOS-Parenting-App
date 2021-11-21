@@ -5,6 +5,7 @@ import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveQue
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -32,13 +33,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
-import ca.cmpt276.parentapp.model.Child.QueueManager;
 
 public class EditChildActivity extends AppCompatActivity {
     private static final String INDEX_NAME = "ca.cmpt276.project.UI - index";
@@ -46,8 +44,8 @@ public class EditChildActivity extends AppCompatActivity {
     private String childImage;
     private String imgName;
     private ChildManager childManager;
-    private QueueManager queueManager;
     private int kidIndex;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public static Intent makeIntent(Context context, int index) {
         Intent intent = new Intent(context, EditChildActivity.class);
@@ -58,7 +56,6 @@ public class EditChildActivity extends AppCompatActivity {
     private void initItems() {
         name = findViewById(R.id.ChildNameEditText);
         childManager = ChildManager.getInstance();
-        queueManager = QueueManager.getInstance();
     }
 
     @Override
@@ -78,6 +75,31 @@ public class EditChildActivity extends AppCompatActivity {
         fillInFields();
         saveEdited();
         addImgBtn();
+        takePictureBtn();
+    }
+
+    private void takePictureBtn() {
+        Button button = findViewById(R.id.takePictureBtn);
+        button.setOnClickListener(view -> {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            try {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            } catch (ActivityNotFoundException e) {
+                // display error state to the user
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            ImageView childImg = findViewById(R.id.ChildImageImageView);
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            childImage = saveToInternalStorage(imageBitmap);
+            childImg.setImageBitmap(imageBitmap);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void addImgBtn() {

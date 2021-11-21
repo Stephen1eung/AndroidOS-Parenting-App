@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.cmpt276.parentapp">
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name= "android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -18,8 +22,8 @@
         android:theme="@style/Theme.ParentApp">
         <activity
             android:name=".UI.FlipCoin.FlipHistory"
-            android:parentActivityName=".UI.FlipCoin.FlipCoinActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".UI.FlipCoin.FlipCoinActivity" />
         <activity
             android:name=".UI.WhoseTurn.EditTask"
             android:exported="false"
@@ -65,13 +69,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".UI.Notification.NotificationIntentService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver android:name=".UI.Notification.NotificationReceiver" />
-        <receiver android:name=".UI.Notification.NotificationServiceStarterReceiver"
+        <receiver
+            android:name=".UI.Notification.NotificationServiceStarterReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

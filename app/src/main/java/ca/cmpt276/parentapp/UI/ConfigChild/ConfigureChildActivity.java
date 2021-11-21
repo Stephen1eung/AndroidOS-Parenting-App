@@ -38,7 +38,6 @@ import java.util.LinkedList;
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
-import ca.cmpt276.parentapp.model.Child.QueueManager;
 
 public class ConfigureChildActivity extends AppCompatActivity {
     ChildManager childManager = ChildManager.getInstance();
@@ -131,8 +130,6 @@ public class ConfigureChildActivity extends AppCompatActivity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
         Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
-        String json2 = gson.toJson(QueueManager.getInstance().getQueueList());
-        editor.putString("SavedQueue", json2);
         editor.apply();
     }
 

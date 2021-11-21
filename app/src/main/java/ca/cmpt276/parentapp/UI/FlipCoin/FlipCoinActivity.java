@@ -32,16 +32,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
-import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
-import ca.cmpt276.parentapp.model.Child.QueueManager;
 import ca.cmpt276.parentapp.model.Coin.Coin;
 import ca.cmpt276.parentapp.model.Coin.CoinManager;
 
 public class FlipCoinActivity extends AppCompatActivity {
     private ChildManager childManager;
-    private QueueManager queueManager;
     private CoinManager coinManager;
     private ImageView coinImage;
     private static int childIndex;
@@ -56,7 +53,6 @@ public class FlipCoinActivity extends AppCompatActivity {
     private void initItems() {
         childManager = ChildManager.getInstance();
         coinManager = CoinManager.getInstance();
-        queueManager = QueueManager.getInstance();
         coinManager.setCoinHistoryArrayList(loadSavedFlips(FlipCoinActivity.this));
         coinImage = findViewById(R.id.coinImage);
     }
@@ -83,7 +79,6 @@ public class FlipCoinActivity extends AppCompatActivity {
         pickKid();
         flipHistoryBtn();
         FlipBtn();
-        listAllKids();
     }
 
     private void flipHistoryBtn() {
@@ -119,9 +114,6 @@ public class FlipCoinActivity extends AppCompatActivity {
                 else {
                     childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
                     lastChildIndex = childIndex;
-                    Child tempTwo = childManager.getChildArrayList().get(lastChildIndex);
-                    queueManager.getQueueList().remove(lastChildIndex);
-                    queueManager.getQueueList().addFirst(tempTwo);
                 }
             }
 
@@ -171,35 +163,35 @@ public class FlipCoinActivity extends AppCompatActivity {
         });
     }
 
-    private void listAllKids() {
-        ArrayAdapter<Child> adapter = new FlipCoinActivity.adapter();
-        list = findViewById(R.id.QueueList);
-        list.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
+//    private void listAllKids() {
+//        ArrayAdapter<Child> adapter = new adapter();
+//        list = findViewById(R.id.QueueList);
+//        list.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
+//    }
 
-    public class adapter extends ArrayAdapter<Child> {
-        public adapter() {
-            super(FlipCoinActivity.this, R.layout.child_list_layout, queueManager.getQueueList());
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            View itemView = convertView;
-            if (itemView == null)
-                itemView = getLayoutInflater().inflate(R.layout.child_list_layout, parent, false);
-
-            Child currKid = queueManager.getQueueList().get(position);
-            TextView txt = itemView.findViewById(R.id.childName);
-            txt.setText(currKid.getName());
-
-            ImageView childImage = itemView.findViewById(R.id.ChildImageList);
-            childImage.setImageResource(R.drawable.childimg);
-
-            return itemView;
-        }
-    }
+//    public class adapter extends ArrayAdapter<Child> {
+//        public adapter() {
+//            super(FlipCoinActivity.this, R.layout.child_list_layout, queueManager.getQueueList());
+//        }
+//
+//        @NonNull
+//        @Override
+//        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+//            View itemView = convertView;
+//            if (itemView == null)
+//                itemView = getLayoutInflater().inflate(R.layout.child_list_layout, parent, false);
+//
+//            Child currKid = queueManager.getQueueList().get(position);
+//            TextView txt = itemView.findViewById(R.id.childName);
+//            txt.setText(currKid.getName());
+//
+//            ImageView childImage = itemView.findViewById(R.id.ChildImageList);
+//            childImage.setImageResource(R.drawable.childimg);
+//
+//            return itemView;
+//        }
+//    }
 
 
     public static ArrayList<Coin> loadSavedFlips(Context context) {
