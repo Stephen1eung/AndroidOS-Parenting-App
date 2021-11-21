@@ -88,6 +88,7 @@ public class EditTask extends AppCompatActivity {
                     .setMessage("Are you sure you want to DELETE this TASK?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         taskManager.removeTask(taskIndex);
+                        saveTasks(EditTask.this);
                         Toast.makeText(EditTask.this, "TASK DELETED", Toast.LENGTH_SHORT).show();
                         finish();
                     })
