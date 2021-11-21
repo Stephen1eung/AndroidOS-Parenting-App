@@ -1,12 +1,15 @@
 package ca.cmpt276.parentapp.model.Child;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.NonNull;
 
 public class Child {
     private String name;
-
-    public Child(String name) {
+    private Bitmap img;
+    public Child(String name, Bitmap bitmap) {
         this.name = name;
+        this.img = bitmap;
     }
 
     public String getName() {
@@ -15,6 +18,14 @@ public class Child {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Bitmap getImg() {
+        return img;
+    }
+
+    public void setImg(Bitmap img) {
+        this.img = img;
     }
 
     @NonNull

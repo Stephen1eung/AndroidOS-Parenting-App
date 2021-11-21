@@ -5,11 +5,13 @@ import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveKid
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -75,17 +77,9 @@ public class EditChildActivity extends AppCompatActivity {
         name.setText(childManager.getChildArrayList().get(kidIndex).getName());
         Button editChildBtn = findViewById(R.id.addChildToListBtn);
         editChildBtn.setText(R.string.edit_child_btn);
-//        childImg = findViewById(R.id.ChildImagePreview);
-//        childImg.setImageResource(R.drawable.child);
-//        String idToStr = "android.resource://" + Objects.requireNonNull(R.class.getPackage()).getName() + "/" + R.drawable.child;
-//        Uri path = Uri.parse(idToStr);
-//        if (manager.getChildArrayList().get(kidIndex).getImgPath() != idToStr) {
-//            File imgFile = new File(manager.getChildArrayList().get(kidIndex).getImgPath());
-//            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-//            childImg.setImageBitmap(myBitmap);
-//        } else {
-//            childImg.setImageURI(path);
-//        }
+        ImageView childImg = findViewById(R.id.ChildImageImageView);
+        Bitmap bitmap = childManager.getChildArrayList().get(kidIndex).getImg();
+        childImg.setImageBitmap(bitmap);
     }
 
     @Override
