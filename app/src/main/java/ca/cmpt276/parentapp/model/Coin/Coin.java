@@ -31,7 +31,9 @@ public class Coin {
     public String toString() {
         ChildManager childManager = ChildManager.getInstance();
         String childName = "";
-        if (!childManager.getChildArrayList().isEmpty() && childManager.getChildArrayList().get(childIndex) != null) {
+        boolean inBounds = (childIndex >= 0) && (childIndex < childManager.getChildArrayList().size());
+        if (inBounds && !childManager.getChildArrayList().isEmpty()) {
+            childManager.getChildArrayList();
             childName = childManager.getChildArrayList().get(childIndex).getName();
         }
 

@@ -36,7 +36,9 @@ public class FlipCoinActivity extends AppCompatActivity {
     private ChildManager childManager;
     private CoinManager coinManager;
     private ImageView coinImage;
-    private int childIndex, lastChildIndex, PlayerChoice;
+    private static int childIndex;
+    private static int lastChildIndex;
+    private int PlayerChoice;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, FlipCoinActivity.class);
@@ -120,7 +122,6 @@ public class FlipCoinActivity extends AppCompatActivity {
         FlipBtn.setOnClickListener(view -> {
             int pick = new Random().nextInt(2);
 
-            // add image later
             if (pick == 1) coinImage.setImageResource(R.drawable.head);
             else coinImage.setImageResource(R.drawable.tail);
             RotateAnimation rotate = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
