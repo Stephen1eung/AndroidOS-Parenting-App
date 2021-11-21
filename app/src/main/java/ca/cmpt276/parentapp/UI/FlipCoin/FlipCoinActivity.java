@@ -99,7 +99,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getItemAtPosition(i).toString() == "DEFAULT") {
+                if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN") {
                     childIndex = -1;
                 }
                 else {
