@@ -3,6 +3,8 @@ package ca.cmpt276.parentapp.UI.ConfigChild;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,6 +27,9 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -166,7 +171,18 @@ public class ConfigureChildActivity extends AppCompatActivity {
             txt.setText(currKid.getName());
 
             ImageView childImage = itemView.findViewById(R.id.ChildImageList);
-            childImage.setImageResource(R.drawable.childimg);
+
+            if (currKid.getImg() != null && currKid.getImg() != "") {
+                try {
+                    File f = new File(currKid.getImg(), currKid.getImgName());
+                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+                    childImage.setImageBitmap(b);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                childImage.setImageResource(R.drawable.childimg);
+            }
 
             return itemView;
         }

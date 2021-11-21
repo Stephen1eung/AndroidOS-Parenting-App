@@ -63,6 +63,7 @@ public class AddChildActivity extends AppCompatActivity {
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result);
                             childImage = saveToInternalStorage(bitmap);
+                            Toast.makeText(AddChildActivity.this, imgName+"", Toast.LENGTH_SHORT).show();
                             childImg.setImageBitmap(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -87,11 +88,12 @@ public class AddChildActivity extends AppCompatActivity {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         String randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        String fileName = "";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
         for (int i = 0; i < 4; i++) {
-            Random random = new Random();
-            new StringBuilder().append(fileName).append(randomChar.charAt(random.nextInt(randomChar.length()))).toString();
+            sb.append(randomChar.charAt(random.nextInt(randomChar.length())));
         }
+        String fileName = sb.toString();
         File myPath = new File(directory, fileName+".jpg");
         imgName = fileName+".jpg";
         FileOutputStream fos = null;

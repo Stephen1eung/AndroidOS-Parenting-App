@@ -138,16 +138,18 @@ public class EditChildActivity extends AppCompatActivity {
             }
         }
     }
+
     // https://stackoverflow.com/questions/17674634/saving-and-reading-bitmaps-images-from-internal-memory-in-android
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         String randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        String fileName = "";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
         for (int i = 0; i < 4; i++) {
-            Random random = new Random();
-            new StringBuilder().append(fileName).append(randomChar.charAt(random.nextInt(randomChar.length()))).toString();
+            sb.append(randomChar.charAt(random.nextInt(randomChar.length())));
         }
+        String fileName = sb.toString();
         File myPath = new File(directory, fileName+".jpg");
         imgName = fileName+".jpg";
         FileOutputStream fos = null;
