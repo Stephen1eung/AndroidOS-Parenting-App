@@ -43,8 +43,6 @@ public class AddChildActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_and_edit_child_layout);
 
-        childImage = BitmapFactory.decodeResource(getResources(), R.drawable.childimg);
-
         addItemBtn();
         addImgBtn();
     }
