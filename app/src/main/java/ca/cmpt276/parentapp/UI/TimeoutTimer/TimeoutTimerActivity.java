@@ -46,7 +46,6 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeout_timer);
 
-
         initAllItems();
         setupTimer();
         setTimerBtn();

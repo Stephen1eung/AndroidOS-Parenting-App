@@ -11,7 +11,7 @@ public class CoinManager implements  Iterable<Coin>{
 
     private CoinManager() {
     }
-    
+
     public static CoinManager getInstance() { return instance; }
 
     public ArrayList<Coin> getCoinHistory() {

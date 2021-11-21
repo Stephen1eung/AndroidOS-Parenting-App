@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         FlipCoinBtn();
         TimeoutTimerBtn();
         ConfigChildBtn();
-        HelpBtn();
         WhoseTurnBtn();
     }
 
@@ -64,14 +63,6 @@ public class MainActivity extends AppCompatActivity {
         Button button = findViewById(R.id.ConfigChildBtn);
         button.setOnClickListener(view -> {
             Intent intent = ConfigureChildActivity.makeIntent(MainActivity.this);
-            startActivity(intent);
-        });
-    }
-
-    private void HelpBtn() {
-        Button button = findViewById(R.id.HelpBtn);
-        button.setOnClickListener(view -> {
-            Intent intent = HelpActivity.makeIntent(MainActivity.this);
             startActivity(intent);
         });
     }

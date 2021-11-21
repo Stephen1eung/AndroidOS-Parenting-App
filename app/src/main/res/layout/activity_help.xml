@@ -37,7 +37,7 @@
         android:id="@+id/help_CMPT276_link"
         android:layout_width="92sp"
         android:layout_height="28sp"
-        android:layout_marginStart="111sp"
+        android:layout_marginStart="68dp"
         android:layout_marginTop="84sp"
         android:text="@string/link"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"

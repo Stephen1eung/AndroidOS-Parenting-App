@@ -20,7 +20,6 @@ import ca.cmpt276.parentapp.UI.Notification.NotificationServiceStarterReceiver;
 import ca.cmpt276.parentapp.UI.TimeoutTimer.TimeoutTimerActivity;
 
 public class NotificationIntentService extends IntentService {
-    private NotificationManagerCompat notificationManager;
     public static final String CHANNEL = "Timer";
     private static final String ACTION_START = "ACTION_START";
     private static final String ACTION_DELETE = "ACTION_DELETE";
@@ -94,3 +93,4 @@ public class NotificationIntentService extends IntentService {
         NotificationManagerCompat.from(this).notify(1, builder.build());
     }
 }
+
