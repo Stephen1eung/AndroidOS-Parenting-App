@@ -1,6 +1,7 @@
 package ca.cmpt276.parentapp.UI.ConfigChild;
 
 import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveKids;
+import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveQueue;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -30,12 +31,14 @@ import java.io.IOException;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
+import ca.cmpt276.parentapp.model.Child.QueueManager;
 
 public class EditChildActivity extends AppCompatActivity {
     private static final String INDEX_NAME = "ca.cmpt276.project.UI - index";
     private EditText name;
     private Bitmap childImage;
     private ChildManager childManager;
+    private QueueManager queueManager;
     private int kidIndex;
 
     public static Intent makeIntent(Context context, int index) {
@@ -47,6 +50,7 @@ public class EditChildActivity extends AppCompatActivity {
     private void initItems() {
         name = findViewById(R.id.ChildNameEditText);
         childManager = ChildManager.getInstance();
+        queueManager = QueueManager.getInstance();
     }
 
     @Override
@@ -134,7 +138,9 @@ public class EditChildActivity extends AppCompatActivity {
                 childManager.getChildArrayList().get(kidIndex).setName(name.getText().toString());
                 if (childImage != null) {
                     childManager.getChildArrayList().get(kidIndex).setImg(childImage);
+                    queueManager.getQueueList().get(kidIndex).setImg(childImage);
                 }
+                saveQueue(EditChildActivity.this);
                 saveKids(EditChildActivity.this);
                 finish();
             } else {
@@ -176,6 +182,8 @@ public class EditChildActivity extends AppCompatActivity {
                     .setPositiveButton("Yes", (dialog, which) -> {
                         childManager.removeChild(kidIndex);
                         saveKids(EditChildActivity.this);
+                        queueManager.removeChild(kidIndex);
+                        saveQueue(EditChildActivity.this);
                         Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
                         finish();
                     })

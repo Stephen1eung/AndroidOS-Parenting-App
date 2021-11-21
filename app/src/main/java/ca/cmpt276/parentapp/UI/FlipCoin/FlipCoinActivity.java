@@ -7,14 +7,19 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
@@ -27,18 +32,22 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
+import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
+import ca.cmpt276.parentapp.model.Child.QueueManager;
 import ca.cmpt276.parentapp.model.Coin.Coin;
 import ca.cmpt276.parentapp.model.Coin.CoinManager;
 
 public class FlipCoinActivity extends AppCompatActivity {
     private ChildManager childManager;
+    private QueueManager queueManager;
     private CoinManager coinManager;
     private ImageView coinImage;
     private static int childIndex;
     private static int lastChildIndex;
     private int PlayerChoice;
+    private ListView list;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, FlipCoinActivity.class);
@@ -47,6 +56,7 @@ public class FlipCoinActivity extends AppCompatActivity {
     private void initItems() {
         childManager = ChildManager.getInstance();
         coinManager = CoinManager.getInstance();
+        queueManager = QueueManager.getInstance();
         coinManager.setCoinHistoryArrayList(loadSavedFlips(FlipCoinActivity.this));
         coinImage = findViewById(R.id.coinImage);
     }
@@ -73,6 +83,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         pickKid();
         flipHistoryBtn();
         FlipBtn();
+        listAllKids();
     }
 
     private void flipHistoryBtn() {
@@ -91,6 +102,7 @@ public class FlipCoinActivity extends AppCompatActivity {
             items.add("NO CHILDREN");
         }
         else {
+            items.add("DEFAULT");
             for (Child i : ChildArray) {
                 items.add(i.getName());
             }
@@ -101,12 +113,15 @@ public class FlipCoinActivity extends AppCompatActivity {
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN") {
+                if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN" || adapterView.getItemAtPosition(i).toString() == "DEFAULT") {
                     childIndex = -1;
                 }
                 else {
                     childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
                     lastChildIndex = childIndex;
+                    Child tempTwo = childManager.getChildArrayList().get(lastChildIndex);
+                    queueManager.getQueueList().remove(lastChildIndex);
+                    queueManager.getQueueList().addFirst(tempTwo);
                 }
             }
 
@@ -154,6 +169,36 @@ public class FlipCoinActivity extends AppCompatActivity {
             PlayerChoice = 1;
             Toast.makeText(FlipCoinActivity.this, "Player Choice: Tail", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void listAllKids() {
+        ArrayAdapter<Child> adapter = new FlipCoinActivity.adapter();
+        list = findViewById(R.id.QueueList);
+        list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public class adapter extends ArrayAdapter<Child> {
+        public adapter() {
+            super(FlipCoinActivity.this, R.layout.child_list_layout, queueManager.getQueueList());
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null)
+                itemView = getLayoutInflater().inflate(R.layout.child_list_layout, parent, false);
+
+            Child currKid = queueManager.getQueueList().get(position);
+            TextView txt = itemView.findViewById(R.id.childName);
+            txt.setText(currKid.getName());
+
+            ImageView childImage = itemView.findViewById(R.id.ChildImageList);
+            childImage.setImageResource(R.drawable.childimg);
+
+            return itemView;
+        }
     }
 
 

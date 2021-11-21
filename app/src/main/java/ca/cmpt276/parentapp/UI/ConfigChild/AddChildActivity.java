@@ -30,6 +30,7 @@ import java.io.IOException;
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
+import ca.cmpt276.parentapp.model.Child.QueueManager;
 
 public class AddChildActivity extends AppCompatActivity {
     private EditText name;
@@ -109,13 +110,16 @@ public class AddChildActivity extends AppCompatActivity {
 
     private void addItemBtn() {
         ChildManager childManager = ChildManager.getInstance();
+        QueueManager queueManager = QueueManager.getInstance();
         name = findViewById(R.id.ChildNameEditText);
         Button button = findViewById(R.id.addChildToListBtn);
         button.setOnClickListener(view -> {
             if (!name.getText().toString().equals("")) {
                 String childName = name.getText().toString();
                 childManager.addChild(new Child(childName, childImage));
+                queueManager.addChild(new Child(childName, childImage));
                 saveKids(AddChildActivity.this);
+                ConfigureChildActivity.saveQueue(AddChildActivity.this);
                 finish();
             } else {
                 Toast.makeText(AddChildActivity.this, "Please Add your Child's Name", Toast.LENGTH_SHORT).show();

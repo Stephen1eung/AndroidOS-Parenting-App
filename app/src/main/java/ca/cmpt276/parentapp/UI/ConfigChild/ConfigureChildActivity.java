@@ -28,10 +28,12 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
+import ca.cmpt276.parentapp.model.Child.QueueManager;
 
 public class ConfigureChildActivity extends AppCompatActivity {
     ChildManager childManager = ChildManager.getInstance();
@@ -47,6 +49,16 @@ public class ConfigureChildActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
         String json = sharedPrefs.getString("SavedKids", "");
         Type type = new TypeToken<ArrayList<Child>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public static ArrayList<Child> loadSavedQueue(Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        // https://stackoverflow.com/questions/22533432/create-object-from-gson-string-doesnt-work
+        Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
+        String json = sharedPrefs.getString("SavedQueue", "");
+        Type type = new TypeToken<LinkedList<Child>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
@@ -107,6 +119,15 @@ public class ConfigureChildActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
         String json = gson.toJson(ChildManager.getInstance().getChildArrayList());
         editor.putString("SavedKids", json);
+        editor.apply();
+    }
+
+    public static void saveQueue(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
+        String json2 = gson.toJson(QueueManager.getInstance().getQueueList());
+        editor.putString("SavedQueue", json2);
         editor.apply();
     }
 
