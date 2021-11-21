@@ -34,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
@@ -43,6 +44,7 @@ public class EditChildActivity extends AppCompatActivity {
     private static final String INDEX_NAME = "ca.cmpt276.project.UI - index";
     private EditText name;
     private String childImage;
+    private String imgName;
     private ChildManager childManager;
     private QueueManager queueManager;
     private int kidIndex;
@@ -140,8 +142,14 @@ public class EditChildActivity extends AppCompatActivity {
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        File myPath = new File(directory, "profile.jpg");
-
+        String randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String fileName = "";
+        for (int i = 0; i < 4; i++) {
+            Random random = new Random();
+            new StringBuilder().append(fileName).append(randomChar.charAt(random.nextInt(randomChar.length()))).toString();
+        }
+        File myPath = new File(directory, fileName+".jpg");
+        imgName = fileName+".jpg";
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(myPath);
@@ -166,6 +174,7 @@ public class EditChildActivity extends AppCompatActivity {
                 childManager.getChildArrayList().get(kidIndex).setName(name.getText().toString());
                 if (childImage != null) {
                     childManager.getChildArrayList().get(kidIndex).setImg(childImage);
+                    childManager.getChildArrayList().get(kidIndex).setImgName(imgName);
                     // queueManager.getQueueList().get(kidIndex).setImg(childImage);
                 }
                 saveQueue(EditChildActivity.this);
@@ -188,20 +197,20 @@ public class EditChildActivity extends AppCompatActivity {
         editChildBtn.setText(R.string.edit_child_btn);
 
         if (childManager.getChildArrayList().get(kidIndex).getImg() != null) {
-            loadImageFromStorage(childManager.getChildArrayList().get(kidIndex).getImg());
+            loadImageFromStorage(childManager.getChildArrayList().get(kidIndex).getImg(),
+                    childManager.getChildArrayList().get(kidIndex).getImgName());
         }
     }
 
-    private void loadImageFromStorage(String path) {
+    private void loadImageFromStorage(String path, String imgName) {
         try {
-            File f = new File(path, "profile.jpg");
+            File f = new File(path, imgName);
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             ImageView childImg = findViewById(R.id.ChildImageImageView);
             childImg.setImageBitmap(b);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override

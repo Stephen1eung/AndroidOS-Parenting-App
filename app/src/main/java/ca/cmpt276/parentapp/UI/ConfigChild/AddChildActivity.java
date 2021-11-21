@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.Child;
@@ -38,6 +39,7 @@ import ca.cmpt276.parentapp.model.Child.QueueManager;
 public class AddChildActivity extends AppCompatActivity {
     private EditText name;
     private String childImage;
+    private String imgName;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, AddChildActivity.class);
@@ -84,8 +86,14 @@ public class AddChildActivity extends AppCompatActivity {
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        File myPath = new File(directory, "profile.jpg");
-
+        String randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String fileName = "";
+        for (int i = 0; i < 4; i++) {
+            Random random = new Random();
+            new StringBuilder().append(fileName).append(randomChar.charAt(random.nextInt(randomChar.length()))).toString();
+        }
+        File myPath = new File(directory, fileName+".jpg");
+        imgName = fileName+".jpg";
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(myPath);
@@ -142,7 +150,7 @@ public class AddChildActivity extends AppCompatActivity {
         button.setOnClickListener(view -> {
             if (!name.getText().toString().equals("")) {
                 String childName = name.getText().toString();
-                childManager.addChild(new Child(childName, childImage));
+                childManager.addChild(new Child(childName, childImage, imgName));
                 // queueManager.addChild(new Child(childName, childImage));
                 saveKids(AddChildActivity.this);
                 ConfigureChildActivity.saveQueue(AddChildActivity.this);
