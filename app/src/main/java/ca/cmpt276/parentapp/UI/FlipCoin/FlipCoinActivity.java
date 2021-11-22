@@ -3,9 +3,13 @@ package ca.cmpt276.parentapp.UI.FlipCoin;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
@@ -25,6 +29,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +43,7 @@ import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
 import ca.cmpt276.parentapp.model.Coin.Coin;
 import ca.cmpt276.parentapp.model.Coin.CoinManager;
+import ca.cmpt276.parentapp.model.Tasks.Task;
 
 public class FlipCoinActivity extends AppCompatActivity {
     private ChildManager childManager;
@@ -45,6 +53,8 @@ public class FlipCoinActivity extends AppCompatActivity {
     private static int lastChildIndex;
     private int PlayerChoice;
     private ListView list;
+    ArrayList<String> items = new ArrayList<>();
+    ArrayList<Child> ChildArray = childManager.getChildArrayList();
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, FlipCoinActivity.class);
@@ -78,7 +88,8 @@ public class FlipCoinActivity extends AppCompatActivity {
         PlayerPickBtn();
         pickKid();
         flipHistoryBtn();
-        FlipBtn();
+        //FlipBtn();
+        listAllKids();
     }
 
     private void flipHistoryBtn() {
@@ -91,8 +102,6 @@ public class FlipCoinActivity extends AppCompatActivity {
 
     private void pickKid() {
         Spinner dropdown = findViewById(R.id.pickchild);
-        ArrayList<Child> ChildArray = childManager.getChildArrayList();
-        ArrayList<String> items = new ArrayList<>();
         if (ChildArray.size() == 0) {
             items.add("NO CHILDREN");
         }
@@ -102,7 +111,7 @@ public class FlipCoinActivity extends AppCompatActivity {
                 items.add(i.getName());
             }
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.simple_spinner_dropdown, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(FlipCoinActivity.this, R.layout.simple_spinner_dropdown, items);
         dropdown.setAdapter(adapter);
 
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -125,8 +134,6 @@ public class FlipCoinActivity extends AppCompatActivity {
     }
 
     private void FlipBtn() {
-        Button FlipBtn = findViewById(R.id.Flip);
-        FlipBtn.setOnClickListener(view -> {
             int pick = new Random().nextInt(2);
 
             if (pick == 1) coinImage.setImageResource(R.drawable.head);
@@ -146,7 +153,6 @@ public class FlipCoinActivity extends AppCompatActivity {
             Toast.makeText(FlipCoinActivity.this, newCoin + "", Toast.LENGTH_SHORT).show();
             coinManager.addCoinHistory(newCoin);
             saveFlip(FlipCoinActivity.this);
-        });
     }
 
     private void PlayerPickBtn() {
@@ -163,36 +169,68 @@ public class FlipCoinActivity extends AppCompatActivity {
         });
     }
 
-//    private void listAllKids() {
-//        ArrayAdapter<Child> adapter = new adapter();
-//        list = findViewById(R.id.QueueList);
-//        list.setAdapter(adapter);
-//        adapter.notifyDataSetChanged();
-//    }
+    private void listAllKids() {
+        ArrayAdapter<Child> adapter = new adapter();
+        list = findViewById(R.id.CircularArrayList);
+        list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
 
-//    public class adapter extends ArrayAdapter<Child> {
-//        public adapter() {
-//            super(FlipCoinActivity.this, R.layout.child_list_layout, queueManager.getQueueList());
-//        }
-//
-//        @NonNull
-//        @Override
-//        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//            View itemView = convertView;
-//            if (itemView == null)
-//                itemView = getLayoutInflater().inflate(R.layout.child_list_layout, parent, false);
-//
-//            Child currKid = queueManager.getQueueList().get(position);
-//            TextView txt = itemView.findViewById(R.id.childName);
-//            txt.setText(currKid.getName());
-//
-//            ImageView childImage = itemView.findViewById(R.id.ChildImageList);
-//            childImage.setImageResource(R.drawable.childimg);
-//
-//            return itemView;
-//        }
-//    }
+    public class adapter extends ArrayAdapter<Child> {
+        public adapter() {
+            super(FlipCoinActivity.this, R.layout.child_list_layout, childManager.getChildArrayList());
+        }
 
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null)
+                itemView = getLayoutInflater().inflate(R.layout.child_list_layout, parent, false);
+
+            Child currKid = childManager.getChildArrayList().get(position);
+            TextView txt = itemView.findViewById(R.id.childName);
+            txt.setText(currKid.getName());
+
+            ImageView childImage = itemView.findViewById(R.id.ChildImageList);
+            if (currKid.getImg() != null && currKid.getImg() != "") {
+                try {
+                    File f = new File(currKid.getImg(), currKid.getImgName());
+                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+                    childImage.setImageBitmap(b);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                childImage.setImageResource(R.drawable.childimg);
+            }
+
+            Button FlipBtn = findViewById(R.id.Flip);
+            FlipBtn.setOnClickListener(view -> {
+                if(childIndex != -1){
+                    Log.d("ChildIndex", "Not Default");
+                    Child i = childManager.findChildByIndex(childIndex);
+                    Log.d("Child", "Added");
+                    childManager.addChild(i);
+                    Log.d("Child", "removed");
+                    childManager.removeChild(childIndex);
+                    FlipBtn();
+                    Log.d("Child", "List Updated");
+                    listAllKids();
+                    //updateList();
+                }
+                else{
+                    Log.d("ChildIndex", "Default");
+                    FlipBtn();
+                }
+            });
+
+            return itemView;
+        }
+    }
+    private void updateList(){
+        //updateList used to update pickKid
+    }
 
     public static ArrayList<Coin> loadSavedFlips(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);

@@ -53,7 +53,7 @@
         android:layout_marginTop="84sp"
         android:text="@string/Authors_text2"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#85FFE6"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/help_CMPT276_link"
         app:layout_constraintTop_toTopOf="@+id/help_authors" />
 

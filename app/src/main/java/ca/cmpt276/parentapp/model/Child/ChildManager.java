@@ -8,7 +8,6 @@ import java.util.Iterator;
 public class ChildManager implements Iterable<Child> {
     private static final ChildManager instance = new ChildManager();
     private ArrayList<Child> childArrayList = new ArrayList<>();
-
     private ChildManager() {
 
     }
@@ -29,6 +28,11 @@ public class ChildManager implements Iterable<Child> {
             if (i.getName().equals(name)) return i;
         }
         return null;
+    }
+
+    public Child findChildByIndex(Integer index) {
+        Child i = childArrayList.get(index);
+        return i;
     }
 
     public int findChildIndex(String name) {
