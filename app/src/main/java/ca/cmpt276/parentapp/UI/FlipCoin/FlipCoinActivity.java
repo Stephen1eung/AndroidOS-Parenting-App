@@ -113,6 +113,8 @@ public class FlipCoinActivity extends AppCompatActivity {
                 }
                 else {
                     childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
+                    TextView ChildName = findViewById(R.id.CurrChildtextView);
+                    ChildName.setText(String.format("Current Child: %s", childManager.getChildArrayList().get(childIndex).getName()));
                     lastChildIndex = childIndex;
                 }
             }
