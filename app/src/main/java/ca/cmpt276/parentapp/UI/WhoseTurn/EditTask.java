@@ -6,17 +6,25 @@ import static ca.cmpt276.parentapp.UI.WhoseTurn.WhoseTurnActivity.saveTasks;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import ca.cmpt276.parentapp.R;
+import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Tasks.TaskManager;
 
 public class EditTask extends AppCompatActivity {
@@ -52,6 +60,30 @@ public class EditTask extends AppCompatActivity {
         getIndexFromIntent();
         fillInFields();
         saveEdited();
+        finishBtnClick();
+    }
+
+    private void finishBtnClick() {
+        Button button = findViewById(R.id.FinishedTask);
+        ImageView imageView = findViewById(R.id.EditTaskChildImageView);
+
+        button.setOnClickListener(view -> {
+            String currChildName = taskManager.getTaskArrayList().get(taskIndex).currChild().getName();
+            Toast.makeText(EditTask.this, currChildName+ " Finished Task!", Toast.LENGTH_SHORT).show();
+            taskManager.getTaskArrayList().get(taskIndex).taskDone();
+            Child CurrChild = taskManager.getTaskArrayList().get(taskIndex).currChild();
+            if (CurrChild.getImg() != null && CurrChild.getImg() != "") {
+                try {
+                    File f = new File(CurrChild.getImg(), CurrChild.getImgName());
+                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+                    imageView.setImageBitmap(b);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                imageView.setImageResource(R.drawable.childimg);
+            }
+        });
     }
 
     private void saveEdited() {
@@ -68,7 +100,22 @@ public class EditTask extends AppCompatActivity {
     }
 
     private void fillInFields() {
+        Button button = findViewById(R.id.addTaskToList);
+        button.setText("Edit Task");
         taskDesc.setText(taskManager.getTaskArrayList().get(taskIndex).getTaskDesc());
+        ImageView imageView = findViewById(R.id.EditTaskChildImageView);
+        Child CurrChild = taskManager.getTaskArrayList().get(taskIndex).currChild();
+        if (CurrChild.getImg() != null && CurrChild.getImg() != "") {
+            try {
+                File f = new File(CurrChild.getImg(), CurrChild.getImgName());
+                Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+                imageView.setImageBitmap(b);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            imageView.setImageResource(R.drawable.childimg);
+        }
     }
 
     private void getIndexFromIntent() {

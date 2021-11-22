@@ -4,18 +4,18 @@ import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveKid
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -25,16 +25,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
-import ca.cmpt276.parentapp.model.Child.QueueManager;
 
 public class AddChildActivity extends AppCompatActivity {
     private EditText name;
-    private Bitmap childImage;
+    private String childImage;
+    private String imgName;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, AddChildActivity.class);
     }
@@ -46,6 +51,31 @@ public class AddChildActivity extends AppCompatActivity {
 
         addItemBtn();
         addImgBtn();
+        takePictureBtn();
+    }
+    // https://developer.android.com/training/camera/photobasics
+    private void takePictureBtn() {
+        Button button = findViewById(R.id.takePictureBtn);
+        button.setOnClickListener(view -> {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            try {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            } catch (ActivityNotFoundException e) {
+                // display error state to the user
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            ImageView childImg = findViewById(R.id.ChildImageImageView);
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            childImage = saveToInternalStorage(imageBitmap);
+            childImg.setImageBitmap(imageBitmap);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void addImgBtn() {
@@ -56,7 +86,7 @@ public class AddChildActivity extends AppCompatActivity {
                         ImageView childImg = findViewById(R.id.ChildImageImageView);
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result);
-                            childImage = bitmap;
+                            childImage = saveToInternalStorage(bitmap);
                             childImg.setImageBitmap(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -75,6 +105,36 @@ public class AddChildActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    // https://stackoverflow.com/questions/17674634/saving-and-reading-bitmaps-images-from-internal-memory-in-android
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        String randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 4; i++) {
+            sb.append(randomChar.charAt(random.nextInt(randomChar.length())));
+        }
+        String fileName = sb.toString();
+        File myPath = new File(directory, fileName + ".jpg");
+        imgName = fileName + ".jpg";
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(myPath);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert fos != null;
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
     }
 
     // https://www.youtube.com/watch?v=SMrB97JuIoM&ab_channel=CodinginFlow
@@ -110,14 +170,13 @@ public class AddChildActivity extends AppCompatActivity {
 
     private void addItemBtn() {
         ChildManager childManager = ChildManager.getInstance();
-        QueueManager queueManager = QueueManager.getInstance();
         name = findViewById(R.id.ChildNameEditText);
         Button button = findViewById(R.id.addChildToListBtn);
         button.setOnClickListener(view -> {
             if (!name.getText().toString().equals("")) {
                 String childName = name.getText().toString();
-                childManager.addChild(new Child(childName, childImage));
-                queueManager.addChild(new Child(childName, childImage));
+                childManager.addChild(new Child(childName, childImage, imgName));
+                // queueManager.addChild(new Child(childName, childImage));
                 saveKids(AddChildActivity.this);
                 ConfigureChildActivity.saveQueue(AddChildActivity.this);
                 finish();

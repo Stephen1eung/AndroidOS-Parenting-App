@@ -5,12 +5,13 @@ import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveQue
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
@@ -27,19 +28,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
-import ca.cmpt276.parentapp.model.Child.QueueManager;
 
 public class EditChildActivity extends AppCompatActivity {
     private static final String INDEX_NAME = "ca.cmpt276.project.UI - index";
     private EditText name;
-    private Bitmap childImage;
+    private String childImage;
+    private String imgName;
     private ChildManager childManager;
-    private QueueManager queueManager;
     private int kidIndex;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public static Intent makeIntent(Context context, int index) {
         Intent intent = new Intent(context, EditChildActivity.class);
@@ -50,7 +56,6 @@ public class EditChildActivity extends AppCompatActivity {
     private void initItems() {
         name = findViewById(R.id.ChildNameEditText);
         childManager = ChildManager.getInstance();
-        queueManager = QueueManager.getInstance();
     }
 
     @Override
@@ -70,6 +75,31 @@ public class EditChildActivity extends AppCompatActivity {
         fillInFields();
         saveEdited();
         addImgBtn();
+        takePictureBtn();
+    }
+
+    private void takePictureBtn() {
+        Button button = findViewById(R.id.takePictureBtn);
+        button.setOnClickListener(view -> {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            try {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            } catch (ActivityNotFoundException e) {
+                // display error state to the user
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            ImageView childImg = findViewById(R.id.ChildImageImageView);
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            childImage = saveToInternalStorage(imageBitmap);
+            childImg.setImageBitmap(imageBitmap);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void addImgBtn() {
@@ -80,7 +110,7 @@ public class EditChildActivity extends AppCompatActivity {
                         ImageView childImg = findViewById(R.id.ChildImageImageView);
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result);
-                            childImage = bitmap;
+                            childImage = saveToInternalStorage(bitmap);
                             childImg.setImageBitmap(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -131,6 +161,36 @@ public class EditChildActivity extends AppCompatActivity {
         }
     }
 
+    // https://stackoverflow.com/questions/17674634/saving-and-reading-bitmaps-images-from-internal-memory-in-android
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        String randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 4; i++) {
+            sb.append(randomChar.charAt(random.nextInt(randomChar.length())));
+        }
+        String fileName = sb.toString();
+        File myPath = new File(directory, fileName+".jpg");
+        imgName = fileName+".jpg";
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(myPath);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert fos != null;
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
+
     private void saveEdited() {
         Button editChildBtn = findViewById(R.id.addChildToListBtn);
         editChildBtn.setOnClickListener(view -> {
@@ -138,7 +198,8 @@ public class EditChildActivity extends AppCompatActivity {
                 childManager.getChildArrayList().get(kidIndex).setName(name.getText().toString());
                 if (childImage != null) {
                     childManager.getChildArrayList().get(kidIndex).setImg(childImage);
-                    queueManager.getQueueList().get(kidIndex).setImg(childImage);
+                    childManager.getChildArrayList().get(kidIndex).setImgName(imgName);
+                    // queueManager.getQueueList().get(kidIndex).setImg(childImage);
                 }
                 saveQueue(EditChildActivity.this);
                 saveKids(EditChildActivity.this);
@@ -160,12 +221,19 @@ public class EditChildActivity extends AppCompatActivity {
         editChildBtn.setText(R.string.edit_child_btn);
 
         if (childManager.getChildArrayList().get(kidIndex).getImg() != null) {
+            loadImageFromStorage(childManager.getChildArrayList().get(kidIndex).getImg(),
+                    childManager.getChildArrayList().get(kidIndex).getImgName());
+        }
+    }
+
+    private void loadImageFromStorage(String path, String imgName) {
+        try {
+            File f = new File(path, imgName);
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             ImageView childImg = findViewById(R.id.ChildImageImageView);
-            Bitmap bitmap = childManager.getChildArrayList().get(kidIndex).getImg();
-
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
-
-            childImg.setImageBitmap(resizedBitmap);
+            childImg.setImageBitmap(b);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -182,8 +250,8 @@ public class EditChildActivity extends AppCompatActivity {
                     .setPositiveButton("Yes", (dialog, which) -> {
                         childManager.removeChild(kidIndex);
                         saveKids(EditChildActivity.this);
-                        queueManager.removeChild(kidIndex);
-                        saveQueue(EditChildActivity.this);
+//                        queueManager.removeChild(kidIndex);
+//                        saveQueue(EditChildActivity.this);
                         Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
                         finish();
                     })

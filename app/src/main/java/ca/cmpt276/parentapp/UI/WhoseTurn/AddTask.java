@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,17 @@ public class AddTask extends AppCompatActivity {
         setContentView(R.layout.add_and_edit_task_layout);
 
         addItemBtn();
+    }
+
+    @Override
+    protected void onStart() {
+        ImageView imageView = findViewById(R.id.EditTaskChildImageView);
+        imageView.setVisibility(View.INVISIBLE);
+
+        Button button = findViewById(R.id.FinishedTask);
+        button.setVisibility(View.INVISIBLE);
+
+        super.onStart();
     }
 
     private void addItemBtn() {
