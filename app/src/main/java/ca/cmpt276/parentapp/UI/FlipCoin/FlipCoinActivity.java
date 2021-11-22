@@ -210,28 +210,23 @@ public class FlipCoinActivity extends AppCompatActivity {
             Button FlipBtn = findViewById(R.id.Flip);
             FlipBtn.setOnClickListener(view -> {
                 if(childIndex != -1){
+                    FlipBtn();
                     Log.d("ChildIndex", "Not Default");
                     Child i = childManager.findChildByIndex(childIndex);
                     Log.d("Child", "Added");
                     childManager.addChild(i);
                     Log.d("Child", "removed");
                     childManager.removeChild(childIndex);
-                    FlipBtn();
                     Log.d("Child", "List Updated");
                     listAllKids();
-                    //updateList();
                 }
                 else{
                     Log.d("ChildIndex", "Default");
                     FlipBtn();
                 }
             });
-
             return itemView;
         }
-    }
-    private void updateList(){
-        //updateList used to update pickKid
     }
 
     public static ArrayList<Coin> loadSavedFlips(Context context) {
