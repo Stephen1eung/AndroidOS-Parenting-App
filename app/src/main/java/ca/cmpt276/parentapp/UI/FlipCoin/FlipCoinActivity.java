@@ -53,8 +53,6 @@ public class FlipCoinActivity extends AppCompatActivity {
     private static int lastChildIndex;
     private int PlayerChoice;
     private ListView list;
-    ArrayList<String> items = new ArrayList<>();
-    ArrayList<Child> ChildArray = childManager.getChildArrayList();
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, FlipCoinActivity.class);
@@ -102,6 +100,8 @@ public class FlipCoinActivity extends AppCompatActivity {
 
     private void pickKid() {
         Spinner dropdown = findViewById(R.id.pickchild);
+        ArrayList<String> items = new ArrayList<>();
+        ArrayList<Child> ChildArray = childManager.getChildArrayList();
         if (ChildArray.size() == 0) {
             items.add("NO CHILDREN");
         }
