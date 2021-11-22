@@ -19,11 +19,24 @@ public class Task {
         this.taskDesc = taskDesc;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void taskDone() {
+        this.index += 1;
+    }
+
+    public Child currChild() {
+        ChildManager childManager = ChildManager.getInstance();
+        return childManager.getChildArrayList().get(index % childManager.getChildArrayList().size());
+    }
+
     @Override
     public String toString() {
         ChildManager childManager = ChildManager.getInstance();
-        Child childTurn = childManager.getChildArrayList().get(index++ % childManager.getChildArrayList().size());
-        return "Task: " + taskDesc + "\n" +
-                "Whose Turn: " + childTurn.getName() + "\n";
+        Child childTurn = childManager.getChildArrayList().get(index % childManager.getChildArrayList().size());
+        return "\nTask: " + taskDesc + "\n" +
+                "Whose Turn: " + childTurn.getName();
     }
 }
