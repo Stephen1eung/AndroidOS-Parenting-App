@@ -147,6 +147,7 @@ public class FlipCoinActivity extends AppCompatActivity {
                 if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN" || adapterView.getItemAtPosition(i).toString() == "DEFAULT") {
                     childIndex = -1;
 
+
                     TextView ChildName = findViewById(R.id.CurrChildtextView);
                     ChildName.setText("Current Child: None");
 
