@@ -50,7 +50,7 @@ public class FlipCoinActivity extends AppCompatActivity {
     private static int childIndex;
     private static int lastChildIndex;
     private ChildManager childManager;
-    private String GlobalChild;
+    private static String GlobalChild;
     private CoinManager coinManager;
     private ImageView coinImage;
     private int PlayerChoice;
@@ -75,10 +75,13 @@ public class FlipCoinActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(CoinManager.getInstance().getCoinHistory());
         editor.putString("SavedFlips", json);
+        editor.putString("GlobalChild", GlobalChild);
         editor.apply();
     }
 
     private void initItems() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(FlipCoinActivity.this);
+        sharedPrefs.getString(GlobalChild, null);
         childManager = ChildManager.getInstance();
         coinManager = CoinManager.getInstance();
         coinManager.setCoinHistoryArrayList(loadSavedFlips(FlipCoinActivity.this));
@@ -236,31 +239,36 @@ public class FlipCoinActivity extends AppCompatActivity {
 
             Button FlipBtn = findViewById(R.id.Flip);
             FlipBtn.setOnClickListener(view -> {
-                Child getChild = childManager.findChildByIndex(childIndex);
-                int CorrectIndex = 0;
-                for (Child i : childManager.getQueue()) {
-                    if (i.getName() == getChild.getName()) {
-                        break;
-                    }
-                    CorrectIndex++;
-                }
-
-                if (CorrectIndex == childManager.getQueue().size()-1) {
+                if (childIndex == -1) {
                     FlipBtn();
                 }
-
-
-                else if (childIndex != -1 && GlobalChild != getChild.getName()) {
-                    FlipBtn();
-                    int queueChildIndex = childManager.findTargetChild(getChild.getName());
-                    GlobalChild = getChild.getName();
-                    childManager.addToQueue(getChild);
-                    childManager.removeQueue(queueChildIndex);
-                    listAllKids();
-                }
-
                 else {
-                    FlipBtn();
+                    Child getChild = childManager.findChildByIndex(childIndex);
+                    int CorrectIndex = 0;
+                    for (Child i : childManager.getQueue()) {
+                        if (i.getName() == getChild.getName()) {
+                            break;
+                        }
+                        CorrectIndex++;
+                    }
+
+                    if (CorrectIndex == childManager.getQueue().size()-1) {
+                        FlipBtn();
+                    }
+
+
+                    else if (childIndex != -1 && GlobalChild != getChild.getName()) {
+                        FlipBtn();
+                        int queueChildIndex = childManager.findTargetChild(getChild.getName());
+                        GlobalChild = getChild.getName();
+                        childManager.addToQueue(getChild);
+                        childManager.removeQueue(queueChildIndex);
+                        listAllKids();
+                    }
+
+                    else {
+                        FlipBtn();
+                    }
                 }
             });
             return itemView;
