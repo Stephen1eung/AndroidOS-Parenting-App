@@ -45,12 +45,13 @@ import ca.cmpt276.parentapp.model.Coin.CoinManager;
 
 public class FlipCoinActivity extends AppCompatActivity {
     private static int childIndex;
-    private static int lastChildIndex;
     private ChildManager childManager;
     private CoinManager coinManager;
     private ImageView coinImage;
     private int PlayerChoice;
     private ListView list;
+    private ArrayList<Child> Queue;
+    private ArrayAdapter<Child> adapter;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, FlipCoinActivity.class);
@@ -78,7 +79,10 @@ public class FlipCoinActivity extends AppCompatActivity {
         childManager = ChildManager.getInstance();
         coinManager = CoinManager.getInstance();
         coinManager.setCoinHistoryArrayList(loadSavedFlips(FlipCoinActivity.this));
+        Queue = new ArrayList<>();
+        Queue.addAll(childManager.getChildArrayList());
         coinImage = findViewById(R.id.coinImage);
+
     }
 
     @Override
@@ -103,7 +107,6 @@ public class FlipCoinActivity extends AppCompatActivity {
         PlayerPickBtn();
         pickKid();
         flipHistoryBtn();
-        //FlipBtn();
         listAllKids();
     }
 
@@ -139,7 +142,6 @@ public class FlipCoinActivity extends AppCompatActivity {
                     childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
                     TextView ChildName = findViewById(R.id.CurrChildtextView);
                     ChildName.setText(String.format("Current Child: %s", childManager.getChildArrayList().get(childIndex).getName()));
-                    lastChildIndex = childIndex;
                 }
             }
 
@@ -187,7 +189,7 @@ public class FlipCoinActivity extends AppCompatActivity {
     }
 
     private void listAllKids() {
-        ArrayAdapter<Child> adapter = new adapter();
+        adapter = new adapter();
         list = findViewById(R.id.CircularArrayList);
         list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -225,14 +227,10 @@ public class FlipCoinActivity extends AppCompatActivity {
             Button FlipBtn = findViewById(R.id.Flip);
             FlipBtn.setOnClickListener(view -> {
                 if (childIndex != -1) {
+                    Child currChild = childManager.findChildByIndex(childIndex);
+                    Queue.removeIf(i -> i.getName().equals(currChild.getName()));
+                    Queue.add(currChild);
                     FlipBtn();
-                    Log.d("ChildIndex", "Not Default");
-                    Child i = childManager.findChildByIndex(childIndex);
-                    Log.d("Child", "Added");
-                    childManager.addChild(i);
-                    Log.d("Child", "removed");
-                    childManager.removeChild(childIndex);
-                    Log.d("Child", "List Updated");
                     listAllKids();
                 } else {
                     Log.d("ChildIndex", "Default");
