@@ -141,7 +141,6 @@ public class FlipCoinActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(FlipCoinActivity.this, R.layout.simple_spinner_dropdown, items);
         dropdown.setAdapter(adapter);
-
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
