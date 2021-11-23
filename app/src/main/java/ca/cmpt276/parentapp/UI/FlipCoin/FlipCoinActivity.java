@@ -108,8 +108,15 @@ public class FlipCoinActivity extends AppCompatActivity {
         PlayerPickBtn();
         pickKid();
         flipHistoryBtn();
-        //FlipBtn();
+        noChildernCase();
         listAllKids();
+    }
+
+    private void noChildernCase() {
+        Button flipBtn = findViewById(R.id.Flip);
+        flipBtn.setOnClickListener(view -> {
+            FlipBtn();
+        });
     }
 
 
