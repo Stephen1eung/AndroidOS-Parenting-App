@@ -80,7 +80,7 @@ public class AddTask extends AppCompatActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.warning)
-                .setTitle("Closing Activity")
+                .setTitle("Go back")
                 .setMessage("Are you sure you want to close this setting without saving?")
                 .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
