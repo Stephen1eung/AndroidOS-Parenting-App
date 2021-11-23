@@ -50,6 +50,7 @@ public class FlipCoinActivity extends AppCompatActivity {
     private static int childIndex;
     private static int lastChildIndex;
     private ChildManager childManager;
+    private String GlobalChild;
     private CoinManager coinManager;
     private ImageView coinImage;
     private int PlayerChoice;
@@ -235,15 +236,30 @@ public class FlipCoinActivity extends AppCompatActivity {
 
             Button FlipBtn = findViewById(R.id.Flip);
             FlipBtn.setOnClickListener(view -> {
-                if (childIndex != -1) {
+                Child getChild = childManager.findChildByIndex(childIndex);
+                int CorrectIndex = 0;
+                for (Child i : childManager.getQueue()) {
+                    if (i.getName() == getChild.getName()) {
+                        break;
+                    }
+                    CorrectIndex++;
+                }
+
+                if (CorrectIndex == childManager.getQueue().size()-1) {
                     FlipBtn();
-                    Child getChild = childManager.findChildByIndex(childIndex);
+                }
+
+
+                else if (childIndex != -1 && GlobalChild != getChild.getName()) {
+                    FlipBtn();
                     int queueChildIndex = childManager.findTargetChild(getChild.getName());
+                    GlobalChild = getChild.getName();
                     childManager.addToQueue(getChild);
                     childManager.removeQueue(queueChildIndex);
                     listAllKids();
-                } else {
-                    Log.d("ChildIndex", "Default");
+                }
+
+                else {
                     FlipBtn();
                 }
             });
