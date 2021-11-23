@@ -62,7 +62,7 @@ public class ConfigureChildActivity extends AppCompatActivity {
         // https://stackoverflow.com/questions/22533432/create-object-from-gson-string-doesnt-work
         Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
         String json = sharedPrefs.getString("SavedQueue", "");
-        Type type = new TypeToken<LinkedList<Child>>() {
+        Type type = new TypeToken<ArrayList<Child>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
@@ -80,11 +80,15 @@ public class ConfigureChildActivity extends AppCompatActivity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
         Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
+        String json = gson.toJson(ChildManager.getInstance().getQueue());
+        editor.putString("SavedQueue", json);
         editor.apply();
     }
 
+
     private void initItems() {
         childManager.setChild(loadSavedKids(ConfigureChildActivity.this));
+        childManager.setQueue(loadSavedQueue(ConfigureChildActivity.this));
         NoChildTextView = findViewById(R.id.NoChildTextView);
     }
 

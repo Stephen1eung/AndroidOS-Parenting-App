@@ -1,6 +1,7 @@
 package ca.cmpt276.parentapp;
 
 import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.loadSavedKids;
+import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.loadSavedQueue;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private void initChildList() {
         ChildManager childManager = ChildManager.getInstance();
         childManager.setChild(loadSavedKids(MainActivity.this));
+        childManager.setQueue(loadSavedQueue(MainActivity.this));
     }
 
     private void FlipCoinBtn() {

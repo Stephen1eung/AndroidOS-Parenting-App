@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
+import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
 
 public class EditChildActivity extends AppCompatActivity {
@@ -199,7 +200,6 @@ public class EditChildActivity extends AppCompatActivity {
                 if (childImage != null) {
                     childManager.getChildArrayList().get(kidIndex).setImg(childImage);
                     childManager.getChildArrayList().get(kidIndex).setImgName(imgName);
-                    // queueManager.getQueueList().get(kidIndex).setImg(childImage);
                 }
                 saveQueue(EditChildActivity.this);
                 saveKids(EditChildActivity.this);

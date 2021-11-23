@@ -8,7 +8,7 @@ import java.util.Iterator;
 public class ChildManager implements Iterable<Child> {
     private static final ChildManager instance = new ChildManager();
     private ArrayList<Child> childArrayList = new ArrayList<>();
-
+    private ArrayList<Child> Queue = new ArrayList<>();;
 
     private ChildManager() {
 
@@ -25,7 +25,13 @@ public class ChildManager implements Iterable<Child> {
         return this.childArrayList;
     }
 
+    public ArrayList<Child> getQueue() {
+        return Queue;
+    }
 
+    public void setQueue(ArrayList<Child> queue) {
+        Queue = queue;
+    }
 
     public Child findChildByName(String name) {
         for (Child i : childArrayList) {
@@ -46,16 +52,27 @@ public class ChildManager implements Iterable<Child> {
         return -1;
     }
 
+    public void addToQueue(Child child) {
+        Queue.add(child);
+    }
+
+    public void removeQueue(int index) {
+        Queue.remove(index);
+    }
+
     public void setChild(ArrayList<Child> kidsList) {
         this.childArrayList = kidsList;
     }
 
     public void addChild(Child child) {
+        if (Queue == null) Queue = new ArrayList<>();
         childArrayList.add(child);
+        Queue.add(child);
     }
 
     public void removeChild(int index) {
         childArrayList.remove(index);
+        Queue.remove(index);
     }
 
     @NonNull
