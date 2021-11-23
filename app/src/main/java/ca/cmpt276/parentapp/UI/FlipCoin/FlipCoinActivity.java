@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
@@ -43,19 +42,36 @@ import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
 import ca.cmpt276.parentapp.model.Coin.Coin;
 import ca.cmpt276.parentapp.model.Coin.CoinManager;
-import ca.cmpt276.parentapp.model.Tasks.Task;
 
 public class FlipCoinActivity extends AppCompatActivity {
+    private static int childIndex;
+    private static int lastChildIndex;
     private ChildManager childManager;
     private CoinManager coinManager;
     private ImageView coinImage;
-    private static int childIndex;
-    private static int lastChildIndex;
     private int PlayerChoice;
     private ListView list;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, FlipCoinActivity.class);
+    }
+
+    public static ArrayList<Coin> loadSavedFlips(Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString("SavedFlips", "");
+        Type type = new TypeToken<ArrayList<Coin>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public static void saveFlip(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(CoinManager.getInstance().getCoinHistory());
+        editor.putString("SavedFlips", json);
+        editor.apply();
     }
 
     private void initItems() {
@@ -81,6 +97,7 @@ public class FlipCoinActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flip_coin);
+        setTitle("Flip Coin");
 
         initItems();
         PlayerPickBtn();
@@ -104,8 +121,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         ArrayList<Child> ChildArray = childManager.getChildArrayList();
         if (ChildArray.size() == 0) {
             items.add("NO CHILDREN");
-        }
-        else {
+        } else {
             items.add("DEFAULT");
             for (Child i : ChildArray) {
                 items.add(i.getName());
@@ -119,8 +135,7 @@ public class FlipCoinActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN" || adapterView.getItemAtPosition(i).toString() == "DEFAULT") {
                     childIndex = -1;
-                }
-                else {
+                } else {
                     childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
                     TextView ChildName = findViewById(R.id.CurrChildtextView);
                     ChildName.setText(String.format("Current Child: %s", childManager.getChildArrayList().get(childIndex).getName()));
@@ -136,25 +151,25 @@ public class FlipCoinActivity extends AppCompatActivity {
     }
 
     private void FlipBtn() {
-            int pick = new Random().nextInt(2);
+        int pick = new Random().nextInt(2);
 
-            if (pick == 1) coinImage.setImageResource(R.drawable.head);
-            else coinImage.setImageResource(R.drawable.tail);
-            RotateAnimation rotate = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
-                    0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-            rotate.setDuration(1000);
-            MediaPlayer mp = MediaPlayer.create(FlipCoinActivity.this, R.raw.flip_sound);
-            mp.start();
-            coinImage.startAnimation(rotate);
+        if (pick == 1) coinImage.setImageResource(R.drawable.head);
+        else coinImage.setImageResource(R.drawable.tail);
+        RotateAnimation rotate = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
+                0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+        rotate.setDuration(1000);
+        MediaPlayer mp = MediaPlayer.create(FlipCoinActivity.this, R.raw.flip_sound);
+        mp.start();
+        coinImage.startAnimation(rotate);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            LocalDateTime dateTime = LocalDateTime.now();
-            String formattedDateTime = dateTime.format(formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.now();
+        String formattedDateTime = dateTime.format(formatter);
 
-            Coin newCoin = new Coin(formattedDateTime, childIndex, PlayerChoice, PlayerChoice == pick);
-            Toast.makeText(FlipCoinActivity.this, newCoin + "", Toast.LENGTH_SHORT).show();
-            coinManager.addCoinHistory(newCoin);
-            saveFlip(FlipCoinActivity.this);
+        Coin newCoin = new Coin(formattedDateTime, childIndex, PlayerChoice, PlayerChoice == pick);
+        Toast.makeText(FlipCoinActivity.this, newCoin + "", Toast.LENGTH_SHORT).show();
+        coinManager.addCoinHistory(newCoin);
+        saveFlip(FlipCoinActivity.this);
     }
 
     private void PlayerPickBtn() {
@@ -209,7 +224,7 @@ public class FlipCoinActivity extends AppCompatActivity {
 
             Button FlipBtn = findViewById(R.id.Flip);
             FlipBtn.setOnClickListener(view -> {
-                if(childIndex != -1){
+                if (childIndex != -1) {
                     FlipBtn();
                     Log.d("ChildIndex", "Not Default");
                     Child i = childManager.findChildByIndex(childIndex);
@@ -219,31 +234,12 @@ public class FlipCoinActivity extends AppCompatActivity {
                     childManager.removeChild(childIndex);
                     Log.d("Child", "List Updated");
                     listAllKids();
-                }
-                else{
+                } else {
                     Log.d("ChildIndex", "Default");
                     FlipBtn();
                 }
             });
             return itemView;
         }
-    }
-
-    public static ArrayList<Coin> loadSavedFlips(Context context) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Gson gson = new Gson();
-        String json = sharedPrefs.getString("SavedFlips", "");
-        Type type = new TypeToken<ArrayList<Coin>>() {
-        }.getType();
-        return gson.fromJson(json, type);
-    }
-
-    public static void saveFlip(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sp.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(CoinManager.getInstance().getCoinHistory());
-        editor.putString("SavedFlips", json);
-        editor.apply();
     }
 }

@@ -18,13 +18,30 @@ public class Coin {
         WinOrNot = winOrNot;
     }
 
-    public String getFlipDate() { return FlipDate; }
-
-    public int getPlayersName() { return childIndex; }
-
-    public int getPlayerChoice() { return PlayerChoice; }
+    public int getChildIndex() {
+        return childIndex;
+    }
 
     public boolean isWinOrNot() { return WinOrNot; }
+
+    public String getChildName() {
+        ChildManager childManager = ChildManager.getInstance();
+        String childName = "";
+        boolean inBounds = (childIndex >= 0) && (childIndex < childManager.getChildArrayList().size());
+        if (inBounds && !childManager.getChildArrayList().isEmpty()) {
+            childName = childManager.getChildArrayList().get(childIndex).getName();
+        }
+        return childName;
+    }
+
+    public Child getChild() {
+        ChildManager childManager = ChildManager.getInstance();
+        boolean inBounds = (childIndex >= 0) && (childIndex < childManager.getChildArrayList().size());
+        if (inBounds && !childManager.getChildArrayList().isEmpty()) {
+            return childManager.getChildArrayList().get(childIndex);
+        }
+        return null;
+    }
 
     @NonNull
     @Override
@@ -33,7 +50,6 @@ public class Coin {
         String childName = "";
         boolean inBounds = (childIndex >= 0) && (childIndex < childManager.getChildArrayList().size());
         if (inBounds && !childManager.getChildArrayList().isEmpty()) {
-            childManager.getChildArrayList();
             childName = childManager.getChildArrayList().get(childIndex).getName();
         }
 

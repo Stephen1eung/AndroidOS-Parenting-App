@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,6 +55,7 @@ public class EditTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_and_edit_task_layout);
+        setTitle("Edit Task");
 
 
         initItems();
@@ -69,9 +71,11 @@ public class EditTask extends AppCompatActivity {
 
         button.setOnClickListener(view -> {
             String currChildName = taskManager.getTaskArrayList().get(taskIndex).currChild().getName();
-            Toast.makeText(EditTask.this, currChildName+ " Finished Task!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditTask.this, currChildName + " Finished Task!", Toast.LENGTH_SHORT).show();
             taskManager.getTaskArrayList().get(taskIndex).taskDone();
             Child CurrChild = taskManager.getTaskArrayList().get(taskIndex).currChild();
+            TextView textView = findViewById(R.id.ChildNameTask);
+            textView.setText("Child Name: " + CurrChild.getName());
             if (CurrChild.getImg() != null && CurrChild.getImg() != "") {
                 try {
                     File f = new File(CurrChild.getImg(), CurrChild.getImgName());
@@ -101,10 +105,13 @@ public class EditTask extends AppCompatActivity {
 
     private void fillInFields() {
         Button button = findViewById(R.id.addTaskToList);
-        button.setText("Edit Task");
+        button.setText("Finish Editing");
         taskDesc.setText(taskManager.getTaskArrayList().get(taskIndex).getTaskDesc());
         ImageView imageView = findViewById(R.id.EditTaskChildImageView);
         Child CurrChild = taskManager.getTaskArrayList().get(taskIndex).currChild();
+        TextView textView = findViewById(R.id.ChildNameTask);
+        textView.setText("Child Name: " + CurrChild.getName());
+
         if (CurrChild.getImg() != null && CurrChild.getImg() != "") {
             try {
                 File f = new File(CurrChild.getImg(), CurrChild.getImgName());
@@ -131,7 +138,7 @@ public class EditTask extends AppCompatActivity {
         } else if (item.getItemId() == R.id.helpBtn) {
             AlertDialog.Builder builder = new AlertDialog.Builder(EditTask.this);
             builder.setIcon(R.drawable.warning)
-                    .setTitle("Closing Activity")
+                    .setTitle("Delete Task")
                     .setMessage("Are you sure you want to DELETE this TASK?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         taskManager.removeTask(taskIndex);
@@ -151,7 +158,7 @@ public class EditTask extends AppCompatActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.warning)
-                .setTitle("Closing Activity")
+                .setTitle("Go Back")
                 .setMessage("Are you sure you want to close this setting without saving?")
                 .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)

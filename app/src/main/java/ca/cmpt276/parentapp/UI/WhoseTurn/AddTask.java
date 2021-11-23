@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ public class AddTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_and_edit_task_layout);
+        setTitle("Create Task");
 
         addItemBtn();
     }
@@ -42,6 +44,9 @@ public class AddTask extends AppCompatActivity {
 
         Button button = findViewById(R.id.FinishedTask);
         button.setVisibility(View.INVISIBLE);
+
+        TextView textView = findViewById(R.id.ChildNameTask);
+        textView.setVisibility(View.INVISIBLE);
 
         super.onStart();
     }
@@ -70,6 +75,7 @@ public class AddTask extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)

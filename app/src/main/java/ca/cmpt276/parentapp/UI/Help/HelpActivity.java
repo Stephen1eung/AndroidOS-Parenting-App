@@ -21,6 +21,7 @@ public class HelpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
+        setTitle("Help");
 
         TextView CMPT276 = findViewById(R.id.help_CMPT276_link);
         CMPT276.setMovementMethod(LinkMovementMethod.getInstance());

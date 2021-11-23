@@ -67,6 +67,22 @@ public class ConfigureChildActivity extends AppCompatActivity {
         return gson.fromJson(json, type);
     }
 
+    public static void saveKids(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
+        String json = gson.toJson(ChildManager.getInstance().getChildArrayList());
+        editor.putString("SavedKids", json);
+        editor.apply();
+    }
+
+    public static void saveQueue(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
+        editor.apply();
+    }
+
     private void initItems() {
         childManager.setChild(loadSavedKids(ConfigureChildActivity.this));
         NoChildTextView = findViewById(R.id.NoChildTextView);
@@ -87,6 +103,7 @@ public class ConfigureChildActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_child);
+        setTitle("Configure Child");
 
         initItems();
         listAllKids();
@@ -115,22 +132,6 @@ public class ConfigureChildActivity extends AppCompatActivity {
         ListView list = findViewById(R.id.ChildListView);
         list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-    }
-
-    public static void saveKids(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sp.edit();
-        Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
-        String json = gson.toJson(ChildManager.getInstance().getChildArrayList());
-        editor.putString("SavedKids", json);
-        editor.apply();
-    }
-
-    public static void saveQueue(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sp.edit();
-        Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
-        editor.apply();
     }
 
     @Override

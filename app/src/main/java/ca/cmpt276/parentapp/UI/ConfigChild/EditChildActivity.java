@@ -39,13 +39,13 @@ import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
 
 public class EditChildActivity extends AppCompatActivity {
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final String INDEX_NAME = "ca.cmpt276.project.UI - index";
     private EditText name;
     private String childImage;
     private String imgName;
     private ChildManager childManager;
     private int kidIndex;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public static Intent makeIntent(Context context, int index) {
         Intent intent = new Intent(context, EditChildActivity.class);
@@ -68,7 +68,7 @@ public class EditChildActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_and_edit_child_layout);
-
+        setTitle("Edit Child");
 
         initItems();
         getIndexFromIntent();
@@ -172,8 +172,8 @@ public class EditChildActivity extends AppCompatActivity {
             sb.append(randomChar.charAt(random.nextInt(randomChar.length())));
         }
         String fileName = sb.toString();
-        File myPath = new File(directory, fileName+".jpg");
-        imgName = fileName+".jpg";
+        File myPath = new File(directory, fileName + ".jpg");
+        imgName = fileName + ".jpg";
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(myPath);
@@ -218,7 +218,7 @@ public class EditChildActivity extends AppCompatActivity {
     private void fillInFields() {
         name.setText(childManager.getChildArrayList().get(kidIndex).getName());
         Button editChildBtn = findViewById(R.id.addChildToListBtn);
-        editChildBtn.setText(R.string.edit_child_btn);
+        editChildBtn.setText("Finish Editing");
 
         if (childManager.getChildArrayList().get(kidIndex).getImg() != null) {
             loadImageFromStorage(childManager.getChildArrayList().get(kidIndex).getImg(),
@@ -245,13 +245,11 @@ public class EditChildActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.helpBtn) {
             AlertDialog.Builder builder = new AlertDialog.Builder(EditChildActivity.this);
             builder.setIcon(R.drawable.warning)
-                    .setTitle("Closing Activity")
+                    .setTitle("DELETE CHILD")
                     .setMessage("Are you sure you want to DELETE this kid?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         childManager.removeChild(kidIndex);
                         saveKids(EditChildActivity.this);
-//                        queueManager.removeChild(kidIndex);
-//                        saveQueue(EditChildActivity.this);
                         Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
                         finish();
                     })
@@ -267,7 +265,7 @@ public class EditChildActivity extends AppCompatActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.warning)
-                .setTitle("Closing Activity")
+                .setTitle("Go Back")
                 .setMessage("Are you sure you want to close this setting without saving?")
                 .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)

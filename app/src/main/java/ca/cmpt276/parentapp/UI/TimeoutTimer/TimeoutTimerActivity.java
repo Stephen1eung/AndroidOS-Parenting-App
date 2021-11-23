@@ -41,10 +41,17 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         return new Intent(context, TimeoutTimerActivity.class);
     }
 
+    private static PendingIntent getStartPendingIntent(Context context) {
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.setAction(ACTION_START_NOTIFICATION_SERVICE);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeout_timer);
+        setTitle("Timeout Timer");
 
         initAllItems();
         setupTimer();
@@ -210,14 +217,8 @@ public class TimeoutTimerActivity extends AppCompatActivity {
 
     public void setupAlarm(Context context) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        AlarmManager.AlarmClockInfo alarmManager = new AlarmManager.AlarmClockInfo(END_TIME,getStartPendingIntent(context));
-        am.setAlarmClock(alarmManager,getStartPendingIntent(context));
-    }
-
-    private static PendingIntent getStartPendingIntent(Context context) {
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        intent.setAction(ACTION_START_NOTIFICATION_SERVICE);
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager.AlarmClockInfo alarmManager = new AlarmManager.AlarmClockInfo(END_TIME, getStartPendingIntent(context));
+        am.setAlarmClock(alarmManager, getStartPendingIntent(context));
     }
 
 

@@ -35,10 +35,10 @@ import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
 
 public class AddChildActivity extends AppCompatActivity {
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private EditText name;
     private String childImage;
     private String imgName;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, AddChildActivity.class);
@@ -48,11 +48,13 @@ public class AddChildActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_and_edit_child_layout);
+        setTitle("Add Child");
 
         addItemBtn();
         addImgBtn();
         takePictureBtn();
     }
+
     // https://developer.android.com/training/camera/photobasics
     private void takePictureBtn() {
         Button button = findViewById(R.id.takePictureBtn);
@@ -176,7 +178,6 @@ public class AddChildActivity extends AppCompatActivity {
             if (!name.getText().toString().equals("")) {
                 String childName = name.getText().toString();
                 childManager.addChild(new Child(childName, childImage, imgName));
-                // queueManager.addChild(new Child(childName, childImage));
                 saveKids(AddChildActivity.this);
                 ConfigureChildActivity.saveQueue(AddChildActivity.this);
                 finish();
@@ -199,7 +200,7 @@ public class AddChildActivity extends AppCompatActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.warning)
-                .setTitle("Closing Activity")
+                .setTitle("Go Back")
                 .setMessage("Are you sure you want to close this setting without saving?")
                 .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
