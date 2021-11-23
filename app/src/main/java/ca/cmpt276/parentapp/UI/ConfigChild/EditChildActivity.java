@@ -201,8 +201,8 @@ public class EditChildActivity extends AppCompatActivity {
                     childManager.getChildArrayList().get(kidIndex).setImg(childImage);
                     childManager.getChildArrayList().get(kidIndex).setImgName(imgName);
                 }
-                saveQueue(EditChildActivity.this);
                 saveKids(EditChildActivity.this);
+                saveQueue(EditChildActivity.this);
                 finish();
             } else {
                 Toast.makeText(EditChildActivity.this, "Name Cannot be empty", Toast.LENGTH_SHORT).show();
@@ -250,6 +250,7 @@ public class EditChildActivity extends AppCompatActivity {
                     .setPositiveButton("Yes", (dialog, which) -> {
                         childManager.removeChild(kidIndex);
                         saveKids(EditChildActivity.this);
+                        saveQueue(EditChildActivity.this);
                         Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
                         finish();
                     })

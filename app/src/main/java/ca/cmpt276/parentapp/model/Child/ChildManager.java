@@ -65,6 +65,7 @@ public class ChildManager implements Iterable<Child> {
     }
 
     public void addChild(Child child) {
+        if (Queue == null) Queue = new ArrayList<>();
         childArrayList.add(child);
         Queue.add(child);
     }
