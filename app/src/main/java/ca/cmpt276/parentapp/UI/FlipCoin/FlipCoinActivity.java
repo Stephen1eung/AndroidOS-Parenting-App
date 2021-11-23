@@ -147,6 +147,10 @@ public class FlipCoinActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN" || adapterView.getItemAtPosition(i).toString() == "DEFAULT") {
                     childIndex = -1;
+
+                    TextView ChildName = findViewById(R.id.CurrChildtextView);
+                    ChildName.setText("Current Child: None");
+
                 } else {
                     childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
                     TextView ChildName = findViewById(R.id.CurrChildtextView);
@@ -239,12 +243,6 @@ public class FlipCoinActivity extends AppCompatActivity {
             FlipBtn.setOnClickListener(view -> {
                 if (childIndex == -1) {
                     FlipBtn();
-                    Child getChild = childManager.findChildByIndex(0);
-                    int queueChildIndex = childManager.findTargetChild(getChild.getName());
-                    GlobalChild = getChild.getName();
-                    childManager.addToQueue(getChild);
-                    childManager.removeQueue(queueChildIndex);
-                    listAllKids();
                 } else {
                     Child getChild = childManager.findChildByIndex(childIndex);
                     int CorrectIndex = 0;
