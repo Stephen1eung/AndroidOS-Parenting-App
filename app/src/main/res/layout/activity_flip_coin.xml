@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="31dp"
         android:layout_marginBottom="23dp"
-        android:text="Queue of Childs"
+        android:text="Queue of Childern"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/CircularArrayList"
