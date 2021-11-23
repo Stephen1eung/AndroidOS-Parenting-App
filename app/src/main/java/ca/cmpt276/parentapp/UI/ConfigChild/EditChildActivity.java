@@ -197,9 +197,12 @@ public class EditChildActivity extends AppCompatActivity {
         editChildBtn.setOnClickListener(view -> {
             if (!name.getText().toString().equals("")) {
                 childManager.getChildArrayList().get(kidIndex).setName(name.getText().toString());
+                childManager.getQueue().get(kidIndex).setName(name.getText().toString());
                 if (childImage != null) {
                     childManager.getChildArrayList().get(kidIndex).setImg(childImage);
                     childManager.getChildArrayList().get(kidIndex).setImgName(imgName);
+                    childManager.getQueue().get(kidIndex).setImg(childImage);
+                    childManager.getQueue().get(kidIndex).setImgName(imgName);
                 }
                 saveKids(EditChildActivity.this);
                 saveQueue(EditChildActivity.this);
