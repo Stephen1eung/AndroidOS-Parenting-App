@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
@@ -187,6 +186,7 @@ public class FlipCoinActivity extends AppCompatActivity {
     }
 
     private void listAllKids() {
+        if (childManager.getQueue() == null) return;
         ArrayAdapter<Child> adapter = new adapter();
         list = findViewById(R.id.CircularArrayList);
         list.setAdapter(adapter);
