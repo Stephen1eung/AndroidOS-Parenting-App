@@ -239,6 +239,12 @@ public class FlipCoinActivity extends AppCompatActivity {
             FlipBtn.setOnClickListener(view -> {
                 if (childIndex == -1) {
                     FlipBtn();
+                    Child getChild = childManager.findChildByIndex(0);
+                    int queueChildIndex = childManager.findTargetChild(getChild.getName());
+                    GlobalChild = getChild.getName();
+                    childManager.addToQueue(getChild);
+                    childManager.removeQueue(queueChildIndex);
+                    listAllKids();
                 } else {
                     Child getChild = childManager.findChildByIndex(childIndex);
                     int CorrectIndex = 0;
