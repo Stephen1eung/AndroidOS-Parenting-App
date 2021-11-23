@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
@@ -40,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
-import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
 import ca.cmpt276.parentapp.model.Coin.Coin;
@@ -49,8 +47,8 @@ import ca.cmpt276.parentapp.model.Coin.CoinManager;
 public class FlipCoinActivity extends AppCompatActivity {
     private static int childIndex;
     private static int lastChildIndex;
-    private ChildManager childManager;
     private static String GlobalChild;
+    private ChildManager childManager;
     private CoinManager coinManager;
     private ImageView coinImage;
     private int PlayerChoice;
@@ -241,8 +239,7 @@ public class FlipCoinActivity extends AppCompatActivity {
             FlipBtn.setOnClickListener(view -> {
                 if (childIndex == -1) {
                     FlipBtn();
-                }
-                else {
+                } else {
                     Child getChild = childManager.findChildByIndex(childIndex);
                     int CorrectIndex = 0;
                     for (Child i : childManager.getQueue()) {
@@ -252,21 +249,16 @@ public class FlipCoinActivity extends AppCompatActivity {
                         CorrectIndex++;
                     }
 
-                    if (CorrectIndex == childManager.getQueue().size()-1) {
+                    if (CorrectIndex == childManager.getQueue().size() - 1) {
                         FlipBtn();
-                    }
-
-
-                    else if (childIndex != -1 && GlobalChild != getChild.getName()) {
+                    } else if (childIndex != -1 && GlobalChild != getChild.getName()) {
                         FlipBtn();
                         int queueChildIndex = childManager.findTargetChild(getChild.getName());
                         GlobalChild = getChild.getName();
                         childManager.addToQueue(getChild);
                         childManager.removeQueue(queueChildIndex);
                         listAllKids();
-                    }
-
-                    else {
+                    } else {
                         FlipBtn();
                     }
                 }
