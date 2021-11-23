@@ -122,7 +122,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         if (ChildArray.size() == 0) {
             items.add("NO CHILDREN");
         } else {
-            items.add("DEFAULT");
+            items.add("SELECT CHILD");
             for (Child i : ChildArray) {
                 items.add(i.getName());
             }
@@ -133,7 +133,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN" || adapterView.getItemAtPosition(i).toString() == "DEFAULT") {
+                if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN" || adapterView.getItemAtPosition(i).toString() == "SELECT CHILD") {
                     childIndex = -1;
                 } else {
                     childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
@@ -226,16 +226,11 @@ public class FlipCoinActivity extends AppCompatActivity {
             FlipBtn.setOnClickListener(view -> {
                 if (childIndex != -1) {
                     FlipBtn();
-                    Log.d("ChildIndex", "Not Default");
                     Child i = childManager.findChildByIndex(childIndex);
-                    Log.d("Child", "Added");
                     childManager.addToQueue(i);
-                    Log.d("Child", "removed");
                     childManager.removeQueue(childIndex);
-                    Log.d("Child", "List Updated");
                     listAllKids();
                 } else {
-                    Log.d("ChildIndex", "Default");
                     FlipBtn();
                 }
             });
