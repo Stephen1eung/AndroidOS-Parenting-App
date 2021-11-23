@@ -4,11 +4,12 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class ChildManager implements Iterable<Child> {
     private static final ChildManager instance = new ChildManager();
     private ArrayList<Child> childArrayList = new ArrayList<>();
-    private ArrayList<Child> Queue = new ArrayList<>();;
+    private LinkedList<Child> Queue = new LinkedList<>();;
 
     private ChildManager() {
 
@@ -25,11 +26,11 @@ public class ChildManager implements Iterable<Child> {
         return this.childArrayList;
     }
 
-    public ArrayList<Child> getQueue() {
+    public LinkedList<Child> getQueue() {
         return Queue;
     }
 
-    public void setQueue(ArrayList<Child> queue) {
+    public void setQueue(LinkedList<Child> queue) {
         Queue = queue;
     }
 
@@ -53,7 +54,7 @@ public class ChildManager implements Iterable<Child> {
     }
 
     public void addToQueue(Child child) {
-        Queue.add(child);
+        Queue.addLast(child);
     }
 
     public void removeQueue(int index) {
@@ -65,7 +66,7 @@ public class ChildManager implements Iterable<Child> {
     }
 
     public void addChild(Child child) {
-        if (Queue == null) Queue = new ArrayList<>();
+        if (Queue == null) Queue = new LinkedList<>();
         childArrayList.add(child);
         Queue.add(child);
     }
