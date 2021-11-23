@@ -57,12 +57,12 @@ public class ConfigureChildActivity extends AppCompatActivity {
         return gson.fromJson(json, type);
     }
 
-    public static ArrayList<Child> loadSavedQueue(Context context) {
+    public static LinkedList<Child> loadSavedQueue(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         // https://stackoverflow.com/questions/22533432/create-object-from-gson-string-doesnt-work
         Gson gson = new GsonBuilder().registerTypeAdapter(Uri.class, new UriAdapter()).create();
         String json = sharedPrefs.getString("SavedQueue", "");
-        Type type = new TypeToken<ArrayList<Child>>() {
+        Type type = new TypeToken<LinkedList<Child>>() {
         }.getType();
         return gson.fromJson(json, type);
     }

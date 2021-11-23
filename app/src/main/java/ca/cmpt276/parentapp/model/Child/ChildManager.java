@@ -2,13 +2,18 @@ package ca.cmpt276.parentapp.model.Child;
 
 import androidx.annotation.NonNull;
 
+import org.w3c.dom.Node;
+
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ChildManager implements Iterable<Child> {
     private static final ChildManager instance = new ChildManager();
     private ArrayList<Child> childArrayList = new ArrayList<>();
-    private ArrayList<Child> Queue = new ArrayList<>();;
+    private LinkedList<Child> Queue = new LinkedList<>();;
 
     private ChildManager() {
 
@@ -25,11 +30,11 @@ public class ChildManager implements Iterable<Child> {
         return this.childArrayList;
     }
 
-    public ArrayList<Child> getQueue() {
+    public LinkedList<Child> getQueue() {
         return Queue;
     }
 
-    public void setQueue(ArrayList<Child> queue) {
+    public void setQueue(LinkedList<Child> queue) {
         Queue = queue;
     }
 
@@ -53,7 +58,16 @@ public class ChildManager implements Iterable<Child> {
     }
 
     public void addToQueue(Child child) {
-        Queue.add(child);
+        Queue.addLast(child);
+    }
+
+    public int findTargetChild(String name) {
+        for (int i = 0; i < Queue.size(); i++) {
+            if (Queue.get(i).getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void removeQueue(int index) {
@@ -65,7 +79,7 @@ public class ChildManager implements Iterable<Child> {
     }
 
     public void addChild(Child child) {
-        if (Queue == null) Queue = new ArrayList<>();
+        if (Queue == null) Queue = new LinkedList<>();
         childArrayList.add(child);
         Queue.add(child);
     }

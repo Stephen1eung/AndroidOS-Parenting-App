@@ -197,6 +197,7 @@ public class FlipCoinActivity extends AppCompatActivity {
     }
 
     private void listAllKids() {
+        if (childManager.getQueue() == null) return;
         ArrayAdapter<Child> adapter = new adapter();
         list = findViewById(R.id.CircularArrayList);
         list.setAdapter(adapter);
@@ -236,13 +237,10 @@ public class FlipCoinActivity extends AppCompatActivity {
             FlipBtn.setOnClickListener(view -> {
                 if (childIndex != -1) {
                     FlipBtn();
-                    Log.d("ChildIndex", "Not Default");
-                    Child i = childManager.findChildByIndex(childIndex);
-                    Log.d("Child", "Added");
-                    childManager.addToQueue(i);
-                    Log.d("Child", "removed");
-                    childManager.removeQueue(childIndex);
-                    Log.d("Child", "List Updated");
+                    Child getChild = childManager.findChildByIndex(childIndex);
+                    int queueChildIndex = childManager.findTargetChild(getChild.getName());
+                    childManager.addToQueue(getChild);
+                    childManager.removeQueue(queueChildIndex);
                     listAllKids();
                 } else {
                     Log.d("ChildIndex", "Default");
