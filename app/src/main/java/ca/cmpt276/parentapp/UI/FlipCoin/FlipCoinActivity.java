@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
@@ -131,7 +132,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         if (ChildArray.size() == 0) {
             items.add("NO CHILDREN");
         } else {
-            items.add("SELECT CHILD");
+            items.add("DEFAULT");
             for (Child i : ChildArray) {
                 items.add(i.getName());
             }
@@ -142,7 +143,7 @@ public class FlipCoinActivity extends AppCompatActivity {
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN" || adapterView.getItemAtPosition(i).toString() == "SELECT CHILD") {
+                if (adapterView.getItemAtPosition(i).toString() == "NO CHILDREN" || adapterView.getItemAtPosition(i).toString() == "DEFAULT") {
                     childIndex = -1;
                 } else {
                     childIndex = childManager.findChildIndex(adapterView.getItemAtPosition(i).toString());
@@ -196,7 +197,6 @@ public class FlipCoinActivity extends AppCompatActivity {
     }
 
     private void listAllKids() {
-        if (childManager.getQueue() == null) return;
         ArrayAdapter<Child> adapter = new adapter();
         list = findViewById(R.id.CircularArrayList);
         list.setAdapter(adapter);
@@ -236,11 +236,16 @@ public class FlipCoinActivity extends AppCompatActivity {
             FlipBtn.setOnClickListener(view -> {
                 if (childIndex != -1) {
                     FlipBtn();
+                    Log.d("ChildIndex", "Not Default");
                     Child i = childManager.findChildByIndex(childIndex);
-                    childManager.removeQueue(childIndex);
+                    Log.d("Child", "Added");
                     childManager.addToQueue(i);
+                    Log.d("Child", "removed");
+                    childManager.removeQueue(childIndex);
+                    Log.d("Child", "List Updated");
                     listAllKids();
                 } else {
+                    Log.d("ChildIndex", "Default");
                     FlipBtn();
                 }
             });

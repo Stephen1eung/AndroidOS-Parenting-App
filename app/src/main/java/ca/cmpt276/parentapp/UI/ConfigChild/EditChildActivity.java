@@ -197,15 +197,12 @@ public class EditChildActivity extends AppCompatActivity {
         editChildBtn.setOnClickListener(view -> {
             if (!name.getText().toString().equals("")) {
                 childManager.getChildArrayList().get(kidIndex).setName(name.getText().toString());
-                childManager.getQueue().get(kidIndex).setName(name.getText().toString());
                 if (childImage != null) {
                     childManager.getChildArrayList().get(kidIndex).setImg(childImage);
                     childManager.getChildArrayList().get(kidIndex).setImgName(imgName);
-                    childManager.getQueue().get(kidIndex).setImg(childImage);
-                    childManager.getQueue().get(kidIndex).setImgName(imgName);
                 }
-                saveKids(EditChildActivity.this);
                 saveQueue(EditChildActivity.this);
+                saveKids(EditChildActivity.this);
                 finish();
             } else {
                 Toast.makeText(EditChildActivity.this, "Name Cannot be empty", Toast.LENGTH_SHORT).show();
@@ -253,7 +250,6 @@ public class EditChildActivity extends AppCompatActivity {
                     .setPositiveButton("Yes", (dialog, which) -> {
                         childManager.removeChild(kidIndex);
                         saveKids(EditChildActivity.this);
-                        saveQueue(EditChildActivity.this);
                         Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
                         finish();
                     })

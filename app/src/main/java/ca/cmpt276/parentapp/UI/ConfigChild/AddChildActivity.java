@@ -1,7 +1,6 @@
 package ca.cmpt276.parentapp.UI.ConfigChild;
 
 import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveKids;
-import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveQueue;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -180,7 +179,7 @@ public class AddChildActivity extends AppCompatActivity {
                 String childName = name.getText().toString();
                 childManager.addChild(new Child(childName, childImage, imgName));
                 saveKids(AddChildActivity.this);
-                saveQueue(AddChildActivity.this);
+                ConfigureChildActivity.saveQueue(AddChildActivity.this);
                 finish();
             } else {
                 Toast.makeText(AddChildActivity.this, "Please Add your Child's Name", Toast.LENGTH_SHORT).show();
