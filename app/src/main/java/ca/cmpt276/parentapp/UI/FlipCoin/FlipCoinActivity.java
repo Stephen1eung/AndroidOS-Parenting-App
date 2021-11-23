@@ -1,5 +1,7 @@
 package ca.cmpt276.parentapp.UI.FlipCoin;
 
+import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveQueue;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
+import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
 import ca.cmpt276.parentapp.model.Coin.Coin;
@@ -105,6 +108,13 @@ public class FlipCoinActivity extends AppCompatActivity {
         flipHistoryBtn();
         //FlipBtn();
         listAllKids();
+    }
+
+
+    @Override
+    protected void onStop() {
+        saveQueue(FlipCoinActivity.this);
+        super.onStop();
     }
 
     private void flipHistoryBtn() {
