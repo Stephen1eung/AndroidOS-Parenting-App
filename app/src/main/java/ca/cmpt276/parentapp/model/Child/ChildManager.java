@@ -86,7 +86,6 @@ public class ChildManager implements Iterable<Child> {
 
     public void removeChild(int index) {
         childArrayList.remove(index);
-        Queue.remove(index);
     }
 
     @NonNull
