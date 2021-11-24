@@ -196,6 +196,8 @@ public class EditChildActivity extends AppCompatActivity {
         Button editChildBtn = findViewById(R.id.addChildToListBtn);
         editChildBtn.setOnClickListener(view -> {
             if (!name.getText().toString().equals("")) {
+                int targetChild = childManager.findTargetChild(childManager.getChildArrayList().get(kidIndex).getName());
+                childManager.getQueue().get(targetChild).setName(name.getText().toString());
                 childManager.getChildArrayList().get(kidIndex).setName(name.getText().toString());
                 if (childImage != null) {
                     childManager.getChildArrayList().get(kidIndex).setImg(childImage);
@@ -248,7 +250,10 @@ public class EditChildActivity extends AppCompatActivity {
                     .setTitle("DELETE CHILD")
                     .setMessage("Are you sure you want to DELETE this kid?")
                     .setPositiveButton("Yes", (dialog, which) -> {
+                        int targetChild = childManager.findTargetChild(childManager.getChildArrayList().get(kidIndex).getName());
+                        childManager.getQueue().remove(targetChild);
                         childManager.removeChild(kidIndex);
+                        saveQueue(EditChildActivity.this);
                         saveKids(EditChildActivity.this);
                         Toast.makeText(EditChildActivity.this, "KID DELETED", Toast.LENGTH_SHORT).show();
                         finish();
