@@ -29,14 +29,22 @@ public class Task {
 
     public Child currChild() {
         ChildManager childManager = ChildManager.getInstance();
-        return childManager.getChildArrayList().get(index % childManager.getChildArrayList().size());
+        if (childManager.getChildArrayList().size() > 0) {
+            return childManager.getChildArrayList().get(index % childManager.getChildArrayList().size());
+        }
+        return null;
     }
 
     @Override
     public String toString() {
         ChildManager childManager = ChildManager.getInstance();
-        Child childTurn = childManager.getChildArrayList().get(index % childManager.getChildArrayList().size());
-        return "\nTask: " + taskDesc + "\n" +
-                "Whose Turn: " + childTurn.getName();
+        if (childManager.getChildArrayList().size() > 0) {
+            Child childTurn = childManager.getChildArrayList().get(index % childManager.getChildArrayList().size());
+            return "\nTask: " + taskDesc + "\n" +
+                    "Whose Turn: " + childTurn.getName();
+        } else {
+            return "\nTask" + taskDesc + "\n" +
+                    "Whose Turn:\n";
+        }
     }
 }

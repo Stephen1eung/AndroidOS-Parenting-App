@@ -136,14 +136,30 @@ public class WhoseTurnActivity extends AppCompatActivity {
             TextView txt = itemView.findViewById(R.id.TaskDes);
             txt.setText(CurrTask.toString());
 
-            Button button = itemView.findViewById(R.id.DoneBtn);
-            button.setOnClickListener(view -> {
-                CurrTask.taskDone();
-                txt.setText(CurrTask.toString());
-                Child newKid = CurrTask.currChild();
-                if (newKid.getImg() != null && newKid.getImg() != "") {
+            if (currKid == null) {
+                return itemView;
+            } else {
+                Button button = itemView.findViewById(R.id.DoneBtn);
+                button.setOnClickListener(view -> {
+                    CurrTask.taskDone();
+                    txt.setText(CurrTask.toString());
+                    Child newKid = CurrTask.currChild();
+                    if (newKid.getImg() != null && newKid.getImg() != "") {
+                        try {
+                            File f = new File(newKid.getImg(), newKid.getImgName());
+                            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+                            childImage.setImageBitmap(b);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        childImage.setImageResource(R.drawable.childimg);
+                    }
+                });
+
+                if (currKid.getImg() != null && currKid.getImg() != "") {
                     try {
-                        File f = new File(newKid.getImg(), newKid.getImgName());
+                        File f = new File(currKid.getImg(), currKid.getImgName());
                         Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
                         childImage.setImageBitmap(b);
                     } catch (FileNotFoundException e) {
@@ -152,21 +168,9 @@ public class WhoseTurnActivity extends AppCompatActivity {
                 } else {
                     childImage.setImageResource(R.drawable.childimg);
                 }
-            });
 
-            if (currKid.getImg() != null && currKid.getImg() != "") {
-                try {
-                    File f = new File(currKid.getImg(), currKid.getImgName());
-                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-                    childImage.setImageBitmap(b);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                childImage.setImageResource(R.drawable.childimg);
+                return itemView;
             }
-
-            return itemView;
         }
     }
 }

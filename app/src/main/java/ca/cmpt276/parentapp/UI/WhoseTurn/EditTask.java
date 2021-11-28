@@ -109,19 +109,21 @@ public class EditTask extends AppCompatActivity {
         taskDesc.setText(taskManager.getTaskArrayList().get(taskIndex).getTaskDesc());
         ImageView imageView = findViewById(R.id.EditTaskChildImageView);
         Child CurrChild = taskManager.getTaskArrayList().get(taskIndex).currChild();
-        TextView textView = findViewById(R.id.ChildNameTask);
-        textView.setText("Child Name: " + CurrChild.getName());
+        if (CurrChild != null) {
+            TextView textView = findViewById(R.id.ChildNameTask);
+            textView.setText("Child Name: " + CurrChild.getName());
 
-        if (CurrChild.getImg() != null && CurrChild.getImg() != "") {
-            try {
-                File f = new File(CurrChild.getImg(), CurrChild.getImgName());
-                Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-                imageView.setImageBitmap(b);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            if (CurrChild.getImg() != null && CurrChild.getImg() != "") {
+                try {
+                    File f = new File(CurrChild.getImg(), CurrChild.getImgName());
+                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+                    imageView.setImageBitmap(b);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                imageView.setImageResource(R.drawable.childimg);
             }
-        } else {
-            imageView.setImageResource(R.drawable.childimg);
         }
     }
 
