@@ -3,12 +3,12 @@ package ca.cmpt276.parentapp.model.Tasks;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
 
-public class Task {
+public class TaskHistory {
     private String taskDesc;
-    private int index;
+    private final int childIndex;
 
-    public Task(String taskDesc) {
-        this.index = 0;
+    public TaskHistory(int childIndex, String taskDesc) {
+        this.childIndex = childIndex;
         this.taskDesc = taskDesc;
     }
 
@@ -20,22 +20,10 @@ public class Task {
         this.taskDesc = taskDesc;
     }
 
-    public int getIndex() {
-        ChildManager childManager = ChildManager.getInstance();
-        if (childManager.getChildArrayList().size() > 0) {
-            return index % childManager.getChildArrayList().size();
-        }
-        return -1;
-    }
-
-    public void taskDone() {
-        this.index += 1;
-    }
-
     public Child currChild() {
         ChildManager childManager = ChildManager.getInstance();
         if (childManager.getChildArrayList().size() > 0) {
-            return childManager.getChildArrayList().get(index % childManager.getChildArrayList().size());
+            return childManager.getChildArrayList().get(childIndex);
         }
         return null;
     }
@@ -44,7 +32,7 @@ public class Task {
     public String toString() {
         ChildManager childManager = ChildManager.getInstance();
         if (childManager.getChildArrayList().size() > 0) {
-            Child childTurn = childManager.getChildArrayList().get(index % childManager.getChildArrayList().size());
+            Child childTurn = childManager.getChildArrayList().get(childIndex % childManager.getChildArrayList().size());
             return "\nTask: " + taskDesc + "\n" +
                     "Whose Turn: " + childTurn.getName();
         } else {

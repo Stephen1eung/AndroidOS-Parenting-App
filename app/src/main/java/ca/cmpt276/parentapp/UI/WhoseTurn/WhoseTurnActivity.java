@@ -31,10 +31,13 @@ import java.util.ArrayList;
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Tasks.Task;
+import ca.cmpt276.parentapp.model.Tasks.TaskHistory;
+import ca.cmpt276.parentapp.model.Tasks.TaskHistoryManager;
 import ca.cmpt276.parentapp.model.Tasks.TaskManager;
 
 public class WhoseTurnActivity extends AppCompatActivity {
     private static final TaskManager taskManager = TaskManager.getInstance();
+    private final TaskHistoryManager taskHistoryManager = TaskHistoryManager.getInstance();
     private TextView NoTaskTextView;
 
     public static Intent makeIntent(Context context) {
@@ -92,6 +95,15 @@ public class WhoseTurnActivity extends AppCompatActivity {
         listAllTasks();
         itemClick();
         addTaskBtn();
+        taskHistoryBtn();
+    }
+
+    private void taskHistoryBtn() {
+        Button button = findViewById(R.id.TaskHistory);
+        button.setOnClickListener(view -> {
+            Intent intent = TaskHistoryActivity.makeIntent(WhoseTurnActivity.this);
+            startActivity(intent);
+        });
     }
 
     private void listAllTasks() {
@@ -141,6 +153,7 @@ public class WhoseTurnActivity extends AppCompatActivity {
             } else {
                 Button button = itemView.findViewById(R.id.DoneBtn);
                 button.setOnClickListener(view -> {
+                    taskHistoryManager.addTaskHistory(new TaskHistory(CurrTask.getIndex(), CurrTask.getTaskDesc()));
                     CurrTask.taskDone();
                     txt.setText(CurrTask.toString());
                     Child newKid = CurrTask.currChild();

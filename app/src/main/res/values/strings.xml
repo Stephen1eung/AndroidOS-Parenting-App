@@ -23,5 +23,6 @@
     <string name="Edit_Task">Edit Task</string>
     <string name="helpBtn">helpBtn</string>
     <string name="no_history">No History</string>
+    <string name="task_history">Task History</string>
 
 </resources>
