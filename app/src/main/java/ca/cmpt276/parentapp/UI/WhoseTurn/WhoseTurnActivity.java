@@ -70,6 +70,12 @@ public class WhoseTurnActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        saveTasks(WhoseTurnActivity.this);
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         saveTasks(WhoseTurnActivity.this);
         super.onDestroy();
