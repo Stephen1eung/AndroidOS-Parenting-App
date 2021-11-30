@@ -1,5 +1,8 @@
 package ca.cmpt276.parentapp.UI.WhoseTurn;
 
+import static ca.cmpt276.parentapp.UI.WhoseTurn.TaskHistoryActivity.loadSavedTaskHistory;
+import static ca.cmpt276.parentapp.UI.WhoseTurn.TaskHistoryActivity.saveHistory;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,18 +70,21 @@ public class WhoseTurnActivity extends AppCompatActivity {
 
     private void initItems() {
         taskManager.setTaskArrayList(loadSavedTasks(WhoseTurnActivity.this));
+        taskHistoryManager.setTaskHistoryArrayList(loadSavedTaskHistory(WhoseTurnActivity.this));
         NoTaskTextView = findViewById(R.id.NoTaskTextView);
     }
 
     @Override
     protected void onStop() {
         saveTasks(WhoseTurnActivity.this);
+        saveHistory(WhoseTurnActivity.this);
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         saveTasks(WhoseTurnActivity.this);
+        saveHistory(WhoseTurnActivity.this);
         super.onDestroy();
     }
 
@@ -166,6 +172,9 @@ public class WhoseTurnActivity extends AppCompatActivity {
 
                     taskHistoryManager.addTaskHistory(new TaskHistory(CurrTask.getIndex(),
                             CurrTask.getTaskDesc(), formatedDate));
+
+                    saveHistory(WhoseTurnActivity.this);
+
                     CurrTask.taskDone();
                     txt.setText(CurrTask.toString());
                     Child newKid = CurrTask.currChild();

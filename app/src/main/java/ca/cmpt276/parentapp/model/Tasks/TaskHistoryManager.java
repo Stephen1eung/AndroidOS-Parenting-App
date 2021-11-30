@@ -1,9 +1,13 @@
 package ca.cmpt276.parentapp.model.Tasks;
 
+import static ca.cmpt276.parentapp.UI.WhoseTurn.TaskHistoryActivity.saveHistory;
+
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import ca.cmpt276.parentapp.UI.WhoseTurn.WhoseTurnActivity;
 
 public class TaskHistoryManager implements Iterable<TaskHistory> {
     private static final TaskHistoryManager instance = new TaskHistoryManager();

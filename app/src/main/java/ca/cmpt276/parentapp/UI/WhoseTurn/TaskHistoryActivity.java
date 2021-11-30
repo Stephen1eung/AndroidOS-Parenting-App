@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,9 +19,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
@@ -39,6 +46,7 @@ public class TaskHistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_history);
+        setTitle("Task History");
 
         listAllTasks();
     }
@@ -50,6 +58,37 @@ public class TaskHistoryActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+
+    @Override
+    protected void onStart() {
+        taskHistoryManager.setTaskHistoryArrayList(loadSavedTaskHistory(TaskHistoryActivity.this));
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        saveHistory(TaskHistoryActivity.this);
+        super.onDestroy();
+    }
+
+    public static ArrayList<TaskHistory> loadSavedTaskHistory(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("SaveTaskHistory", "");
+        Type type = new TypeToken<ArrayList<TaskHistory>>() {
+
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public static void saveHistory(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(TaskHistoryManager.getInstance().getTaskHistoryArrayList());
+        editor.putString("SaveTaskHistory", json);
+        editor.apply();
+    }
 
     public class adapter extends ArrayAdapter<TaskHistory> {
         public adapter() {
