@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import ca.cmpt276.parentapp.R;
@@ -160,7 +161,11 @@ public class WhoseTurnActivity extends AppCompatActivity {
             } else {
                 Button button = itemView.findViewById(R.id.DoneBtn);
                 button.setOnClickListener(view -> {
-                    taskHistoryManager.addTaskHistory(new TaskHistory(CurrTask.getIndex(), CurrTask.getTaskDesc(), LocalDateTime.now()));
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+                    String formatedDate = LocalDateTime.now().format(formatter);
+
+                    taskHistoryManager.addTaskHistory(new TaskHistory(CurrTask.getIndex(),
+                            CurrTask.getTaskDesc(), formatedDate));
                     CurrTask.taskDone();
                     txt.setText(CurrTask.toString());
                     Child newKid = CurrTask.currChild();
