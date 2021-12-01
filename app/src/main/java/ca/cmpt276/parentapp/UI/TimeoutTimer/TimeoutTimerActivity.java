@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -60,8 +59,8 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeout_timer);
         setTitle("Timeout Timer");
         // code from https://abhiandroid.com/ui/progressbar
-        simpleProgressBar=(ProgressBar) findViewById(R.id.simpleProgressBar); // initiate the progress bar
-        visibleProgressBar=(ProgressBar) findViewById(R.id.visibleProgressBar);
+        simpleProgressBar = (ProgressBar) findViewById(R.id.simpleProgressBar); // initiate the progress bar
+        visibleProgressBar = (ProgressBar) findViewById(R.id.visibleProgressBar);
         visibleProgressBar.setMax(100);
         visibleProgressBar.setVisibility(View.INVISIBLE);
         progress = 0;
@@ -176,7 +175,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
                 TIME_LEFT = millisUntilFinished;
                 Log.d("Time Left", String.valueOf(TIME_LEFT));
                 updateCounter();
-                double math = ((((double)START_TIME - TIME_LEFT)/START_TIME)*100);
+                double math = ((((double) START_TIME - TIME_LEFT) / START_TIME) * 100);
                 Log.d("math", String.valueOf(math));
                 progress = (int) Math.round(math);
                 Log.d("Progress", String.valueOf(progress));
