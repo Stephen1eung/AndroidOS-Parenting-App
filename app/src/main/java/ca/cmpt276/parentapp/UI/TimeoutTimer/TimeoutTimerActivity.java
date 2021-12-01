@@ -236,6 +236,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         editor.putLong("START_TIME", START_TIME);
         editor.putLong("TIME_LEFT", TIME_LEFT);
         editor.putBoolean("timerRunning", timerRunning);
+        editor.putLong("TIMER_SPEED", TIMER_SPEED);
         editor.putLong("END_TIME", END_TIME);
         editor.apply();
 
@@ -248,6 +249,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("timerOutPref", MODE_PRIVATE);
         START_TIME = prefs.getLong("START_TIME", 60000);
         TIME_LEFT = prefs.getLong("TIME_LEFT", START_TIME);
+        TIMER_SPEED = prefs.getLong("TIMER_SPEED", TIMER_SPEED);
         timerRunning = prefs.getBoolean("timerRunning", false);
 
         updateCounter();
