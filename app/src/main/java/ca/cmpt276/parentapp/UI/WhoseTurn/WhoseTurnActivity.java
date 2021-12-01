@@ -120,6 +120,8 @@ public class WhoseTurnActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void listAllTasks() {
         ArrayAdapter<Task> adapter = new adapter();
         ListView list = findViewById(R.id.TaskListView);
