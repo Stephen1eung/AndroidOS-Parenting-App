@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +33,11 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     private EditText userInput;
     private boolean timerRunning;
     private long TIME_LEFT, END_TIME;
+    private int progress;
     private CountDownTimer countDownTimer;
     private Button startAndPauseBtn, resetBtn, setBtn;
     private NotificationManagerCompat notificationManager;
+    private ProgressBar simpleProgressBar, visibleProgressBar;
 
 
     public static Intent makeIntent(Context context) {
@@ -52,6 +55,12 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeout_timer);
         setTitle("Timeout Timer");
+        // code from https://abhiandroid.com/ui/progressbar
+        simpleProgressBar=(ProgressBar) findViewById(R.id.simpleProgressBar); // initiate the progress bar
+        visibleProgressBar=(ProgressBar) findViewById(R.id.visibleProgressBar);
+        visibleProgressBar.setMax(100);
+        visibleProgressBar.setVisibility(View.INVISIBLE);
+        progress = 0;
 
         initAllItems();
         setupTimer();
@@ -109,12 +118,19 @@ public class TimeoutTimerActivity extends AppCompatActivity {
 
     private void startTimer() {
         END_TIME = System.currentTimeMillis() + TIME_LEFT;
+        simpleProgressBar.setVisibility(View.INVISIBLE);
+        visibleProgressBar.setVisibility(View.VISIBLE);
         countDownTimer = new CountDownTimer(TIME_LEFT, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 TIME_LEFT = millisUntilFinished;
                 Log.d("Time Left", String.valueOf(TIME_LEFT));
                 updateCounter();
+                double math = ((((double)START_TIME - TIME_LEFT)/START_TIME)*100);
+                Log.d("math", String.valueOf(math));
+                progress = (int) Math.round(math);
+                Log.d("Progress", String.valueOf(progress));
+                visibleProgressBar.setProgress(progress);
             }
 
             @Override
@@ -123,6 +139,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
                 Log.d("Alarm", "Set");
                 setupAlarm(getApplicationContext());
                 updateBtnStates();
+                simpleProgressBar.setProgress(100);
             }
         }.start();
         timerRunning = true;
@@ -220,6 +237,5 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         AlarmManager.AlarmClockInfo alarmManager = new AlarmManager.AlarmClockInfo(END_TIME, getStartPendingIntent(context));
         am.setAlarmClock(alarmManager, getStartPendingIntent(context));
     }
-
 
 }
