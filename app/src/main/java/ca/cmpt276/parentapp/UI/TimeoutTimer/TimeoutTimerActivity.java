@@ -8,12 +8,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -27,7 +31,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     public static final String CHANNEL = "Timer";
     private static final String ACTION_START_NOTIFICATION_SERVICE = "ACTION_START_NOTIFICATION_SERVICE";
     private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
-    private long START_TIME = 60000;
+    private long START_TIME = 60000, TIMER_SPEED = 1000;
     private TextView countDown;
     private EditText userInput;
     private boolean timerRunning;
@@ -57,6 +61,52 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         setupTimer();
         setTimerBtn();
         startService(new Intent(this, NotificationIntentService.class));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.timeout_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.twenty:
+                TIMER_SPEED = 1750;
+                Toast.makeText(TimeoutTimerActivity.this, "20% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.fifty:
+                TIMER_SPEED = 1500;
+                Toast.makeText(TimeoutTimerActivity.this, "50% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.seventyFive:
+                TIMER_SPEED = 1250;
+                Toast.makeText(TimeoutTimerActivity.this, "75% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.Hondos:
+                TIMER_SPEED = 1000;
+                Toast.makeText(TimeoutTimerActivity.this, "100% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.doubleSpeed:
+                Toast.makeText(TimeoutTimerActivity.this, "200% speed", Toast.LENGTH_SHORT).show();
+                TIMER_SPEED = 500;
+                return true;
+            case R.id.tripleDaSpeed:
+                TIMER_SPEED = 333;
+                Toast.makeText(TimeoutTimerActivity.this, "300% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.quadroSpeed:
+                TIMER_SPEED = 100;
+                Toast.makeText(TimeoutTimerActivity.this, "400% speed", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setTimerBtn() {
@@ -109,7 +159,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
 
     private void startTimer() {
         END_TIME = System.currentTimeMillis() + TIME_LEFT;
-        countDownTimer = new CountDownTimer(TIME_LEFT, 1000) {
+        countDownTimer = new CountDownTimer(TIME_LEFT, TIMER_SPEED) {
             @Override
             public void onTick(long millisUntilFinished) {
                 TIME_LEFT = millisUntilFinished;
