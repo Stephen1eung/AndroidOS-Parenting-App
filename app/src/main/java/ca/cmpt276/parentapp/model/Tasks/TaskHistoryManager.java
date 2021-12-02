@@ -5,6 +5,7 @@ import static ca.cmpt276.parentapp.UI.WhoseTurn.TaskHistoryActivity.saveHistory;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import ca.cmpt276.parentapp.UI.WhoseTurn.WhoseTurnActivity;
@@ -33,7 +34,7 @@ public class TaskHistoryManager implements Iterable<TaskHistory> {
     }
 
     public void addTaskHistory(TaskHistory newTask) {
-        TaskHistoryArrayList.add(newTask);
+        TaskHistoryArrayList.add(0,newTask);
     }
 
     public void removeTaskHistory(int index) {

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -164,7 +165,8 @@ public class WhoseTurnActivity extends AppCompatActivity {
             TextView txt = itemView.findViewById(R.id.TaskDes);
             txt.setText(CurrTask.toString());
 
-            if (currKid == null) {
+            if(currKid == null) {
+                Toast.makeText(WhoseTurnActivity.this, "No Children",Toast.LENGTH_SHORT).show();
                 return itemView;
             } else {
                 Button button = itemView.findViewById(R.id.DoneBtn);
