@@ -56,6 +56,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeout_timer);
         setTitle("Timeout Timer");
         // code from https://abhiandroid.com/ui/progressbar
+        // circular progress bar code from https://stackoverflow.com/questions/21333866/how-to-create-a-circular-progressbar-in-android-which-rotates-on-it
         simpleProgressBar=(ProgressBar) findViewById(R.id.simpleProgressBar); // initiate the progress bar
         indeterminateProgressBar=(ProgressBar) findViewById(R.id.indeterminateProgressBar);
         simpleProgressBar.setVisibility(View.INVISIBLE);
