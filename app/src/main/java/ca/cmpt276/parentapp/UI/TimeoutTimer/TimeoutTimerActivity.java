@@ -37,7 +37,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private Button startAndPauseBtn, resetBtn, setBtn;
     private NotificationManagerCompat notificationManager;
-    private ProgressBar simpleProgressBar;
+    private ProgressBar simpleProgressBar, indeterminateProgressBar;
 
 
     public static Intent makeIntent(Context context) {
@@ -57,6 +57,8 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         setTitle("Timeout Timer");
         // code from https://abhiandroid.com/ui/progressbar
         simpleProgressBar=(ProgressBar) findViewById(R.id.simpleProgressBar); // initiate the progress bar
+        indeterminateProgressBar=(ProgressBar) findViewById(R.id.indeterminateProgressBar);
+        simpleProgressBar.setVisibility(View.INVISIBLE);
         simpleProgressBar.setMax(100);
         progress = 0;
 
@@ -116,6 +118,8 @@ public class TimeoutTimerActivity extends AppCompatActivity {
 
     private void startTimer() {
         END_TIME = System.currentTimeMillis() + TIME_LEFT;
+        indeterminateProgressBar.setVisibility(View.INVISIBLE);
+        simpleProgressBar.setVisibility(View.VISIBLE);
         countDownTimer = new CountDownTimer(TIME_LEFT, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
