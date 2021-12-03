@@ -2,6 +2,7 @@ package ca.cmpt276.parentapp.UI.ConfigChild;
 
 import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveKids;
 import static ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity.saveQueue;
+import static ca.cmpt276.parentapp.UI.WhoseTurn.TaskHistoryActivity.saveHistory;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -33,11 +34,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import ca.cmpt276.parentapp.R;
+import ca.cmpt276.parentapp.UI.WhoseTurn.TaskHistoryActivity;
 import ca.cmpt276.parentapp.model.Child.Child;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
+import ca.cmpt276.parentapp.model.Tasks.TaskHistory;
+import ca.cmpt276.parentapp.model.Tasks.TaskHistoryManager;
 
 public class EditChildActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -251,6 +256,11 @@ public class EditChildActivity extends AppCompatActivity {
                     .setMessage("Are you sure you want to DELETE this kid?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         int targetChild = childManager.findTargetChild(childManager.getChildArrayList().get(kidIndex).getName());
+
+                        TaskHistoryManager.getInstance().getTaskHistoryArrayList()
+                                .removeIf(i -> i.currChild() == childManager.getChildArrayList().get(kidIndex));
+                        saveHistory(EditChildActivity.this);
+
                         childManager.getQueue().remove(targetChild);
                         childManager.removeChild(kidIndex);
                         saveQueue(EditChildActivity.this);

@@ -44,4 +44,17 @@
         app:layout_constraintTop_toBottomOf="@+id/TaskDes"
         app:layout_constraintVertical_bias="1.0" />
 
+    <Button
+        android:id="@+id/TaskHistoryBtn"
+        android:layout_width="74dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="76dp"
+        android:background="@drawable/round_button"
+        android:text="History"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TaskDes"
+        app:layout_constraintVertical_bias="1.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

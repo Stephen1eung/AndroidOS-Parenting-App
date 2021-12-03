@@ -19,8 +19,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,10 +39,15 @@ import ca.cmpt276.parentapp.model.Tasks.TaskHistory;
 import ca.cmpt276.parentapp.model.Tasks.TaskHistoryManager;
 
 public class TaskHistoryActivity extends AppCompatActivity {
+    private ArrayList<TaskHistory> taskHistories = new ArrayList<>();
+    private static final String TASK_NAME = "ca.cmpt276.project.UI.TaskHistory - name";
+    private String TaskName;
     private final TaskHistoryManager taskHistoryManager = TaskHistoryManager.getInstance();
 
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, TaskHistoryActivity.class);
+    public static Intent makeIntent(Context context, String taskName) {
+        Intent intent = new Intent(context, TaskHistoryActivity.class);
+        intent.putExtra(TASK_NAME, taskName);
+        return intent;
     }
 
     @Override
@@ -47,6 +55,19 @@ public class TaskHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_history);
         setTitle("Task History");
+
+        initItems();
+    }
+
+    private void initItems() {
+        Intent intent = getIntent();
+        TaskName = intent.getStringExtra(TASK_NAME);
+
+        for (TaskHistory i : taskHistoryManager.getTaskHistoryArrayList()) {
+            if (i.getTaskDesc().equals(TaskName)) {
+                taskHistories.add(i);
+            }
+        }
 
         listAllTasks();
     }
@@ -62,6 +83,13 @@ public class TaskHistoryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         taskHistoryManager.setTaskHistoryArrayList(loadSavedTaskHistory(TaskHistoryActivity.this));
+        initItems();
+        TextView noHistoryTextView = findViewById(R.id.noHistoryTextView);
+        if (taskHistories.isEmpty()) {
+            noHistoryTextView.setVisibility(View.VISIBLE);
+        } else {
+            noHistoryTextView.setVisibility(View.INVISIBLE);
+        }
         super.onStart();
     }
 
@@ -92,7 +120,7 @@ public class TaskHistoryActivity extends AppCompatActivity {
 
     public class adapter extends ArrayAdapter<TaskHistory> {
         public adapter() {
-                super(TaskHistoryActivity.this, R.layout.task_history_list_view, taskHistoryManager.getTaskHistoryArrayList());
+            super(TaskHistoryActivity.this, R.layout.task_history_list_view, taskHistories);
         }
 
         @NonNull
@@ -103,7 +131,7 @@ public class TaskHistoryActivity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.task_history_list_view, parent, false);
 
             ImageView childImage = itemView.findViewById(R.id.TaskHistoryImageView);
-            TaskHistory CurrTask = taskHistoryManager.getTaskHistoryArrayList().get(position);
+            TaskHistory CurrTask = taskHistories.get(position);
             Child currKid = CurrTask.currChild();
 
             TextView txt = itemView.findViewById(R.id.ChildNameTaskHistory);

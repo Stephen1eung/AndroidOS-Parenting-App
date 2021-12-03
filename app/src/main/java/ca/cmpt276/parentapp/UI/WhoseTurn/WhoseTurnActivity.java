@@ -36,6 +36,7 @@ import java.util.ArrayList;
 
 import ca.cmpt276.parentapp.R;
 import ca.cmpt276.parentapp.model.Child.Child;
+import ca.cmpt276.parentapp.model.Child.ChildManager;
 import ca.cmpt276.parentapp.model.Tasks.Task;
 import ca.cmpt276.parentapp.model.Tasks.TaskHistory;
 import ca.cmpt276.parentapp.model.Tasks.TaskHistoryManager;
@@ -110,18 +111,7 @@ public class WhoseTurnActivity extends AppCompatActivity {
         listAllTasks();
         itemClick();
         addTaskBtn();
-        taskHistoryBtn();
     }
-
-    private void taskHistoryBtn() {
-        Button button = findViewById(R.id.TaskHistory);
-        button.setOnClickListener(view -> {
-            Intent intent = TaskHistoryActivity.makeIntent(WhoseTurnActivity.this);
-            startActivity(intent);
-        });
-    }
-
-
 
     private void listAllTasks() {
         ArrayAdapter<Task> adapter = new adapter();
@@ -141,8 +131,12 @@ public class WhoseTurnActivity extends AppCompatActivity {
     private void addTaskBtn() {
         Button button = findViewById(R.id.AddTaskBtn);
         button.setOnClickListener(view -> {
-            Intent intent = AddTask.makeIntent(WhoseTurnActivity.this);
-            startActivity(intent);
+            if (ChildManager.getInstance().getChildArrayList().isEmpty()) {
+                Toast.makeText(WhoseTurnActivity.this, "Please add a Child", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = AddTask.makeIntent(WhoseTurnActivity.this);
+                startActivity(intent);
+            }
         });
     }
 
@@ -166,19 +160,15 @@ public class WhoseTurnActivity extends AppCompatActivity {
             txt.setText(CurrTask.toString());
 
             if(currKid == null) {
-                Toast.makeText(WhoseTurnActivity.this, "No Children",Toast.LENGTH_SHORT).show();
                 return itemView;
             } else {
                 Button button = itemView.findViewById(R.id.DoneBtn);
                 button.setOnClickListener(view -> {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
                     String formatedDate = LocalDateTime.now().format(formatter);
-
                     taskHistoryManager.addTaskHistory(new TaskHistory(CurrTask.getIndex(),
                             CurrTask.getTaskDesc(), formatedDate));
-
                     saveHistory(WhoseTurnActivity.this);
-
                     CurrTask.taskDone();
                     txt.setText(CurrTask.toString());
                     Child newKid = CurrTask.currChild();
@@ -192,6 +182,16 @@ public class WhoseTurnActivity extends AppCompatActivity {
                         }
                     } else {
                         childImage.setImageResource(R.drawable.childimg);
+                    }
+                });
+
+                Button currHistoryBtn = itemView.findViewById(R.id.TaskHistoryBtn);
+                currHistoryBtn.setOnClickListener(view -> {
+                    if (ChildManager.getInstance().getChildArrayList().isEmpty()) {
+                        Toast.makeText(WhoseTurnActivity.this, "Please add a Child", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = TaskHistoryActivity.makeIntent(WhoseTurnActivity.this, CurrTask.getTaskDesc());
+                        startActivity(intent);
                     }
                 });
 

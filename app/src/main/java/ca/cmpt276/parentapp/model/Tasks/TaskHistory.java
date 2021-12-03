@@ -27,7 +27,7 @@ public class TaskHistory {
 
     public Child currChild() {
         ChildManager childManager = ChildManager.getInstance();
-        if (childManager.getChildArrayList().size() > 0) {
+        if (childManager.getChildArrayList().size() > 0 && childIndex < childManager.getChildArrayList().size()) {
             return childManager.getChildArrayList().get(childIndex);
         }
         return null;
