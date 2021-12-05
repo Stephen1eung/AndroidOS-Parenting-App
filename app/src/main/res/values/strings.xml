@@ -24,5 +24,6 @@
     <string name="helpBtn">helpBtn</string>
     <string name="no_history">No History</string>
     <string name="task_history">Task History</string>
+    <string name="speedTitle">speed</string>
 
 </resources>

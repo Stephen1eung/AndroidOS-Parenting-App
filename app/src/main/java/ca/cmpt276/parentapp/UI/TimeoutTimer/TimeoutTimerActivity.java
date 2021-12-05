@@ -8,12 +8,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -28,13 +32,16 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     private static final String ACTION_START_NOTIFICATION_SERVICE = "ACTION_START_NOTIFICATION_SERVICE";
     private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
     private long START_TIME = 60000;
+    private float TIMER_SPEED = 1;
     private TextView countDown;
     private EditText userInput;
     private boolean timerRunning;
     private long TIME_LEFT, END_TIME;
+    private int progress;
     private CountDownTimer countDownTimer;
     private Button startAndPauseBtn, resetBtn, setBtn;
     private NotificationManagerCompat notificationManager;
+    private ProgressBar simpleProgressBar, indeterminateProgressBar;
 
 
     public static Intent makeIntent(Context context) {
@@ -52,11 +59,68 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeout_timer);
         setTitle("Timeout Timer");
+        // code from https://abhiandroid.com/ui/progressbar
+        // circular progress bar code from https://stackoverflow.com/questions/21333866/how-to-create-a-circular-progressbar-in-android-which-rotates-on-it
+        simpleProgressBar=(ProgressBar) findViewById(R.id.simpleProgressBar); // initiate the progress bar
+        indeterminateProgressBar=(ProgressBar) findViewById(R.id.indeterminateProgressBar);
+        simpleProgressBar.setVisibility(View.INVISIBLE);
+        simpleProgressBar.setMax(100);
+        progress = 0;
 
         initAllItems();
         setupTimer();
         setTimerBtn();
         startService(new Intent(this, NotificationIntentService.class));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.timeout_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (timerRunning) {
+            Toast.makeText(TimeoutTimerActivity.this, "Timer is already running", Toast.LENGTH_SHORT).show();
+            return super.onOptionsItemSelected(item);
+        }
+        switch (item.getItemId()) {
+            case R.id.twenty:
+                TIMER_SPEED = 0.25f;
+                Toast.makeText(TimeoutTimerActivity.this, "20% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.fifty:
+                TIMER_SPEED = 0.5f;
+                Toast.makeText(TimeoutTimerActivity.this, "50% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.seventyFive:
+                TIMER_SPEED = 0.75f;
+                Toast.makeText(TimeoutTimerActivity.this, "75% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.Hondos:
+                TIMER_SPEED = 1;
+                Toast.makeText(TimeoutTimerActivity.this, "100% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.doubleSpeed:
+                Toast.makeText(TimeoutTimerActivity.this, "200% speed", Toast.LENGTH_SHORT).show();
+                TIMER_SPEED = 2f;
+                return true;
+            case R.id.tripleDaSpeed:
+                TIMER_SPEED = 3f;
+                Toast.makeText(TimeoutTimerActivity.this, "300% speed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.quadroSpeed:
+                TIMER_SPEED = 4f;
+                Toast.makeText(TimeoutTimerActivity.this, "400% speed", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setTimerBtn() {
@@ -109,12 +173,19 @@ public class TimeoutTimerActivity extends AppCompatActivity {
 
     private void startTimer() {
         END_TIME = System.currentTimeMillis() + TIME_LEFT;
-        countDownTimer = new CountDownTimer(TIME_LEFT, 1000) {
+        indeterminateProgressBar.setVisibility(View.INVISIBLE);
+        simpleProgressBar.setVisibility(View.VISIBLE);
+        countDownTimer = new CountDownTimer(TIME_LEFT, (long) (1000 / TIMER_SPEED)) {
             @Override
             public void onTick(long millisUntilFinished) {
-                TIME_LEFT = millisUntilFinished;
+                TIME_LEFT -= 1000;
                 Log.d("Time Left", String.valueOf(TIME_LEFT));
                 updateCounter();
+                double math = ((((double) START_TIME - TIME_LEFT) / START_TIME) * 100);
+                Log.d("math", String.valueOf(math));
+                progress = (int) Math.round(math);
+                Log.d("Progress", String.valueOf(progress));
+                simpleProgressBar.setProgress(progress);
             }
 
             @Override
@@ -123,6 +194,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
                 Log.d("Alarm", "Set");
                 setupAlarm(getApplicationContext());
                 updateBtnStates();
+                simpleProgressBar.setProgress(100);
             }
         }.start();
         timerRunning = true;
@@ -186,6 +258,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         editor.putLong("START_TIME", START_TIME);
         editor.putLong("TIME_LEFT", TIME_LEFT);
         editor.putBoolean("timerRunning", timerRunning);
+        editor.putFloat("TIMER_SPEED", TIMER_SPEED);
         editor.putLong("END_TIME", END_TIME);
         editor.apply();
 
@@ -198,6 +271,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("timerOutPref", MODE_PRIVATE);
         START_TIME = prefs.getLong("START_TIME", 60000);
         TIME_LEFT = prefs.getLong("TIME_LEFT", START_TIME);
+        TIMER_SPEED = prefs.getFloat("TIMER_SPEED", 1f);
         timerRunning = prefs.getBoolean("timerRunning", false);
 
         updateCounter();
@@ -220,6 +294,5 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         AlarmManager.AlarmClockInfo alarmManager = new AlarmManager.AlarmClockInfo(END_TIME, getStartPendingIntent(context));
         am.setAlarmClock(alarmManager, getStartPendingIntent(context));
     }
-
 
 }
