@@ -41,7 +41,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private Button startAndPauseBtn, resetBtn, setBtn;
     private NotificationManagerCompat notificationManager;
-    private ProgressBar simpleProgressBar, visibleProgressBar;
+    private ProgressBar simpleProgressBar, indeterminateProgressBar;
 
 
     public static Intent makeIntent(Context context) {
@@ -60,10 +60,11 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeout_timer);
         setTitle("Timeout Timer");
         // code from https://abhiandroid.com/ui/progressbar
-        simpleProgressBar = (ProgressBar) findViewById(R.id.simpleProgressBar); // initiate the progress bar
-        visibleProgressBar = (ProgressBar) findViewById(R.id.visibleProgressBar);
-        visibleProgressBar.setMax(100);
-        visibleProgressBar.setVisibility(View.INVISIBLE);
+        // circular progress bar code from https://stackoverflow.com/questions/21333866/how-to-create-a-circular-progressbar-in-android-which-rotates-on-it
+        simpleProgressBar=(ProgressBar) findViewById(R.id.simpleProgressBar); // initiate the progress bar
+        indeterminateProgressBar=(ProgressBar) findViewById(R.id.indeterminateProgressBar);
+        simpleProgressBar.setVisibility(View.INVISIBLE);
+        simpleProgressBar.setMax(100);
         progress = 0;
 
         initAllItems();
@@ -172,9 +173,9 @@ public class TimeoutTimerActivity extends AppCompatActivity {
 
     private void startTimer() {
         END_TIME = System.currentTimeMillis() + TIME_LEFT;
-        simpleProgressBar.setVisibility(View.INVISIBLE);
-        visibleProgressBar.setVisibility(View.VISIBLE);
-        countDownTimer = new CountDownTimer(TIME_LEFT, (long) (1000 / TIMER_SPEED)) {
+        indeterminateProgressBar.setVisibility(View.INVISIBLE);
+        simpleProgressBar.setVisibility(View.VISIBLE);
+        countDownTimer = new CountDownTimer(TIME_LEFT, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 TIME_LEFT -= 1000;
@@ -184,7 +185,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
                 Log.d("math", String.valueOf(math));
                 progress = (int) Math.round(math);
                 Log.d("Progress", String.valueOf(progress));
-                visibleProgressBar.setProgress(progress);
+                simpleProgressBar.setProgress(progress);
             }
 
             @Override
