@@ -80,6 +80,10 @@ public class TimeoutTimerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (timerRunning) {
+            Toast.makeText(TimeoutTimerActivity.this, "Timer is already running", Toast.LENGTH_SHORT).show();
+            return super.onOptionsItemSelected(item);
+        }
         switch (item.getItemId()) {
             case R.id.twenty:
                 TIMER_SPEED = 0.25f;
