@@ -31,7 +31,8 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     public static final String CHANNEL = "Timer";
     private static final String ACTION_START_NOTIFICATION_SERVICE = "ACTION_START_NOTIFICATION_SERVICE";
     private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
-    private long START_TIME = 60000, TIMER_SPEED = 1000;
+    private long START_TIME = 60000;
+    private float TIMER_SPEED = 1;
     private TextView countDown;
     private EditText userInput;
     private boolean timerRunning;
@@ -81,31 +82,31 @@ public class TimeoutTimerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.twenty:
-                TIMER_SPEED = 1750;
+                TIMER_SPEED = 0.25f;
                 Toast.makeText(TimeoutTimerActivity.this, "20% speed", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.fifty:
-                TIMER_SPEED = 1500;
+                TIMER_SPEED = 0.5f;
                 Toast.makeText(TimeoutTimerActivity.this, "50% speed", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.seventyFive:
-                TIMER_SPEED = 1250;
+                TIMER_SPEED = 0.75f;
                 Toast.makeText(TimeoutTimerActivity.this, "75% speed", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.Hondos:
-                TIMER_SPEED = 1000;
+                TIMER_SPEED = 1;
                 Toast.makeText(TimeoutTimerActivity.this, "100% speed", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.doubleSpeed:
                 Toast.makeText(TimeoutTimerActivity.this, "200% speed", Toast.LENGTH_SHORT).show();
-                TIMER_SPEED = 500;
+                TIMER_SPEED = 2f;
                 return true;
             case R.id.tripleDaSpeed:
-                TIMER_SPEED = 333;
+                TIMER_SPEED = 3f;
                 Toast.makeText(TimeoutTimerActivity.this, "300% speed", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.quadroSpeed:
-                TIMER_SPEED = 100;
+                TIMER_SPEED = 4f;
                 Toast.makeText(TimeoutTimerActivity.this, "400% speed", Toast.LENGTH_SHORT).show();
                 return true;
 
@@ -169,10 +170,10 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         END_TIME = System.currentTimeMillis() + TIME_LEFT;
         simpleProgressBar.setVisibility(View.INVISIBLE);
         visibleProgressBar.setVisibility(View.VISIBLE);
-        countDownTimer = new CountDownTimer(TIME_LEFT, TIMER_SPEED) {
+        countDownTimer = new CountDownTimer(TIME_LEFT, (long) (1000 / TIMER_SPEED)) {
             @Override
             public void onTick(long millisUntilFinished) {
-                TIME_LEFT = millisUntilFinished;
+                TIME_LEFT -= 1000;
                 Log.d("Time Left", String.valueOf(TIME_LEFT));
                 updateCounter();
                 double math = ((((double) START_TIME - TIME_LEFT) / START_TIME) * 100);
@@ -252,7 +253,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         editor.putLong("START_TIME", START_TIME);
         editor.putLong("TIME_LEFT", TIME_LEFT);
         editor.putBoolean("timerRunning", timerRunning);
-        editor.putLong("TIMER_SPEED", TIMER_SPEED);
+        editor.putFloat("TIMER_SPEED", TIMER_SPEED);
         editor.putLong("END_TIME", END_TIME);
         editor.apply();
 
@@ -265,7 +266,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("timerOutPref", MODE_PRIVATE);
         START_TIME = prefs.getLong("START_TIME", 60000);
         TIME_LEFT = prefs.getLong("TIME_LEFT", START_TIME);
-        TIMER_SPEED = prefs.getLong("TIMER_SPEED", TIMER_SPEED);
+        TIMER_SPEED = prefs.getFloat("TIMER_SPEED", 1f);
         timerRunning = prefs.getBoolean("timerRunning", false);
 
         updateCounter();
