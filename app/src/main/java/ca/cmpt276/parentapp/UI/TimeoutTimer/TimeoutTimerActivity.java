@@ -175,7 +175,7 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         END_TIME = System.currentTimeMillis() + TIME_LEFT;
         indeterminateProgressBar.setVisibility(View.INVISIBLE);
         simpleProgressBar.setVisibility(View.VISIBLE);
-        countDownTimer = new CountDownTimer(TIME_LEFT, 1000) {
+        countDownTimer = new CountDownTimer(TIME_LEFT, (long) (1000 / TIMER_SPEED)) {
             @Override
             public void onTick(long millisUntilFinished) {
                 TIME_LEFT -= 1000;
