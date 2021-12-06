@@ -15,6 +15,7 @@ import android.widget.Button;
 import ca.cmpt276.parentapp.UI.Help.HelpActivity;
 import ca.cmpt276.parentapp.UI.ConfigChild.ConfigureChildActivity;
 import ca.cmpt276.parentapp.UI.FlipCoin.FlipCoinActivity;
+import ca.cmpt276.parentapp.UI.TakeBreath.TakeBreathActivity;
 import ca.cmpt276.parentapp.UI.TimeoutTimer.TimeoutTimerActivity;
 import ca.cmpt276.parentapp.UI.WhoseTurn.WhoseTurnActivity;
 import ca.cmpt276.parentapp.model.Child.ChildManager;
@@ -37,12 +38,21 @@ public class MainActivity extends AppCompatActivity {
         TimeoutTimerBtn();
         ConfigChildBtn();
         WhoseTurnBtn();
+        TakeBreathBtn();
     }
 
     private void initChildList() {
         ChildManager childManager = ChildManager.getInstance();
         childManager.setChild(loadSavedKids(MainActivity.this));
         childManager.setQueue(loadSavedQueue(MainActivity.this));
+    }
+
+    private void TakeBreathBtn() {
+        Button button = findViewById(R.id.BreathBtnMainMenu);
+        button.setOnClickListener(view -> {
+            Intent intent = TakeBreathActivity.makeIntent(MainActivity.this);
+            startActivity(intent);
+        });
     }
 
     private void FlipCoinBtn() {

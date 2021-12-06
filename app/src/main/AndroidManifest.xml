@@ -23,10 +23,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
+            android:name=".UI.TakeBreath.TakeBreathActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.WhoseTurn.TaskHistoryActivity"
             android:exported="false"
-            android:parentActivityName=".UI.WhoseTurn.TaskHistoryActivity"
-            />
+            android:parentActivityName=".UI.WhoseTurn.TaskHistoryActivity" />
         <activity
             android:name=".UI.FlipCoin.FlipHistory"
             android:exported="false"
