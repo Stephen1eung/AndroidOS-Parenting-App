@@ -1,11 +1,13 @@
 package ca.cmpt276.parentapp.UI.TakeBreath;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,16 +17,47 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import androidx.appcompat.app.AppCompatActivity;
 
 import ca.cmpt276.parentapp.R;
-import ca.cmpt276.parentapp.UI.TimeoutTimer.TimeoutTimerActivity;
 
 public class TakeBreathActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private final State BreathInState = In();
+    private final State BreathOutState = Out();
+    private final State startState = new StartState();
+    private final State finishState = new FinishState();
+    TextView HelpText = findViewById(R.id.HelpText);
+    Button breathBtn = findViewById(R.id.BreathBtn);
+    TextView numOfBreath = findViewById(R.id.NumOfBreathes);
+    private State CurrState = startState;
     private int NumOfBreaths = 3, HoldState = 0;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, TakeBreathActivity.class);
+    }
+
+    @Override
+    protected void onStart() {
+        loadBreaths();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        saveBreaths(NumOfBreaths);
+        super.onStop();
+    }
+
+    private void loadBreaths() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TakeBreathActivity.this);
+        NumOfBreaths = sp.getInt("SavedBreaths", 3);
+    }
+
+    private void saveBreaths(int NumOfBreaths) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TakeBreathActivity.this);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("SavedBreaths", NumOfBreaths);
+        editor.apply();
     }
 
     @Override
@@ -39,19 +72,23 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
     @SuppressLint("ClickableViewAccessibility")
     private void startBreathBtn() {
-        Button btn = findViewById(R.id.BreathBtn);
-        btn.setOnTouchListener((view, motionEvent) -> {
+        breathBtn.setOnTouchListener((view, motionEvent) -> {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (HoldState == 0) {
                         HoldState = 1;
-                        btn.setText("In");
+                        CurrState.handleClickOnButton();
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if (HoldState == 1) {
                         HoldState = 2;
-
+                        CurrState.handleClickOnButton();
+                    }
+                case MotionEvent.ACTION_UP:
+                    if (HoldState == 1 || HoldState == 2) {
+                        HoldState = 0;
+                        CurrState.handleClickOnButton();
                     }
                     break;
                 default:
@@ -73,7 +110,6 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        TextView numOfBreath = findViewById(R.id.NumOfBreathes);
         String text = adapterView.getItemAtPosition(i).toString();
         NumOfBreaths = Integer.parseInt(text);
         numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), text));
@@ -83,5 +119,100 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    // ***********************************************************
+    // Taken from Dr. Fraser's state problem demo
+    // ***********************************************************
+
+    private void setState(State newState) {
+        CurrState.handleEnter();
+        CurrState.handleExit();
+        CurrState = newState;
+    }
+
+    private abstract class State {
+        void handleEnter() {
+        }
+
+        void handleClickOnButton() {
+        }
+
+        void handleClickOffButton() {
+        }
+
+        void handleExit() {
+        }
+    }
+
+    private class StartState extends State {
+        @Override
+        void handleEnter() {
+            if (NumOfBreaths > 0) {
+                numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), NumOfBreaths));
+            }
+        }
+
+        @Override
+        void handleClickOnButton() {
+            setState(BreathInState);
+            BreathInState.handleClickOnButton();
+        }
+
+        @Override
+        void handleExit() {
+            if (NumOfBreaths > 0) {
+                numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), NumOfBreaths));
+                breathBtn.setText("In");
+                HelpText.setText("Hold Button to breath In");
+            } else {
+                HelpText.setText("Good Job!");
+                numOfBreath.setText("DONE!!!");
+                HelpText.setText("");
+            }
+        }
+    }
+
+    private class FinishState extends State {
+        @Override
+        void handleEnter() {
+            super.handleEnter();
+        }
+
+        @Override
+        void handleClickOnButton() {
+            super.handleClickOnButton();
+            setState(finishState);
+        }
+    }
+
+    private class In extends State {
+        Handler handler = new Handler();
+        Runnable runnable = () -> setState(BreathOutState);
+
+        @Override
+        void handleEnter() {
+            breathBtn.setText("Out");
+            HelpText.setText("Breathe out");
+        }
+
+        @Override
+        void handleClickOnButton() {
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable, 3000);
+            breathBtn.animate().scaleX(2.5f).scaleY(2.5f).setDuration(10000);
+            // for sound new Handler(Looper.getMainLooper()).postDelayed(() -> )
+        }
+
+        @Override
+        void handleClickOffButton() {
+            handler.removeCallbacks(runnable);
+        }
+
+        @Override
+        void handleClickOnButton() {
+            super.handleClickOnButton();
+            setState(finishState);
+        }
     }
 }
