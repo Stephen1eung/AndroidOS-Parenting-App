@@ -24,6 +24,7 @@
         android:theme="@style/Theme.ParentApp">
         <activity
             android:name=".UI.TakeBreath.TakeBreathActivity"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".UI.WhoseTurn.TaskHistoryActivity"
