@@ -64,7 +64,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
     private void loadBreaths() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TakeBreathActivity.this);
-        NumOfBreaths = sp.getInt("SavedBreaths", 3);
+        NumOfBreaths = sp.getInt("SavedBreaths", 3) - 1;
     }
 
     private void saveBreaths(int NumOfBreaths) {
@@ -86,8 +86,17 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     @SuppressLint("ClickableViewAccessibility")
     private void startBreathBtn() {
         breathBtn = findViewById(R.id.BreathBtn);
+        HelpText = findViewById(R.id.HelpText);
         buttonText = breathBtn.getText().toString();
         breathBtn.setOnTouchListener((view, motionEvent) -> {
+            if (NumOfBreaths > 0) {
+                numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), NumOfBreaths));
+            }
+            else{
+                HelpText.setText("Good Job!");
+                numOfBreath.setText("DONE!!!");
+                breathBtn.setText("Good Job");
+            }
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (HoldState == 0) {
@@ -116,11 +125,14 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
                             scaleDown.cancel();
                             sound.stop();
                         }
+
+
                     }
                     break;
                 default:
                     break;
             }
+
             return false;
         });
     }
@@ -159,7 +171,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
         spinner.setAdapter(adapter);
-        spinner.setSelection(NumOfBreaths-1);
+        spinner.setSelection(NumOfBreaths);
         spinner.setOnItemSelectedListener(this);
     }
 
@@ -167,9 +179,13 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         numOfBreath = findViewById(R.id.numOfBreath);
         String text = adapterView.getItemAtPosition(i).toString();
-        NumOfBreaths = adapterView.getSelectedItemPosition();
+        //NumOfBreaths = adapterView.getSelectedItemPosition();
+
+        NumOfBreaths = Integer.parseInt(text);
+
         numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), text));
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -211,6 +227,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
         @Override
         void handleClickOnButton() {
+
             setState(BreathInState);
             BreathInState.handleClickOnButton();
         }
@@ -219,9 +236,11 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         void handleExit() {
             HelpText = findViewById(R.id.HelpText);
             breathBtn = findViewById(R.id.BreathBtn);
+
             if (NumOfBreaths > 0) {
                 numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), NumOfBreaths));
                 breathBtn.setText("In");
+
 
                 HelpText.setText("Hold Button to breath In");
             } else {
@@ -246,6 +265,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     }
 
     private class In extends State {
+
         Handler handler = new Handler();
         Runnable runnable = () -> setState(BreathOutState);
 
@@ -253,11 +273,13 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         void handleEnter() {
             breathBtn.setText("In");
             HelpText.setText("Breathe In");
+
             buttonText = breathBtn.getText().toString();
         }
 
         @Override
         void handleClickOnButton() {
+
             super.handleClickOnButton();
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable, 3000);
@@ -284,6 +306,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
         @Override
         void handleClickOnButton() {
+            NumOfBreaths -=1;
             super.handleClickOnButton();
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable, 3000);
