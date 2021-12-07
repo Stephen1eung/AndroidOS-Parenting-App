@@ -219,6 +219,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
 
     }
+
     private class Out extends State {
         Handler handler = new Handler();
         Runnable runnable = () -> setState(BreathInState);
