@@ -139,6 +139,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     }
 
 
+
     private void animationPlayDown() {
         scaleDownX = ObjectAnimator.ofFloat(breathBtn, "scaleX", 1f).setDuration(1000);
         scaleDownY = ObjectAnimator.ofFloat(breathBtn, "scaleY", 1f).setDuration(1000);
