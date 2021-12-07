@@ -22,13 +22,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import ca.cmpt276.parentapp.R;
 
 public class TakeBreathActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private final State BreathInState = In();
-    private final State BreathOutState = Out();
+    private final State BreathInState = new In();
+    private final State BreathOutState = new Out();
+    TextView HelpText;
+    Button breathBtn;
+    TextView numOfBreath;
     private final State startState = new StartState();
     private final State finishState = new FinishState();
-    TextView HelpText = findViewById(R.id.HelpText);
-    Button breathBtn = findViewById(R.id.BreathBtn);
-    TextView numOfBreath = findViewById(R.id.NumOfBreathes);
     private State CurrState = startState;
     private int NumOfBreaths = 3, HoldState = 0;
 
@@ -72,6 +72,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
     @SuppressLint("ClickableViewAccessibility")
     private void startBreathBtn() {
+        breathBtn = findViewById(R.id.BreathBtn);
         breathBtn.setOnTouchListener((view, motionEvent) -> {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -110,6 +111,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        numOfBreath = findViewById(R.id.numOfBreath);
         String text = adapterView.getItemAtPosition(i).toString();
         NumOfBreaths = Integer.parseInt(text);
         numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), text));
@@ -161,6 +163,8 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
         @Override
         void handleExit() {
+            HelpText = findViewById(R.id.HelpText);
+            breathBtn = findViewById(R.id.BreathBtn);
             if (NumOfBreaths > 0) {
                 numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), NumOfBreaths));
                 breathBtn.setText("In");
@@ -192,16 +196,20 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
         @Override
         void handleEnter() {
-            breathBtn.setText("Out");
-            HelpText.setText("Breathe out");
+            breathBtn.setText("In");
+            HelpText.setText("Breathe In");
         }
 
         @Override
         void handleClickOnButton() {
+            super.handleClickOnButton();
+
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable, 3000);
+            Toast.makeText(TakeBreathActivity.this, "3 seconds have passed, you may release the button ", Toast.LENGTH_SHORT);
             breathBtn.animate().scaleX(2.5f).scaleY(2.5f).setDuration(10000);
             // for sound new Handler(Looper.getMainLooper()).postDelayed(() -> )
+            setState(finishState);
         }
 
         @Override
@@ -209,10 +217,35 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
             handler.removeCallbacks(runnable);
         }
 
+
+    }
+    private class Out extends State {
+        Handler handler = new Handler();
+        Runnable runnable = () -> setState(BreathInState);
+
+        @Override
+        void handleEnter() {
+            breathBtn.setText("Out");
+            HelpText.setText("Breathe Out");
+        }
+
         @Override
         void handleClickOnButton() {
             super.handleClickOnButton();
+
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable, 3000);
+            Toast.makeText(TakeBreathActivity.this, "3 seconds have passed, you may release the button ", Toast.LENGTH_SHORT);
+            breathBtn.animate().scaleX(1f).scaleY(1f).setDuration(10000);
+            // for sound new Handler(Looper.getMainLooper()).postDelayed(() -> )
             setState(finishState);
         }
+
+        @Override
+        void handleClickOffButton() {
+            handler.removeCallbacks(runnable);
+        }
+
+
     }
 }
