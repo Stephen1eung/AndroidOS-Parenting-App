@@ -38,7 +38,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     MediaPlayer sound;
     Spinner spinner;
     private State CurrState = startState;
-    private int NumOfBreaths = 3, HoldState = 0;
+    private int NumOfBreaths, HoldState = 0;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, TakeBreathActivity.class);
@@ -64,7 +64,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
     private void loadBreaths() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TakeBreathActivity.this);
-        NumOfBreaths = sp.getInt("SavedBreaths", 3);
+        NumOfBreaths = sp.getInt("SavedBreaths", 2);
     }
 
     private void saveBreaths(int NumOfBreaths) {
@@ -79,6 +79,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
         setTitle("Take Breath");
+        loadBreaths();
         initDropDown();
         startBreathBtn();
     }
@@ -151,7 +152,6 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     }
 
     private void initDropDown() {
-        loadBreaths();
         spinner = findViewById(R.id.dropDownBreath);
         spinner = findViewById(R.id.dropDownBreath);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(TakeBreathActivity.this, R.array.breathNums,
@@ -159,7 +159,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
         spinner.setAdapter(adapter);
-        spinner.setSelection(NumOfBreaths-1);
+        spinner.setSelection(NumOfBreaths);
         spinner.setOnItemSelectedListener(this);
     }
 
