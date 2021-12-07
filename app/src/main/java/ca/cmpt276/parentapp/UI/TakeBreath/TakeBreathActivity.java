@@ -57,15 +57,21 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        saveBreaths(NumOfBreaths);
+        super.onDestroy();
+    }
+
     private void loadBreaths() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TakeBreathActivity.this);
         NumOfBreaths = sp.getInt("SavedBreaths", 3);
     }
 
-    private void saveBreaths(int NumOfBreaths) {
+    private void saveBreaths(int n) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TakeBreathActivity.this);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("SavedBreaths", NumOfBreaths);
+        editor.putInt("SavedBreaths", n);
         editor.apply();
     }
 
@@ -140,12 +146,14 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     }
 
     private void initDropDown() {
+        loadBreaths();
         Spinner spinner = findViewById(R.id.dropDownBreath);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(TakeBreathActivity.this, R.array.breathNums,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
         spinner.setAdapter(adapter);
+        spinner.setSelection(NumOfBreaths);
         spinner.setOnItemSelectedListener(this);
     }
 
@@ -153,7 +161,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         numOfBreath = findViewById(R.id.numOfBreath);
         String text = adapterView.getItemAtPosition(i).toString();
-        NumOfBreaths = Integer.parseInt(text);
+        NumOfBreaths = adapterView.getSelectedItemPosition();
         numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), text));
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
     }
