@@ -64,7 +64,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
     private void loadBreaths() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TakeBreathActivity.this);
-        NumOfBreaths = sp.getInt("SavedBreaths", 3);
+        NumOfBreaths = sp.getInt("SavedBreaths", 2) ;
     }
 
     private void saveBreaths(int NumOfBreaths) {
@@ -92,8 +92,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         breathBtn.setOnTouchListener((view, motionEvent) -> {
             if (NumOfBreaths > 0) {
                 numOfBreath.setText(String.format("%s %s", getString(R.string.NumOfBreathTextView), NumOfBreaths));
-            }
-            else{
+            } else {
                 HelpText.setText("Good Job!");
                 numOfBreath.setText("DONE!!!");
                 breathBtn.setText("Good Job");
@@ -114,6 +113,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
                     if (HoldState == 1) {
                         HoldState = 2;
                         CurrState.handleClickOnButton();
+                        sound.stop();
                     }
                 case MotionEvent.ACTION_UP:
                     if (HoldState == 1 || HoldState == 2) {
@@ -126,19 +126,17 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
                             scaleDown.cancel();
                             sound.stop();
                         }
-
-
+                        sound.stop();
                     }
+                    sound.stop();
                     break;
                 default:
+                    sound.stop();
                     break;
             }
-
             return false;
         });
     }
-
-
 
     private void animationPlayDown() {
         scaleDownX = ObjectAnimator.ofFloat(breathBtn, "scaleX", 1f).setDuration(1000);
@@ -305,7 +303,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
         @Override
         void handleClickOnButton() {
-            NumOfBreaths -=1;
+            NumOfBreaths -= 1;
             super.handleClickOnButton();
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable, 3000);

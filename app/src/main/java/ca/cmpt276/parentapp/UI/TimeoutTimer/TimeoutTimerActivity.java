@@ -186,6 +186,12 @@ public class TimeoutTimerActivity extends AppCompatActivity {
                 progress = (int) Math.round(math);
                 Log.d("Progress", String.valueOf(progress));
                 simpleProgressBar.setProgress(progress);
+                if (progress >= 100) {
+                    TIME_LEFT = 0;
+                    timerRunning = false;
+                    updateCounter();
+                    updateBtnStates();
+                }
             }
 
             @Override
@@ -294,5 +300,4 @@ public class TimeoutTimerActivity extends AppCompatActivity {
         AlarmManager.AlarmClockInfo alarmManager = new AlarmManager.AlarmClockInfo(END_TIME, getStartPendingIntent(context));
         am.setAlarmClock(alarmManager, getStartPendingIntent(context));
     }
-
 }
