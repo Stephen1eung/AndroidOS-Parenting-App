@@ -79,6 +79,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
         setTitle("Take Breath");
+        loadBreaths();
         initDropDown();
         startBreathBtn();
     }
@@ -265,7 +266,6 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     }
 
     private class In extends State {
-
         Handler handler = new Handler();
         Runnable runnable = () -> setState(BreathOutState);
 
@@ -273,13 +273,11 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         void handleEnter() {
             breathBtn.setText("In");
             HelpText.setText("Breathe In");
-
             buttonText = breathBtn.getText().toString();
         }
 
         @Override
         void handleClickOnButton() {
-
             super.handleClickOnButton();
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable, 3000);
