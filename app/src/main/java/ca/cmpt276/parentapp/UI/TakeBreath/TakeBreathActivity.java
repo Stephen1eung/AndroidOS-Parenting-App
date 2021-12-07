@@ -37,6 +37,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     ObjectAnimator scaleUpY, scaleDownY;
     AnimatorSet scaleUp, scaleDown;
     MediaPlayer sound;
+    Spinner spinner;
     private final State startState = new StartState();
     private final State finishState = new FinishState();
     private State CurrState = startState;
@@ -76,6 +77,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         setTitle("Take Breath");
         initDropDown();
         startBreathBtn();
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -106,12 +108,15 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
                         HoldState = 0;
                         CurrState.handleClickOnButton();
                         if (buttonText.equals("In")){
-                            scaleUp.pause();
+                            scaleUp.cancel();
+                            sound.stop();
                         }
                         else{
-                            scaleDown.pause();
+                            scaleDown.cancel();
+                            sound.stop();
+
                         }
-                        sound.stop();
+
                     }
                     break;
                 default:
@@ -122,25 +127,31 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     }
 
     private void animationPlayDown() {
-        scaleDownX = ObjectAnimator.ofFloat(breathBtn,"scaleX",1f).setDuration(2000);
-        scaleDownY = ObjectAnimator.ofFloat(breathBtn,"scaleY",1f).setDuration(2000);
+        scaleDownX = ObjectAnimator.ofFloat(breathBtn,"scaleX",1f).setDuration(1000);
+        scaleDownY = ObjectAnimator.ofFloat(breathBtn,"scaleY",1f).setDuration(1000);
         scaleDown = new AnimatorSet();
-
         scaleDown.play(scaleDownX).with(scaleDownY);
+
+        sound = MediaPlayer.create(TakeBreathActivity.this, R.raw.calm);
+
+        sound.start();
         scaleDown.start();
     }
 
     private void animationPlayUp() {
-        scaleUpX = ObjectAnimator.ofFloat(breathBtn,"scaleX",2.5f).setDuration(2000);
-        scaleUpY = ObjectAnimator.ofFloat(breathBtn,"scaleY",2.5f).setDuration(2000);
+        scaleUpX = ObjectAnimator.ofFloat(breathBtn,"scaleX",2.5f).setDuration(1000);
+        scaleUpY = ObjectAnimator.ofFloat(breathBtn,"scaleY",2.5f).setDuration(1000);
         scaleUp = new AnimatorSet();
-
         scaleUp.play(scaleUpX).with(scaleUpY);
+
+        sound = MediaPlayer.create(TakeBreathActivity.this, R.raw.calm);
+
+        sound.start();
         scaleUp.start();
     }
 
     private void initDropDown() {
-        Spinner spinner = findViewById(R.id.dropDownBreath);
+        spinner = findViewById(R.id.dropDownBreath);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(TakeBreathActivity.this, R.array.breathNums,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -215,6 +226,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
                 numOfBreath.setText("DONE!!!");
                 HelpText.setText("");
             }
+
         }
     }
 
@@ -246,17 +258,17 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         void handleClickOnButton() {
             super.handleClickOnButton();
 
-            sound = MediaPlayer.create(TakeBreathActivity.this, R.raw.calm);
+
             handler.removeCallbacks(runnable);
-            sound.start();
+
 
             handler.postDelayed(runnable, 3000);
-            Toast.makeText(TakeBreathActivity.this, "3 seconds have passed, you may release the button ", Toast.LENGTH_SHORT);
+
             //breathBtn.animate().scaleX(2.5f).scaleY(2.5f).setDuration(10000);
             animationPlayUp();
-            sound.stop();
 
-            // for sound new Handler(Looper.getMainLooper()).postDelayed(() -> )
+
+
             setState(finishState);
 
         }
@@ -283,16 +295,16 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         @Override
         void handleClickOnButton() {
             super.handleClickOnButton();
-            sound = MediaPlayer.create(TakeBreathActivity.this, R.raw.calm);
+
             handler.removeCallbacks(runnable);
-            sound.start();
+
 
             handler.postDelayed(runnable, 3000);
             Toast.makeText(TakeBreathActivity.this, "3 seconds have passed, you may release the button ", Toast.LENGTH_SHORT);
             //breathBtn.animate().scaleX(1f).scaleY(1f).setDuration(10000);
             animationPlayDown();
 
-            sound.stop();
+
 
 
             // for sound new Handler(Looper.getMainLooper()).postDelayed(() -> )
