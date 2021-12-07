@@ -9,12 +9,9 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,6 +26,8 @@ import ca.cmpt276.parentapp.R;
 public class TakeBreathActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private final State BreathInState = new In();
     private final State BreathOutState = new Out();
+    private final State startState = new StartState();
+    private final State finishState = new FinishState();
     String buttonText;
     TextView HelpText;
     Button breathBtn;
@@ -38,10 +37,9 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     AnimatorSet scaleUp, scaleDown;
     MediaPlayer sound;
     Spinner spinner;
-    private final State startState = new StartState();
-    private final State finishState = new FinishState();
     private State CurrState = startState;
     private int NumOfBreaths = 3, HoldState = 0;
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, TakeBreathActivity.class);
     }
@@ -83,7 +81,6 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         setTitle("Take Breath");
         initDropDown();
         startBreathBtn();
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -94,10 +91,9 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (HoldState == 0) {
-                        if (buttonText.equals("In")){
+                        if (buttonText.equals("In")) {
                             animationPlayUp();
-                        }
-                        else if (buttonText.equals("Out")){
+                        } else if (buttonText.equals("Out")) {
                             animationPlayDown();
                         }
                         HoldState = 1;
@@ -113,16 +109,13 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
                     if (HoldState == 1 || HoldState == 2) {
                         HoldState = 0;
                         CurrState.handleClickOnButton();
-                        if (buttonText.equals("In")){
+                        if (buttonText.equals("In")) {
                             scaleUp.cancel();
                             sound.stop();
-                        }
-                        else{
+                        } else {
                             scaleDown.cancel();
                             sound.stop();
-
                         }
-
                     }
                     break;
                 default:
@@ -134,8 +127,8 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
 
 
     private void animationPlayDown() {
-        scaleDownX = ObjectAnimator.ofFloat(breathBtn,"scaleX",1f).setDuration(1000);
-        scaleDownY = ObjectAnimator.ofFloat(breathBtn,"scaleY",1f).setDuration(1000);
+        scaleDownX = ObjectAnimator.ofFloat(breathBtn, "scaleX", 1f).setDuration(1000);
+        scaleDownY = ObjectAnimator.ofFloat(breathBtn, "scaleY", 1f).setDuration(1000);
         scaleDown = new AnimatorSet();
         scaleDown.play(scaleDownX).with(scaleDownY);
 
@@ -146,8 +139,8 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
     }
 
     private void animationPlayUp() {
-        scaleUpX = ObjectAnimator.ofFloat(breathBtn,"scaleX",2.5f).setDuration(1000);
-        scaleUpY = ObjectAnimator.ofFloat(breathBtn,"scaleY",2.5f).setDuration(1000);
+        scaleUpX = ObjectAnimator.ofFloat(breathBtn, "scaleX", 2.5f).setDuration(1000);
+        scaleUpY = ObjectAnimator.ofFloat(breathBtn, "scaleY", 2.5f).setDuration(1000);
         scaleUp = new AnimatorSet();
         scaleUp.play(scaleUpX).with(scaleUpY);
 
@@ -166,7 +159,7 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
         spinner.setAdapter(adapter);
-        spinner.setSelection(NumOfBreaths);
+        spinner.setSelection(NumOfBreaths-1);
         spinner.setOnItemSelectedListener(this);
     }
 
@@ -236,7 +229,6 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
                 numOfBreath.setText("DONE!!!");
                 HelpText.setText("");
             }
-
         }
     }
 
@@ -267,28 +259,16 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         @Override
         void handleClickOnButton() {
             super.handleClickOnButton();
-
-
             handler.removeCallbacks(runnable);
-
-
             handler.postDelayed(runnable, 3000);
-
-            //breathBtn.animate().scaleX(2.5f).scaleY(2.5f).setDuration(10000);
             animationPlayUp();
-
-
-
             setState(finishState);
-
         }
 
         @Override
         void handleClickOffButton() {
             handler.removeCallbacks(runnable);
         }
-
-
     }
 
     private class Out extends State {
@@ -305,19 +285,10 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         @Override
         void handleClickOnButton() {
             super.handleClickOnButton();
-
             handler.removeCallbacks(runnable);
-
-
             handler.postDelayed(runnable, 3000);
             Toast.makeText(TakeBreathActivity.this, "3 seconds have passed, you may release the button ", Toast.LENGTH_SHORT);
-            //breathBtn.animate().scaleX(1f).scaleY(1f).setDuration(10000);
             animationPlayDown();
-
-
-
-
-            // for sound new Handler(Looper.getMainLooper()).postDelayed(() -> )
             setState(finishState);
         }
 
@@ -325,7 +296,5 @@ public class TakeBreathActivity extends AppCompatActivity implements AdapterView
         void handleClickOffButton() {
             handler.removeCallbacks(runnable);
         }
-
-
     }
 }
