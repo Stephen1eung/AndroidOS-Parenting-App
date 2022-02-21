@@ -1,5 +1,6 @@
 **CMPT276 FINAL PROJECT**
-    * Stephen Leung *
+
+* Stephen Leung *
     
 Parenting app
 
